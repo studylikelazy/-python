@@ -1,522 +1,529 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2TJ29KSJP4"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+<!-- Google tag (gtag.js) -->
 
-      gtag('config', 'G-2TJ29KSJP4');
-    </script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2TJ29KSJP4"></script>
+
+<script>
+
+window.dataLayer = window.dataLayer || [];
+
+function gtag(){dataLayer.push(arguments);}
+
+gtag('js', new Date());
+
+
+
+gtag('config', 'G-2TJ29KSJP4');
+
+</script> 
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2TJ29KSJP4"></script>
+
+<script>
+
+window.dataLayer = window.dataLayer || [];
+
+function gtag(){dataLayer.push(arguments);}
+
+gtag('js', new Date());
+
+
+
+gtag('config', 'G-2TJ29KSJP4');
+
+</script> 
+
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Typing Drift - Custom Code Edition (v2.0.0)</title>
+    <title>PyType-Learner Web v1.9.0</title>
     <style>
         :root {
-            --bg-color: #0d0f14;
-            --container-bg: #161a23;
-            --accent-cyan: #00f2fe;
-            --accent-magenta: #ff007f;
-            --text-main: #f0f3f8;
-            --text-muted: #6c7a9c;
-            --correct-color: #39ff14;
-            --incorrect-color: #ff3333;
+            --bg-color: #0f172a;
+            --container-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --correct: #4ade80;
+            --incorrect: #f87171;
+            --current-bg: rgba(56, 189, 248, 0.2);
+            --gold: #f59e0b;
+            --card-bg: #0b0f19;
+            --neon-blue: rgba(56, 189, 248, 0.6);
+            --neon-green: rgba(74, 222, 128, 0.8);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
             padding: 20px;
         }
 
         .container {
-            background: var(--container-bg);
-            border: 2px solid #232d3f;
-            border-radius: 16px;
-            box-shadow: 0 0 30px rgba(0, 242, 254, 0.1);
             width: 100%;
             max-width: 800px;
-            padding: 40px;
+            background-color: var(--container-bg);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        header {
             text-align: center;
-            position: relative;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 15px;
         }
 
-        h1 {
-            font-size: 2.5rem;
-            background: linear-gradient(45deg, var(--accent-cyan), var(--accent-magenta));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
-            letter-spacing: 2px;
+        h1 { font-size: 24px; color: var(--accent); margin-bottom: 8px; }
+        .subtitle { font-size: 14px; color: var(--text-muted); }
+
+        .screen { display: none; }
+        .screen.active { display: block; }
+
+        #welcome-screen { text-align: center; }
+
+        .mode-selection {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            max-width: 550px;
+            margin: 20px auto;
+        }
+        @media (max-width: 600px) {
+            .mode-selection { grid-template-columns: 1fr; }
         }
 
-        .subtitle {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 30px;
-        }
-
-        /* Screens */
-        .screen {
-            display: none;
-        }
-
-        .screen.active {
-            display: block;
-        }
-
-        /* Start Screen (Custom Code Input) */
-        .instruction {
-            margin-bottom: 20px;
-            line-height: 1.6;
-            color: var(--text-main);
+        .mode-card {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
             text-align: left;
         }
+        .mode-card:hover { border-color: var(--accent); background: rgba(56, 189, 248, 0.05); transform: translateY(-2px); }
+        .mode-title { font-size: 16px; font-weight: bold; color: var(--text-main); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+        .mode-desc { font-size: 13px; color: var(--text-muted); line-height: 1.4; }
 
-        .code-input-area {
-            width: 100%;
-            height: 200px;
-            background: #11161f;
-            border: 1px solid #2a354a;
-            border-radius: 12px;
-            color: #39ff14;
-            font-family: 'Courier New', Courier, monospace;
+        .custom-code-box {
+            text-align: left;
+            max-width: 550px;
+            margin: 20px auto 0 auto;
+            background: rgba(56, 189, 248, 0.03);
             padding: 15px;
-            font-size: 1rem;
-            resize: none;
-            margin-bottom: 20px;
-            outline: none;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+            border-radius: 8px;
+            border: 1px dashed var(--accent);
         }
-
-        .code-input-area:focus {
-            border-color: var(--accent-cyan);
-            box-shadow: 0 0 10px rgba(0, 242, 254, 0.2), inset 0 0 10px rgba(0,0,0,0.5);
+        .custom-textarea {
+            width: 100%;
+            height: 70px;
+            background-color: var(--card-bg);
+            border: 1px solid #334155;
+            color: #38bdf8;
+            font-family: monospace;
+            font-size: 13px;
+            padding: 10px;
+            border-radius: 6px;
+            resize: none;
+            outline: none;
+            margin-bottom: 10px;
         }
 
         .btn {
-            background: linear-gradient(135deg, var(--accent-cyan), #4facfe);
-            color: #000;
-            font-weight: bold;
-            font-size: 1.2rem;
-            padding: 15px 40px;
+            background-color: var(--accent);
+            color: #0f172a;
             border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.4);
-            margin-top: 10px;
-        }
-
-        .btn:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 6px 20px rgba(0, 242, 254, 0.6);
-        }
-
-        /* Game Screen */
-        .track-container {
-            width: 100%;
-            height: 40px;
-            background: #1f2633;
-            border-radius: 20px;
-            position: relative;
-            margin-bottom: 30px;
-            border: 1px solid #2d384e;
-            overflow: hidden;
-        }
-
-        .track-line {
-            position: absolute;
-            top: 50%;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: dashed #415274;
-            transform: translateY(-50%);
-        }
-
-        .car-avatar {
-            position: absolute;
-            top: 50%;
-            left: 0%;
-            transform: translate(-50%, -50%);
-            font-size: 24px;
-            transition: left 0.2s cubic-bezier(0.1, 0.8, 0.3, 1);
-            filter: drop-shadow(0 0 5px var(--accent-cyan));
-        }
-
-        .stats-row {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 35px;
-            background: #1c2330;
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid #2a354a;
-        }
-
-        .stat-box .label {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            margin-bottom: 5px;
-        }
-
-        .stat-box .value {
-            font-size: 1.5rem;
+            padding: 10px 24px;
+            font-size: 15px;
             font-weight: bold;
-            color: var(--accent-cyan);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn:hover { opacity: 0.9; }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: var(--text-muted);
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px 15px;
+            border-radius: 6px;
         }
 
-        .word-display {
-            font-size: 1.6rem;
-            letter-spacing: 1px;
-            margin-bottom: 40px;
-            line-height: 1.6;
-            min-height: 80px;
-            background: #11161f;
-            padding: 20px;
-            border-radius: 12px;
-            border-left: 5px solid var(--accent-magenta);
-            text-align: left;
+        .code-display {
+            font-family: "Consolas", monospace;
+            font-size: 18px;
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 8px;
             white-space: pre-wrap;
             word-break: break-all;
-            font-family: 'Courier New', Courier, monospace;
+            margin-bottom: 15px;
+            line-height: 1.6;
+            border: 1px solid #334155;
+            transition: all 0.2s;
         }
+        .code-display.combo-low { border-color: var(--accent); box-shadow: 0 0 15px var(--neon-blue); }
+        .code-display.combo-high { border-color: var(--correct); box-shadow: 0 0 25px var(--neon-green); animation: neon-pulse 0.8s infinite alternate; }
+        @keyframes neon-pulse { from { box-shadow: 0 0 15px rgba(74, 222, 128, 0.6); } to { box-shadow: 0 0 30px rgba(74, 222, 128, 1); } }
 
-        .char-correct {
-            color: var(--correct-color);
-            text-shadow: 0 0 8px rgba(57, 255, 20, 0.6);
-        }
-
-        .char-current {
-            background-color: rgba(0, 242, 254, 0.3);
-            border-bottom: 2px solid var(--accent-cyan);
-            color: var(--text-main);
-            animation: blink 1s infinite;
-        }
-
-        .char-incorrect {
-            color: var(--incorrect-color);
-            background-color: rgba(255, 51, 51, 0.2);
-            text-shadow: 0 0 8px rgba(255, 51, 51, 0.6);
-        }
-
-        @keyframes blink {
-            50% { background-color: transparent; border-bottom-color: transparent; }
-        }
-
-        /* Result Screen */
-        .results-grid {
+        .choices-container {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin: 30px 0;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        @media (max-width: 600px) {
+            .choices-container { grid-template-columns: 1fr; }
+        }
+        .choice-btn {
+            background-color: #334155;
+            border: 1px solid #475569;
+            color: var(--text-main);
+            padding: 14px;
+            border-radius: 6px;
+            font-family: "Consolas", monospace;
+            font-size: 14px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .choice-btn:hover { background-color: #475569; border-color: var(--accent); }
+        .choice-btn.correct-ans { background-color: rgba(74, 222, 128, 0.2); border-color: var(--correct); color: var(--correct); }
+        .choice-btn.wrong-ans { background-color: rgba(248, 113, 113, 0.2); border-color: var(--incorrect); color: var(--incorrect); }
+
+        .char.pending { color: #64748b; }
+        .char.correct { color: var(--correct); }
+        .char.incorrect { color: var(--incorrect); background-color: rgba(248, 113, 113, 0.1); }
+        .char.current { color: var(--text-main); background-color: var(--current-bg); border-bottom: 2px solid var(--accent); }
+
+        .input-field {
+            width: 100%;
+            background-color: var(--card-bg);
+            border: 1px solid #334155;
+            color: var(--text-main);
+            font-family: "Consolas", monospace;
+            font-size: 18px;
+            padding: 14px;
+            border-radius: 6px;
+            outline: none;
+            margin-bottom: 20px;
         }
 
-        .result-card {
-            background: #1c2330;
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid #2a354a;
+        .grammar-container {
+            background-color: rgba(56, 189, 248, 0.02);
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 18px;
         }
+        .grammar-section { margin-bottom: 10px; }
+        .section-lbl { font-size: 11px; font-weight: bold; color: var(--accent); letter-spacing: 1px; margin-bottom: 2px; }
+        .section-title { font-size: 15px; font-weight: bold; color: #f8fafc; margin-bottom: 8px; border-bottom: 1px solid #334155; padding-bottom: 4px; }
+        .rule-box { font-family: monospace; background: rgba(0,0,0,0.2); padding: 6px 10px; border-radius: 4px; color: #e2e8f0; font-size: 13px; }
+        .desc-text { font-size: 13px; color: #cbd5e1; line-height: 1.5; }
 
-        .result-card .res-val {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: var(--accent-magenta);
-            margin-top: 5px;
-        }
-
-        .rank-banner {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: var(--correct-color);
-            margin: 25px 0;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .focus-notice {
-            color: var(--accent-magenta);
-            font-size: 0.9rem;
-            margin-top: 15px;
-            opacity: 0.8;
-            display: none;
-        }
+        .summary-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px; }
+        .stat-card { background: rgba(0, 0, 0, 0.15); padding: 15px; border-radius: 8px; text-align: center; }
+        .stat-val { font-size: 24px; font-weight: bold; color: var(--accent); margin-top: 5px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>TYPING DRIFT</h1>
-    <div class="subtitle">v2.0.0 コード持ち込みカスタム機能・GA4連動完全版</div>
+    <header>
+        <h1>PyType-Learner Web</h1>
+        <div class="subtitle">副業自動化・フルスタックパック v1.9.0</div>
+    </header>
 
-    <!-- START SCREEN (Code Input) -->
-    <div id="start-screen" class="screen active">
-        <div class="instruction">
-            <h3>【コード持ち込み機能】</h3>
-            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 10px;">
-                練習したいPythonやJavaScriptなどのソースコード、またはテキストを下のエリアに貼り付けてください。自分だけのオリジナルコースでドリフトを開始できます！
-            </p>
+    <!-- Welcome -->
+    <div id="welcome-screen" class="screen active">
+        <p>副業・業務効率化で即戦力となる15の必須構文を最速で攻略せよ。</p>
+        
+        <div class="mode-selection">
+            <div class="mode-card" onclick="selectGameMode('typing')">
+                <div class="mode-title">⚡ タイピングドライブ [PC推奨]</div>
+                <div class="mode-desc">正確なキー入力でネオンコンボを発動し、コードの構造を脳に焼き付けます。</div>
+            </div>
+            <div class="mode-card" onclick="selectGameMode('quiz')">
+                <div class="mode-title">🧠 ナレッジクイズ [スマホ対応]</div>
+                <div class="mode-desc">目的の自動化処理に対応する正しいPython構文を4択からタップで選択します。</div>
+            </div>
         </div>
-        <textarea id="custom-code-input" class="code-input-area" placeholder='# ここに自分のコードを貼り付けてください&#10;print("Hello, World!")&#10;for i in range(5):&#10;    print(i)'></textarea>
-        <br>
-        <button class="btn" onclick="startGame()">DRIVE START</button>
+
+        <div class="custom-code-box">
+            <h4 style="font-size:13px; color:var(--accent); margin-bottom:4px;">🛠️ AI生成コード/自作コードの持ち込み（UGC拡張）</h4>
+            <textarea id="custom-code-input" class="custom-textarea" placeholder="ここに自作のスクリプトを貼り付けると、上記モードへ自動変換されます..."></textarea>
+        </div>
     </div>
 
-    <!-- GAME SCREEN -->
+    <!-- Game -->
     <div id="game-screen" class="screen">
-        <!-- Progress Track -->
-        <div class="track-container">
-            <div class="track-line"></div>
-            <div id="car" class="car-avatar">🏎️</div>
+        <div class="stats-bar">
+            <div id="progress-text">タスク: 1 / 15</div>
+            <div id="combo-text">🔥 0 COMBO</div>
+            <div id="accuracy-text">精度: 100%</div>
+            <div id="timer-text">時間: 0秒</div>
         </div>
-
-        <!-- Realtime Stats -->
-        <div class="stats-row">
-            <div class="stat-box">
-                <div class="label">Progress</div>
-                <div id="stat-progress" class="value">0%</div>
+        
+        <div id="code-display" class="code-display"></div>
+        
+        <input type="text" id="input-field" class="input-field" placeholder="半角で正確にコードを入力してください..." autocomplete="off" style="display:none;">
+        <div id="choices-container" class="choices-container" style="display:none;"></div>
+        
+        <div class="grammar-container">
+            <div id="g-title" class="section-title"></div>
+            <div class="grammar-section">
+                <div class="section-lbl">📐 構文定義</div>
+                <div id="g-rule" class="rule-box"></div>
             </div>
-            <div class="stat-box">
-                <div class="label">WPM</div>
-                <div id="stat-wpm" class="value">0</div>
-            </div>
-            <div class="stat-box">
-                <div class="label">Accuracy</div>
-                <div id="stat-accuracy" class="value">100%</div>
+            <div class="grammar-section">
+                <div class="section-lbl">💡 副業実務での活用ロジック</div>
+                <div id="g-desc" class="desc-text"></div>
             </div>
         </div>
-
-        <!-- Sentence Display -->
-        <div id="word-display" class="word-display"></div>
-        <div id="focus-notice" class="focus-notice">⚠️ 画面をクリックしてタイピングを再開してください</div>
     </div>
 
-    <!-- RESULT SCREEN -->
+    <!-- Result -->
     <div id="result-screen" class="screen">
-        <h2>MISSION ACCOMPLISHED!</h2>
-        <div class="rank-banner" id="res-rank">-</div>
-
-        <div class="results-grid">
-            <div class="result-card">
-                <div class="label">タイピング速度 (WPM)</div>
-                <div class="res-val" id="res-wpm">0</div>
-            </div>
-            <div class="result-card">
-                <div class="label">正確性 (Accuracy)</div>
-                <div class="res-val" id="res-accuracy">0%</div>
-            </div>
+        <h2>🎉 プログラムラン・全タスク完了！</h2>
+        <div class="summary-stats">
+            <div class="stat-card"><div>総走行時間</div><div id="total-time-val" class="stat-val">0秒</div></div>
+            <div class="stat-card"><div>最終習得精度</div><div id="total-acc-val" class="stat-val">100%</div></div>
         </div>
-
-        <button class="btn" onclick="restartGame()">RETRY DRIFT</button>
+        <div style="text-align: center;"><button class="btn" onclick="initWelcomeScreen()">メインメニューへ戻る</button></div>
     </div>
 </div>
 
 <script>
-    let textToType = "";
-    let currentCharIndex = 0;
-    let startTime = null;
-    let totalKeystrokes = 0;
-    let correctKeystrokes = 0;
-    let gameActive = false;
+    const CORE_DEFAULT_DATA = [
+        // --- ジャンル1: WEBスクレイピング基礎 ---
+        { code: "import requests", title: "【スクレイピング】STEP 1: ネット通信用モジュールの読込", rule: "import モジュール名", desc: "WebサイトからHTMLデータを自動ダウンロードするための必須ライブラリを読み込みます。", dummy: ["fetch requests", "include requests", "require requests"] },
+        { code: "from bs4 import BeautifulSoup", title: "【スクレイピング】STEP 2: 解析ツールの導入", rule: "from ライブラリ名 import クラス名", desc: "ダウンロードした膨大なHTMLから、欲しい文字や価格だけをピンポイントで抽出する解析ツール(BeautifulSoup)を呼び出します。", dummy: ["import beautifulsoup4", "from soup import BeautifulSoup", "import bs4.BeautifulSoup"] },
+        { code: "res = requests.get(url)", title: "【スクレイピング】STEP 3: 指定したURLへのアクセス", rule: "変数 = requests.get(ターゲットURL)", desc: "ターゲットにするWebサイトにプログラムからアクセスし、その応答(レスポンス)を丸ごと変数に格納します。", dummy: ["res = requests.open(url)", "res = fetch(url)", "res = web.get(url)"] },
+        { code: "soup = BeautifulSoup(res.text, \"html.parser\")", title: "【スクレイピング】STEP 4: HTMLデータの解析準備", rule: "変数 = BeautifulSoup(解析するテキスト, \"パーサー名\")", desc: "取得したWebサイトのテキストデータを、Pythonが検索・抽出をしやすい構造に変換(パース)します。", dummy: ["soup = res.parse(\"html\")", "soup = BeautifulSoup(res.content)", "soup = parse.html(res.text)"] },
+        
+        // --- ジャンル2: データ処理・Excel操作 ---
+        { code: "import pandas as pd", title: "【データ自動化】STEP 5: 最強のデータ集計ツールの読込", rule: "import ライブラリ名 as 略称", desc: "大量のデータを並び替え、フィルタリングし、ExcelやCSVとして出力するための業界標準ライブラリを「pd」という短い名前で導入します。", dummy: ["import pandas", "using pandas as pd", "import openpyxl as pd"] },
+        { code: "df = pd.read_excel(\"data.xlsx\")", title: "【データ自動化】STEP 6: Excelデータの自動一括読込", rule: "変数 = pd.read_excel(\"ファイルパス\")", desc: "手作業で開くのが面倒なExcelファイルを一瞬で読み込み、データフレーム（表データ構造）として保持します。", dummy: ["df = open_excel(\"data.xlsx\")", "df = pd.load_excel(\"data.xlsx\")", "df = excel.read(\"data.xlsx\")"] },
+        { code: "df.to_csv(\"result.csv\", index=False)", title: "【データ自動化】STEP 7: 加工データのCSV書き出し", rule: "データフレーム.to_csv(\"保存名\", index=False)", desc: "副業で最も多い『納品用CSVの作成』コマンド。余計な行番号(index)を消して綺麗に出力するのが実務のプロの技です。", dummy: ["df.save_csv(\"result.csv\")", "df.to_csv(\"result.csv\")", "pd.write_csv(df, \"result.csv\")"] },
 
-    const startScreen = document.getElementById('start-screen');
+        // --- ジャンル3: ファイル・システム操作 ---
+        { code: "import os", title: "【ファイル操作】STEP 8: OS連携モジュールの読込", rule: "import os", desc: "パソコンの中にあるフォルダを作ったり、ファイル名を一括で変更したりする「パソコン操作の自動化」の基本ライブラリです。", dummy: ["import system", "import path", "from os import system"] },
+        { code: "os.makedirs(\"output\", exist_ok=True)", title: "【ファイル操作】STEP 9: 納品用フォルダの自動作成", rule: "os.makedirs(\"フォルダ名\", exist_ok=True)", desc: "「output」という新しいフォルダを作ります。既にフォルダがあってもエラーを起こさない(exist_ok=True)実務的な書き方です。", dummy: ["os.mkdir(\"output\")", "os.create_directory(\"output\")", "os.makedirs(\"output\")"] },
+        { code: "import shutil", title: "【ファイル操作】STEP 10: 高度なファイル移動・コピー", rule: "import shutil", desc: "ファイルを別のフォルダに一括移動したり、フォルダごと丸ごとコピー・削除したりするための強力なライブラリです。", dummy: ["import filemove", "import os.shutil", "from os import shutil"] },
+
+        // --- ジャンル4: 制御・マナー（スクレイピングの鉄則） ---
+        { code: "import time", title: "【時間制御】STEP 11: 待機処理モジュールの読込", rule: "import time", desc: "プログラムの実行速度をコントロールし、一時停止させるための時間制御ライブラリを読み込みます。", dummy: ["import sleep", "from time import sleep", "import clock"] },
+        { code: "time.sleep(3)", title: "【時間制御】STEP 12: サーバー負荷を防ぐ3秒間停止", rule: "time.sleep(秒数)", desc: "Webサイトから連続でデータを抜くとアクセス禁止になります。副業スクレイピング案件では『1アクセスごとに3秒待つ』のが絶対の鉄則です。", dummy: ["sleep(3)", "time.wait(3)", "time.sleep(3000)"] },
+
+        // --- ジャンル5: API通知（LINE・Discord連携） ---
+        { code: "import json", title: "【API連携】STEP 13: データのJSON形式変換ツール", rule: "import json", desc: "DiscordやLINEの通知システムにデータを送る際、世界共通のデータ形式である「JSON」を扱うためのライブラリです。", dummy: ["import dict", "from json import parse", "import convert"] },
+        { code: "payload = {\"content\": \"通知テスト\"}", title: "【API連携】STEP 14: 送信データの作成（辞書型）", rule: "変数 = {キー: 値}", desc: "チャットツール側に送るメッセージ内容を、Pythonの「辞書型(Dictionary)」という形式で定義します。", dummy: ["payload = [\"content\": \"通知テスト\"]", "payload = \"content: 通知テスト\"", "var payload = {content: \"通知テスト\"}"] },
+        { code: "requests.post(url, json=payload)", title: "【API連携】STEP 15: Discord/LINEへの自動通知送信", rule: "requests.post(送信先URL, json=送信データ)", desc: "作成したメッセージデータを指定のWebhook URLへ一瞬で送信します。価格監視botなどの最終アウトプット層です。", dummy: ["requests.get(url, json=payload)", "requests.send(url, payload)", "requests.post(url, data=payload)"] }
+    ];
+
+    let questions = [];
+    let currentIdx = 0;
+    let startTime = 0;
+    let timerInterval = null;
+    let currentMode = 'typing';
+    
+    let totalErrors = 0;
+    let totalTypedChars = 0;
+    let comboCount = 0;
+    let lastUserLength = 0;
+
+    const welcomeScreen = document.getElementById('welcome-screen');
     const gameScreen = document.getElementById('game-screen');
     const resultScreen = document.getElementById('result-screen');
-    const wordDisplay = document.getElementById('word-display');
-    const car = document.getElementById('car');
-    const focusNotice = document.getElementById('focus-notice');
-    const customCodeInput = document.getElementById('custom-code-input');
+    const codeDisplay = document.getElementById('code-display');
+    const inputField = document.getElementById('input-field');
+    const choicesContainer = document.getElementById('choices-container');
 
-    // UI Updates
-    const statProgress = document.getElementById('stat-progress');
-    const statWpm = document.getElementById('stat-wpm');
-    const statAccuracy = document.getElementById('stat-accuracy');
-
-    // Default template text if input is empty
-    const defaultCode = `print("Hello, World!")\nimport random\nfor i in range(5):\n    print("Drifting...")`;
-
-    function startGame() {
-        // Fetch input text
-        let rawInput = customCodeInput.value.trim();
-        if (!rawInput) {
-            textToType = defaultCode;
-        } else {
-            textToType = rawInput;
-        }
-
-        startScreen.classList.remove('active');
+    function initWelcomeScreen() {
+        welcomeScreen.classList.add('active');
+        gameScreen.classList.remove('active');
         resultScreen.classList.remove('active');
+    }
+
+    function selectGameMode(mode) {
+        currentMode = mode;
+        const rawText = document.getElementById('custom-code-input').value;
+        
+        if (rawText.trim()) {
+            questions = [];
+            rawText.split('\n').forEach((line, idx) => {
+                if (!line.trim()) return;
+                questions.push({
+                    code: line,
+                    title: `持ち込みスクリプト: タスク ${idx + 1}`,
+                    rule: "カスタムロジック",
+                    desc: "インポートされたコードです。実際の動作と構造を意識して攻略してください。",
+                    dummy: [line + ";", line.replace(/=/g, "=="), "void " + line]
+                });
+            });
+        } else {
+            questions = [...CORE_DEFAULT_DATA];
+        }
+        launchEngine();
+    }
+
+    function launchEngine() {
+        currentIdx = 0;
+        totalErrors = 0;
+        totalTypedChars = 0;
+        comboCount = 0;
+        lastUserLength = 0;
+        
+        welcomeScreen.classList.remove('active');
         gameScreen.classList.add('active');
         
-        currentCharIndex = 0;
-        totalKeystrokes = 0;
-        correctKeystrokes = 0;
-        startTime = Date.now();
-        gameActive = true;
-
-        updateProgress();
-        renderText();
-        
-        // GA4 Custom Event: Game Start
-        if (typeof gtag === 'function') {
-            gtag('event', 'game_start', {
-                'event_category': 'Game',
-                'event_label': 'Typing Drift Custom Edition'
-            });
-        }
-    }
-
-    function renderText() {
-        wordDisplay.innerHTML = '';
-        for (let i = 0; i < textToType.length; i++) {
-            const span = document.createElement('span');
-            // Show visible block for line breaks to guide the user
-            if (textToType[i] === '\n') {
-                span.innerHTML = '↵\n';
-            } else {
-                span.textContent = textToType[i];
-            }
-            
-            if (i === currentCharIndex) {
-                span.className = 'char-current';
-            }
-            wordDisplay.appendChild(span);
-        }
-        scrollCurrentCharIntoView();
-    }
-
-    function scrollCurrentCharIntoView() {
-        const currentSpan = wordDisplay.children[currentCharIndex];
-        if (currentSpan) {
-            currentSpan.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-    }
-
-    function updateProgress() {
-        const progressPercent = textToType.length > 0 ? Math.round((currentCharIndex / textToType.length) * 100) : 0;
-        statProgress.textContent = `${progressPercent}%`;
-        car.style.left = `${progressPercent}%`;
-    }
-
-    function updateLiveStats() {
-        if (!startTime) return;
-        const elapsedMinutes = (Date.now() - startTime) / 60000;
-        
-        const wpm = elapsedMinutes > 0 ? Math.round((correctKeystrokes / 5) / elapsedMinutes) : 0;
-        statWpm.textContent = wpm;
-
-        const accuracy = totalKeystrokes > 0 ? Math.round((correctKeystrokes / totalKeystrokes) * 100) : 100;
-        statAccuracy.textContent = `${accuracy}%`;
-    }
-
-    // Capture standard keystrokes
-    window.addEventListener('keydown', (e) => {
-        if (!gameActive) return;
-
-        let targetChar = textToType[currentCharIndex];
-        let inputKey = e.key;
-
-        // Handle Enter key for line breaks
-        if (targetChar === '\n' && inputKey === 'Enter') {
-            inputKey = '\n';
-        }
-
-        // Ignore utility keys except Enter
-        if (e.key.length !== 1 && e.key !== 'Enter') return;
-        
-        // Prevent default browser action for Space and Enter to avoid page scrolling
-        if (e.key === ' ' || e.key === 'Enter') {
-            e.preventDefault();
-        }
-
-        totalKeystrokes++;
-        const spans = wordDisplay.querySelectorAll('span');
-
-        if (inputKey === targetChar) {
-            correctKeystrokes++;
-            spans[currentCharIndex].className = 'char-correct';
-            currentCharIndex++;
-
-            if (currentCharIndex >= textToType.length) {
-                endGame();
-                return;
-            }
-            updateProgress();
+        if (currentMode === 'typing') {
+            inputField.style.display = 'block';
+            choicesContainer.style.display = 'none';
+            inputField.focus();
         } else {
-            spans[currentCharIndex].className = 'char-current char-incorrect';
+            inputField.style.display = 'none';
+            choicesContainer.style.display = 'grid';
         }
+        
+        startTime = Date.now();
+        clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            document.getElementById('timer-text').innerText = `時間: ${Math.floor((Date.now() - startTime) / 1000)}秒`;
+        }, 1000);
+        
+        loadQuestion();
+    }
 
-        if (gameActive) {
-            if (spans[currentCharIndex]) {
-                spans[currentCharIndex].className = 'char-current';
-            }
-            scrollCurrentCharIntoView();
-            updateLiveStats();
+    function loadQuestion() {
+        if (currentIdx >= questions.length) { endGame(); return; }
+        const q = questions[currentIdx];
+        
+        document.getElementById('progress-text').innerText = `タスク: ${currentIdx + 1} / ${questions.length}`;
+        document.getElementById('g-title').innerText = q.title;
+        document.getElementById('g-rule').innerText = q.rule;
+        document.getElementById('g-desc').innerText = q.desc;
+        
+        codeDisplay.className = 'code-display';
+        
+        if (currentMode === 'typing') {
+            inputField.value = '';
+            renderTypingDisplay(q.code, '');
+        } else {
+            renderQuizDisplay(q);
+        }
+    }
+
+    function renderTypingDisplay(target, user) {
+        codeDisplay.innerHTML = '';
+        for (let i = 0; i < target.length; i++) {
+            const span = document.createElement('span');
+            span.textContent = target[i];
+            if (i < user.length) {
+                span.className = (user[i] === target[i]) ? 'char correct' : 'char incorrect';
+                if (i === user.length - 1 && user[i] !== target[i]) totalErrors++;
+            } else if (i === user.length) span.className = 'char current';
+            else span.className = 'char pending';
+            codeDisplay.appendChild(span);
+        }
+        if (user.length > 0) totalTypedChars++;
+        updateAccuracyUI();
+    }
+
+    inputField.addEventListener('input', () => {
+        const target = questions[currentIdx].code;
+        const user = inputField.value;
+        if (user.length > lastUserLength) {
+            if (user[user.length - 1] === target[user.length - 1]) comboCount++;
+            else comboCount = 0;
+        }
+        lastUserLength = user.length;
+        renderTypingDisplay(target, user);
+        
+        if (comboCount >= 15) codeDisplay.classList.add('combo-high');
+        else if (comboCount >= 5) codeDisplay.classList.add('combo-low');
+        document.getElementById('combo-text').innerText = `🔥 ${comboCount} COMBO`;
+
+        if (user === target) {
+            currentIdx++;
+            lastUserLength = 0;
+            setTimeout(loadQuestion, 200);
         }
     });
+
+    function renderQuizDisplay(q) {
+        codeDisplay.innerHTML = `<span style="color:var(--accent); font-size:14px; font-weight:bold;">📝 実行したい自動化処理:</span>\n${q.title}\n\n<span style="color:var(--text-muted); font-size:13px;">これに該当する正しいPython構文を以下から選んでください。</span>`;
+        choicesContainer.innerHTML = '';
+        
+        const allChoices = [q.code, ...q.dummy].sort(() => Math.random() - 0.5);
+        
+        allChoices.forEach(choiceText => {
+            const btn = document.createElement('button');
+            btn.className = 'choice-btn';
+            btn.textContent = choiceText;
+            btn.onclick = () => handleQuizAnswer(btn, choiceText, q.code);
+            choicesContainer.appendChild(btn);
+        });
+    }
+
+    function handleQuizAnswer(selectedBtn, chosen, correct) {
+        totalTypedChars++;
+        const buttons = choicesContainer.querySelectorAll('.choice-btn');
+        buttons.forEach(b => b.removeAttribute('onclick'));
+
+        if (chosen === correct) {
+            selectedBtn.classList.add('correct-ans');
+            codeDisplay.innerHTML = `<span style="color:var(--correct); font-weight:bold;">✔ 正解（システム承認）</span>\n\n<span style="font-family:monospace; font-size:20px;">${correct}</span>`;
+            comboCount++;
+            currentIdx++;
+            setTimeout(loadQuestion, 800);
+        } else {
+            selectedBtn.classList.add('wrong-ans');
+            totalErrors++;
+            comboCount = 0;
+            buttons.forEach(b => { if(b.textContent === correct) b.classList.add('correct-ans'); });
+            currentIdx++;
+            setTimeout(loadQuestion, 1600);
+        }
+        document.getElementById('combo-text').innerText = `🔥 ${comboCount} COMBO`;
+        updateAccuracyUI();
+    }
+
+    function updateAccuracyUI() {
+        const acc = totalTypedChars > 0 ? Math.max(0, Math.min(100, Math.floor(((totalTypedChars - totalErrors) / totalTypedChars) * 100))) : 100;
+        document.getElementById('accuracy-text').innerText = `精度: ${acc}%`;
+    }
 
     function endGame() {
-        gameActive = false;
+        clearInterval(timerInterval);
         gameScreen.classList.remove('active');
         resultScreen.classList.add('active');
-
-        const elapsedMinutes = (Date.now() - startTime) / 60000;
-        const finalWpm = Math.round((correctKeystrokes / 5) / elapsedMinutes);
-        const finalAccuracy = totalKeystrokes > 0 ? Math.round((correctKeystrokes / totalKeystrokes) * 100) : 100;
-
-        document.getElementById('res-wpm').textContent = finalWpm;
-        document.getElementById('res-accuracy').textContent = `${finalAccuracy}%`;
-
-        // Rank determination
-        let rank = 'NOVICE DRIVER';
-        if (finalWpm >= 60 && finalAccuracy >= 95) rank = 'LEGENDARY DRIFTER (R34 CLASS)';
-        else if (finalWpm >= 45 && finalAccuracy >= 90) rank = 'PRO RACER';
-        else if (finalWpm >= 30) rank = 'STREET RACER';
-
-        document.getElementById('res-rank').textContent = rank;
-
-        // GA4 Custom Event: Game End
-        if (typeof gtag === 'function') {
-            gtag('event', 'game_complete', {
-                'score_wpm': finalWpm,
-                'score_accuracy': finalAccuracy,
-                'driver_rank': rank
-            });
-        }
+        
+        const totalElapsed = Math.floor((Date.now() - startTime) / 1000);
+        const finalAcc = totalTypedChars > 0 ? Math.max(0, Math.min(100, Math.floor(((totalTypedChars - totalErrors) / totalTypedChars) * 100))) : 100;
+        
+        document.getElementById('total-time-val').innerText = `${totalElapsed}秒`;
+        document.getElementById('total-acc-val').innerText = `${finalAcc}%`;
     }
 
-    function restartGame() {
-        startScreen.classList.add('active');
-        gameScreen.classList.remove('active');
-        resultScreen.classList.remove('active');
-    }
-
-    // Tab Focus warning fallback
-    window.addEventListener('blur', () => {
-        if (gameActive) focusNotice.style.display = 'block';
-    });
-    window.addEventListener('focus', () => {
-        focusNotice.style.display = 'none';
-    });
+    window.onload = initWelcomeScreen;
 </script>
-
 </body>
 </html>
