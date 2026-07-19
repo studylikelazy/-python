@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PyType-Learner Web v1.5.0</title>
+    <title>PyType-Learner Web v1.6.0</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -16,6 +16,8 @@
             --current-bg: rgba(56, 189, 248, 0.2);
             --gold: #f59e0b;
             --card-bg: #0b0f19;
+            --neon-blue: rgba(56, 189, 248, 0.6);
+            --neon-green: rgba(74, 222, 128, 0.8);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -70,13 +72,41 @@
         .features {
             text-align: left;
             max-width: 550px;
-            margin: 20px auto 30px auto;
+            margin: 20px auto 20px auto;
             background: rgba(0, 0, 0, 0.15);
             padding: 20px;
             border-radius: 8px;
             border-left: 4px solid var(--accent);
         }
         .features li { margin-bottom: 10px; font-size: 15px; color: #cbd5e1; list-style: none; }
+
+        /* カスタムコード入力エリアのスタイリング */
+        .custom-code-box {
+            text-align: left;
+            max-width: 550px;
+            margin: 20px auto 20px auto;
+            background: rgba(56, 189, 248, 0.05);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px dashed var(--accent);
+        }
+        .custom-code-box h3 { font-size: 15px; color: var(--accent); margin-bottom: 6px; }
+        .custom-code-box p { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
+        .custom-textarea {
+            width: 100%;
+            height: 90px;
+            background-color: var(--card-bg);
+            border: 1px solid #334155;
+            color: #38bdf8;
+            font-family: "Consolas", monospace;
+            font-size: 13px;
+            padding: 10px;
+            border-radius: 6px;
+            resize: none;
+            outline: none;
+            margin-bottom: 10px;
+        }
+        .custom-textarea:focus { border-color: var(--accent); }
 
         .btn {
             background-color: var(--accent);
@@ -87,9 +117,10 @@
             font-weight: bold;
             border-radius: 6px;
             cursor: pointer;
-            transition: opacity 0.2s;
+            transition: all 0.2s;
         }
-        .btn:hover { opacity: 0.9; }
+        .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-secondary { background-color: #475569; color: var(--text-main); padding: 8px 20px; font-size: 14px; }
 
         .stats-bar {
             display: flex;
@@ -100,8 +131,11 @@
             background: rgba(0, 0, 0, 0.2);
             padding: 10px 15px;
             border-radius: 6px;
+            align-items: center;
         }
+        #combo-text { font-weight: bold; color: var(--gold); font-size: 15px; }
 
+        /* コンボに応じた疾走演出用ネオンエフェクト */
         .code-display {
             font-family: "Consolas", "Monaco", "Courier New", monospace;
             font-size: 22px;
@@ -114,6 +148,20 @@
             margin-bottom: 15px;
             line-height: 1.5;
             border: 1px solid #334155;
+            transition: all 0.2s ease;
+        }
+        .code-display.combo-low {
+            border-color: var(--accent);
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+        .code-display.combo-high {
+            border-color: var(--correct);
+            box-shadow: 0 0 25px var(--neon-green);
+            animation: neon-pulse 0.8s infinite alternate;
+        }
+        @keyframes neon-pulse {
+            from { box-shadow: 0 0 15px rgba(74, 222, 128, 0.6); }
+            to { box-shadow: 0 0 30px rgba(74, 222, 128, 1); }
         }
 
         .char.pending { color: #64748b; }
@@ -152,7 +200,6 @@
 
         #result-screen h2 { color: var(--correct); text-align: center; margin-bottom: 20px; }
         .new-record { color: var(--gold); text-align: center; font-weight: bold; margin-bottom: 15px; animation: pulse 1.5s infinite; display: none; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
         .summary-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px; }
         .stat-card { background: rgba(0, 0, 0, 0.15); padding: 15px; border-radius: 8px; text-align: center; }
@@ -171,38 +218,50 @@
 <div class="container">
     <header>
         <h1>PyType-Learner Web</h1>
-        <div class="subtitle">ゲームプログラミング基礎編 v1.5.0</div>
+        <div class="subtitle">カスタム＆ドライブエディション v1.6.0</div>
     </header>
 
     <!-- Welcome -->
     <div id="welcome-screen" class="screen active">
         <div id="high-score-display" class="high-score-board" style="display: none;"></div>
-        <p>ゲーム開発で頻出するPythonのコードをタイピングし、その仕組みをマスターする実践アセットです。</p>
+        <p>タイピングの爽快な演出と共に、Python構文をハイスピードで脳に焼き付けるアセットです。</p>
+        
         <div class="features">
             <ul>
-                <li>🎮 <b>ゲーム開発のコア10ステップ:</b> スコア計算、乱数、座標移動、ゲームループを網羅。</li>
-                <li>💡 <b>リアルタイムコード添字:</b> ミスした記号やインデントをその場で赤くハイライト。</li>
-                <li>🏆 <b>自己ベストセーブ:</b> 最速タイムと最高精度をブラウザに自動で記録。</li>
+                <li>🎮 <b>ゲームプログラミング構文:</b> 基礎から実践的なループ、乱数までを網羅。</li>
+                <li>🔥 <b>コンボドライブシステム:</b> ノーミスで連続入力すると画面がネオンに発光。</li>
             </ul>
         </div>
-        <button class="btn" onclick="startGame()">ゲーム文法タイピングを始める</button>
+
+        <button class="btn" onclick="startStandardGame()">標準プログラムを開始</button>
+
+        <!-- 自作コード持ち込みセクション -->
+        <div class="custom-code-box">
+            <h3>🛠️ 自作コード持ち込みモード</h3>
+            <p>お手持ちのPythonスクリプトファイル（.pyなど）の中身を貼り付けて、自分専用のタイピングステージを瞬時にビルドできます。</p>
+            <textarea id="custom-code-input" class="custom-textarea" placeholder="ここにPythonコードをコピー＆ペーストしてください...&#10;例:&#10;import os&#10;print('System Active')"></textarea>
+            <div style="text-align: right;">
+                <button class="btn btn-secondary" onclick="startCustomGame()">カスタムモードで走る</button>
+            </div>
+        </div>
     </div>
 
     <!-- Game -->
     <div id="game-screen" class="screen">
         <div class="stats-bar">
             <div id="progress-text">問題: 1 / 10</div>
+            <div id="combo-text">🔥 0 COMBO</div>
             <div id="accuracy-text">精度: 100%</div>
             <div id="timer-text">経過時間: 0秒</div>
         </div>
         <div id="code-display" class="code-display"></div>
-        <input type="text" id="input-field" class="input-field" placeholder="半角英数でゲームコードを入力してください..." autocomplete="off">
+        <input type="text" id="input-field" class="input-field" placeholder="半角英数でコードを正確に入力してください..." autocomplete="off">
         
         <!-- 文法学習エリア -->
         <div class="grammar-container">
             <div id="g-title" class="section-title"></div>
             <div class="grammar-section">
-                <div class="section-lbl">📐 ゲーム開発の文法ルール</div>
+                <div class="section-lbl">📐 文法ルール</div>
                 <div id="g-rule" class="rule-box"></div>
             </div>
             <div class="grammar-section">
@@ -218,92 +277,31 @@
 
     <!-- Result -->
     <div id="result-screen" class="screen">
-        <h2>🎉 ステージクリア！</h2>
-        <div id="new-record-alert" class="new-record">👑 自己ベスト更新！ゲーム開発の基礎スキルが刻まれました！</div>
+        <h2>🎉 プログラム ラン コンプリート！</h2>
+        <div id="new-record-alert" class="new-record">👑 自己ベスト更新！パフォーマンスレコードをローカルにセーブしました！</div>
         
         <div class="summary-stats">
             <div class="stat-card"><div>総所要時間</div><div id="total-time-val" class="stat-val">0秒</div></div>
-            <div class="stat-card"><div>タイピング精度</div><div id="total-acc-val" class="stat-val">100%</div></div>
+            <div class="stat-card"><div>最高タイピング精度</div><div id="total-acc-val" class="stat-val">100%</div></div>
         </div>
-        <div style="font-size: 14px; margin-bottom: 10px; color: var(--text-muted);">📚 今日学んだゲームプログラム構文一覧:</div>
+        <div style="font-size: 14px; margin-bottom: 10px; color: var(--text-muted);">📚 今回走行したプログラムソース一覧:</div>
         <div id="review-list" class="review-list"></div>
-        <div style="text-align: center;"><button class="btn" onclick="initWelcomeScreen()">もう一度挑戦する</button></div>
+        <div style="text-align: center;"><button class="btn" onclick="initWelcomeScreen()">メインメニューに戻る</button></div>
     </div>
 </div>
 
 <script>
-    // ゲーム開発の基本と実践フローに沿った10問
-    const LEARNING_DATA = [
-        {
-            code: "score = 0",
-            title: "GAME STEP 1: スコア（状態）の初期化",
-            rule: "変数名 = 初期値",
-            desc: "ゲーム開始時にプレイヤーの得点を0点にリセットする処理です。ゲーム内のあらゆる状態（スコア、所持金、現在のレベルなど）は、このように変数を用意して管理を開始します。",
-            trap: "すべて半角小文字です。イコールの前後に半角スペースを空けるのが綺麗なコードのコツです。"
-        },
-        {
-            code: "import random",
-            title: "GAME STEP 2: ランダム要素（乱数）の導入",
-            rule: "import random",
-            desc: "アイテムのドロップ確率、ガチャの判定、敵の出現位置など、ゲームに『偶然の要素』を取り入れるためのPython標準の乱数ライブラリ（モジュール）を読み込みます。",
-            trap: "import と random の間には必ず半角スペースを1つ空けてください。"
-        },
-        {
-            code: "dice = random.randint(1, 6)",
-            title: "GAME STEP 3: ランダムな整数の生成",
-            rule: "変数 = random.randint(最小値, 最大値)",
-            desc: "1から6までの整数をランダムに1つ選び、変数diceに代入します。サイコロを振る演出や、攻撃時のランダムなダメージ計算（クリティカル等）の基本となる非常に重要な構文です。",
-            trap: "randintの綴り（rand + int）に注意。括弧内のカンマ「,」の後に半角スペースが必要です。"
-        },
-        {
-            code: "score += 100",
-            title: "GAME STEP 4: スコアの加算（累積代入）",
-            rule: "変数名 += 加算したい値",
-            desc: "現在のスコアに100点をプラスして上書き保存します。ゲーム中に敵を倒したりアイテムを拾ったりした際、元の得点に値を足し合わせる処理です。`score = score + 100` の短縮形です。",
-            trap: "「+」と「=」の順番を逆にして「=+」にすると、ただの「100の代入」になってしまうので注意！"
-        },
-        {
-            code: "player_pos = [0, 0]",
-            title: "GAME STEP 5: 座標リストによる位置管理",
-            rule: "リスト名 = [X座標, Y座標]",
-            desc: "プレイヤーキャラクターやマシンの現在位置（X座標とY座標）を1つの『リスト型』の変数にまとめて管理します。画面内の2D位置表現（横軸と縦軸）の基本形です。",
-            trap: "四角括弧 [ ] と、区切りのカンマはすべて半角で入力しましょう。"
-        },
-        {
-            code: "player_pos[0] += 5",
-            title: "GAME STEP 6: キャラクターの移動（加速）処理",
-            rule: "リスト名[インデックス] += 移動量",
-            desc: "座標リストの0番目（X座標）に5を加算することで、キャラクターやマシンを画面右方向へ移動させる処理です。キーボードの右キーが押された時などにこのコードが裏で実行されます。",
-            trap: "Pythonのリストは0から数えるため、`[0]`がX軸（横）、`[1]`がY軸（縦）を指します。"
-        },
-        {
-            code: "actions = [\"drift\", \"nitro\", \"brake\"]",
-            title: "GAME STEP 7: 行動パターンのリスト化",
-            rule: "変数名 = [\"要素1\", \"要素2\", \"要素3\"]",
-            desc: "ゲーム内で選択可能なアクション（例：ドリフト、ニトロ、ブレーキなど）を1つのリストにまとめます。敵の行動パターンやアイテムのドロップリストを作る際に応用できます。",
-            trap: "文字データを囲むダブルクォーテーション `\"` をバックスラッシュでエスケープせず、そのまま正確に入力してください。"
-        },
-        {
-            code: "enemy_action = random.choice(actions)",
-            title: "GAME STEP 8: 敵AIの行動をランダムに決定",
-            rule: "変数名 = random.choice(リスト名)",
-            desc: "STEP 7で作ったリストの中から、ランダムで要素を1つだけ自動選出します。敵AIが次にどのアクションを取るかを予測不可能にし、ゲーム性を高めるためによく使われます。",
-            trap: "choiceの括弧の中に、対象となるリストの変数名（actions）を正確に入力します。"
-        },
-        {
-            code: "if hp <= 0:",
-            title: "GAME STEP 9: ゲームオーバーの条件判定",
-            rule: "if 変数 <= 0:",
-            desc: "プレイヤーの体力（hp）が0以下になったかどうかを判定します。この条件が満たされた場合（True）に、ゲーム終了の画面を呼び出すトリガーとなります。",
-            trap: "比較演算子の向き（<=）に注意し、末尾の「:（コロン）」を絶対に忘れないでください。"
-        },
-        {
-            code: "while is_playing:",
-            title: "GAME STEP 10: ゲームループ（メイン処理の継続）",
-            rule: "while 条件式:",
-            desc: "ゲームがプレイ中（is_playingがTrue）である限り、中の処理（画面の更新や入力の受付）をずっと繰り返します。あらゆるゲームプログラムの根底で動いている心臓部のループ構文です。",
-            trap: "whileの後にスペースを空け、末尾に「:（コロン）」を打ちます。ループの中身はインデントが必要になります。"
-        }
+    const CORE_DEFAULT_DATA = [
+        { code: "score = 0", title: "GAME STEP 1: スコア（状態）の初期化", rule: "変数名 = 初期値", desc: "ゲーム内のあらゆる状態（スコア、所持金、レベルなど）は、このように変数を用意して管理を開始します。", trap: "すべて半角小文字。イコールの前後に半角スペースを空けるのが美しい設計です。" },
+        { code: "import random", title: "GAME STEP 2: 乱数モジュールの導入", rule: "import random", desc: "ドロップ確率や敵の出現位置など、ゲームに『偶然の要素』を取り入れるための外部ライブラリを読み込みます。", trap: "import と random の間には必ず半角スペースを1つ空けてください。" },
+        { code: "dice = random.randint(1, 6)", title: "GAME STEP 3: ランダムな整数の生成", rule: "変数 = random.randint(最小値, 最大値)", desc: "1から6までの整数をランダムに選んで変数に代入します。クリティカルダメージ計算等の基本形です。", trap: "randintの綴りに注意。括弧内のカンマ「,」の後に半角スペースが必要です。" },
+        { code: "score += 100", title: "GAME STEP 4: スコアの累積加算", rule: "変数名 += 加算値", desc: "現在のスコアに100点をプラスして上書き保存します。`score = score + 100` のスマートな短縮表記です。", trap: "「+」と「=」の順番を逆にしないこと。逆にすると単なる100の代入になります。" },
+        { code: "player_pos = [0, 0]", title: "GAME STEP 5: 座標リストによる位置管理", rule: "リスト名 = [X座標, Y座標]", desc: "キャラクターやマシンの現在位置（X軸・Y軸）を1つの『リスト型』の変数にまとめて2D空間を表現します。", trap: "四角括弧 [ ] と、区切りのカンマはすべて半角で正確に入力しましょう。" },
+        { code: "player_pos[0] += 5", title: "GAME STEP 6: キャラクターの移動処理", rule: "リスト名[インデックス] += 移動量", desc: "座標リストの0番目（X座標）に5を加算し、画面右方向へマシンを急加速させる処理です。", trap: "Pythonの配列は0から数えるため、`[0]`がX軸（横）、`[1]`がY軸（縦）を指します。" },
+        { code: "actions = [\"drift\", \"nitro\", \"brake\"]", title: "GAME STEP 7: 行動パターンのアセット化", rule: "変数名 = [\"要素1\", \"要素2\"]", desc: "ゲーム内で選択可能なアクションをリストにまとめ、敵AIの行動予測を組むための基盤とします。", trap: "ダブルクォーテーション `\"` を打ち忘れないよう注意してください。" },
+        { code: "enemy_action = random.choice(actions)", title: "GAME STEP 8: 敵AIのランダム行動選択", rule: "変数名 = random.choice(リスト名)", desc: "リストの中からランダムで要素を1つだけ自動選出します。敵の挙動を不規則にしゲーム性を高めます。", trap: "choiceの括弧の中に、対象となるリストの変数名（actions）を正確に入力します。" },
+        { code: "if hp <= 0:", title: "GAME STEP 9: ゲームオーバーの条件分岐", rule: "if 変数 <= 0:", desc: "プレイヤーの体力（hp）が0以下になったかどうかを判定し、ゲーム終了画面を呼び出すトリガーです。", trap: "比較演算子の向き（<=）に注意し、末尾の「:（コロン）」を絶対に忘れないでください。" },
+        { code: "while is_playing:", title: "GAME STEP 10: メインゲームループの駆動", rule: "while 条件式:", desc: "ゲームがプレイ中である限り、画面の更新や入力をバックグラウンドで常にループ実行し続ける心臓部です。", trap: "whileの後にスペースを空け、末尾に「:（コロン）」を打ちます。" }
     ];
 
     let questions = [];
@@ -312,6 +310,10 @@
     let timerInterval = null;
     let totalErrors = 0;
     let totalTypedChars = 0;
+    
+    // コンボシステム制御用変数
+    let comboCount = 0;
+    let lastUserLength = 0;
 
     const welcomeScreen = document.getElementById('welcome-screen');
     const gameScreen = document.getElementById('game-screen');
@@ -325,28 +327,67 @@
     const gTrap = document.getElementById('g-trap');
 
     const progressText = document.getElementById('progress-text');
+    const comboText = document.getElementById('combo-text');
     const accuracyText = document.getElementById('accuracy-text');
     const timerText = document.getElementById('timer-text');
 
     function initWelcomeScreen() {
         switchScreen('welcome');
-        const saved = localStorage.getItem('pytype_saved_record_game_v15');
+        const saved = localStorage.getItem('pytype_saved_record_v16');
         const scoreBoard = document.getElementById('high-score-display');
         if (saved) {
             const record = JSON.parse(saved);
-            scoreBoard.innerText = `🏆 現在のあなたの最高記録 ── タイム: ${record.time}秒 / タイピング精度: ${record.accuracy}%`;
+            scoreBoard.innerText = `🏆 現在のシステム最高記録 ── タイム: ${record.time}秒 / 精度: ${record.accuracy}%`;
             scoreBoard.style.display = 'inline-block';
         } else {
             scoreBoard.style.display = 'none';
         }
     }
 
-    function startGame() {
-        // ゲーム開発の流れを意識させるため、STEP1から順番に出題
-        questions = [...LEARNING_DATA];
+    function startStandardGame() {
+        questions = [...CORE_DEFAULT_DATA];
+        launchEngine();
+    }
+
+    function startCustomGame() {
+        const rawText = document.getElementById('custom-code-input').value;
+        if (!rawText.trim()) {
+            alert("エラー: テキストエリアにPythonコードが入力されていません。");
+            return;
+        }
+        
+        const lines = rawText.split('\n');
+        questions = [];
+        let stepNum = 1;
+        
+        lines.forEach((line) => {
+            // 完全な空行はタイピング不可のため自動スキップ
+            if (line.trim() === '') return;
+            
+            questions.push({
+                code: line,
+                title: `CUSTOM STEP ${stepNum}: ユーザー定義コードの実行`,
+                rule: "持ち込みスクリプト",
+                desc: "リソース提供者様がインポートした独自のPythonコードです。インデントのスペース数や構造を意識しながらタイピングしてください。",
+                trap: "インデント（先頭のスペース）および末尾のコロンなどの記号ミスに細心の注意を払いましょう。"
+            });
+            stepNum++;
+        });
+
+        if (questions.length === 0) {
+            alert("エラー: 有効なソースコード行が検出されませんでした。");
+            return;
+        }
+        launchEngine();
+    }
+
+    function launchEngine() {
         currentIdx = 0;
         totalErrors = 0;
         totalTypedChars = 0;
+        comboCount = 0;
+        lastUserLength = 0;
+        updateComboUI();
         switchScreen('game');
         startTime = Date.now();
         clearInterval(timerInterval);
@@ -388,8 +429,12 @@
             span.textContent = target[i];
             
             if (i < user.length) {
-                if (user[i] === target[i]) span.classList.add('correct');
-                else { span.classList.add('incorrect'); if (i === user.length - 1) totalErrors++; }
+                if (user[i] === target[i]) {
+                    span.classList.add('correct');
+                } else {
+                    span.classList.add('incorrect');
+                    if (i === user.length - 1) totalErrors++;
+                }
             } else if (i === user.length) span.classList.add('current');
             else span.classList.add('pending');
             codeDisplay.appendChild(span);
@@ -399,16 +444,43 @@
         accuracyText.innerText = `精度: ${acc}%`;
     }
 
+    // リアルタイム・コンボ判定処理
     inputField.addEventListener('input', () => {
         const target = questions[currentIdx].code;
         const user = inputField.value;
+
+        if (user.length > lastUserLength) {
+            const lastIdx = user.length - 1;
+            // 入力された直近の1文字が正しいか検証
+            if (user[lastIdx] === target[lastIdx]) {
+                comboCount++;
+            } else {
+                comboCount = 0; // 1文字でもミスがあればコンボ即時破綻
+            }
+        }
+        lastUserLength = user.length;
+
         renderCodeDisplay(target, user);
+        updateComboUI();
         
         if (user === target) { 
             currentIdx++; 
+            lastUserLength = 0;
             setTimeout(loadQuestion, 200); 
         }
     });
+
+    // コンボ数に応じた視覚エフェクトの動的切り替え
+    function updateComboUI() {
+        comboText.innerText = `🔥 ${comboCount} COMBO`;
+        codeDisplay.className = 'code-display';
+        
+        if (comboCount >= 15) {
+            codeDisplay.classList.add('combo-high');
+        } else if (comboCount >= 5) {
+            codeDisplay.classList.add('combo-low');
+        }
+    }
 
     gameScreen.addEventListener('click', () => inputField.focus());
 
@@ -421,7 +493,7 @@
         document.getElementById('total-time-val').innerText = `${totalElapsed}秒`;
         document.getElementById('total-acc-val').innerText = `${finalAcc}%`;
 
-        const saved = localStorage.getItem('pytype_saved_record_game_v15');
+        const saved = localStorage.getItem('pytype_saved_record_v16');
         let isNew = false;
         if (!saved) isNew = true;
         else {
@@ -430,7 +502,7 @@
         }
 
         if (isNew) {
-            localStorage.setItem('pytype_saved_record_game_v15', JSON.stringify({ time: totalElapsed, accuracy: finalAcc }));
+            localStorage.setItem('pytype_saved_record_v16', JSON.stringify({ time: totalElapsed, accuracy: finalAcc }));
             document.getElementById('new-record-alert').style.display = 'block';
         } else {
             document.getElementById('new-record-alert').style.display = 'none';
@@ -442,7 +514,7 @@
             const item = document.createElement('div'); item.classList.add('review-item');
             const c = document.createElement('div'); c.classList.add('review-code'); c.textContent = q.code;
             const t = document.createElement('div'); t.classList.add('review-title'); t.textContent = q.title;
-            const d = document.createElement('div'); d.classList.add('review-desc'); d.textContent = `公式: ${q.rule} ── ${q.desc}`;
+            const d = document.createElement('div'); d.classList.add('review-desc'); d.textContent = `${q.desc}`;
             item.appendChild(t); item.appendChild(c); item.appendChild(d); list.appendChild(item);
         });
     }
