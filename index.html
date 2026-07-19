@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PyType-Learner Web v1.8.0</title>
+    <title>PyType-Learner Web v2.0.0</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -56,18 +56,6 @@
         .screen.active { display: block; }
 
         #welcome-screen { text-align: center; }
-
-        .high-score-board {
-            background: rgba(245, 158, 11, 0.1);
-            border: 1px solid var(--gold);
-            color: var(--gold);
-            padding: 10px 15px;
-            border-radius: 6px;
-            display: inline-block;
-            margin-bottom: 20px;
-            font-weight: bold;
-            font-size: 14px;
-        }
 
         .mode-selection {
             display: grid;
@@ -129,7 +117,6 @@
             transition: all 0.2s;
         }
         .btn:hover { opacity: 0.9; }
-        .btn-secondary { background-color: #475569; color: var(--text-main); padding: 6px 14px; font-size: 13px; }
 
         .stats-bar {
             display: flex;
@@ -144,7 +131,7 @@
 
         .code-display {
             font-family: "Consolas", monospace;
-            font-size: 20px;
+            font-size: 18px;
             background-color: var(--card-bg);
             padding: 25px;
             border-radius: 8px;
@@ -175,7 +162,7 @@
             padding: 14px;
             border-radius: 6px;
             font-family: "Consolas", monospace;
-            font-size: 15px;
+            font-size: 14px;
             text-align: left;
             cursor: pointer;
             transition: all 0.15s;
@@ -210,8 +197,8 @@
         }
         .grammar-section { margin-bottom: 10px; }
         .section-lbl { font-size: 11px; font-weight: bold; color: var(--accent); letter-spacing: 1px; margin-bottom: 2px; }
-        .section-title { font-size: 16px; font-weight: bold; color: #f8fafc; margin-bottom: 8px; border-bottom: 1px solid #334155; padding-bottom: 4px; }
-        .rule-box { font-family: monospace; background: rgba(0,0,0,0.2); padding: 6px 10px; border-radius: 4px; color: #e2e8f0; font-size: 14px; }
+        .section-title { font-size: 15px; font-weight: bold; color: #f8fafc; margin-bottom: 8px; border-bottom: 1px solid #334155; padding-bottom: 4px; }
+        .rule-box { font-family: monospace; background: rgba(0,0,0,0.2); padding: 6px 10px; border-radius: 4px; color: #e2e8f0; font-size: 13px; }
         .desc-text { font-size: 13px; color: #cbd5e1; line-height: 1.5; }
 
         .summary-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px; }
@@ -224,48 +211,44 @@
 <div class="container">
     <header>
         <h1>PyType-Learner Web</h1>
-        <div class="subtitle">副業自動化・ドライブエディション v1.8.0</div>
+        <div class="subtitle">クロスオーバーエディション v2.0.0</div>
     </header>
 
     <!-- Welcome -->
     <div id="welcome-screen" class="screen active">
-        <div id="high-score-display" class="high-score-board" style="display: none;"></div>
-        <p>副業・業務効率化で即戦力となるPython構文を、自身の環境に合わせて最速で攻略せよ。</p>
+        <p>初心者・ゲーマー・副業志望者へ。Pythonの基礎から実戦コードまでを網羅した25のミッション。</p>
         
         <div class="mode-selection">
             <div class="mode-card" onclick="selectGameMode('typing')">
                 <div class="mode-title">⚡ タイピングドライブ [PC推奨]</div>
-                <div class="mode-desc">キーボード入力でコンボを繋げ、ネオンの疾走エフェクトを発生させて脳に構文を焼き付けます。</div>
+                <div class="mode-desc">正確なキー入力でネオンコンボを発動し、コードの構造を脳に焼き付けます。</div>
             </div>
             <div class="mode-card" onclick="selectGameMode('quiz')">
                 <div class="mode-title">🧠 ナレッジクイズ [スマホ対応]</div>
-                <div class="mode-desc">キーボード不要。提示された自動化の目的に合致する正しいコードを4択からタップで選択します。</div>
+                <div class="mode-desc">目的の処理に対応する正しいPython構文を4択からタップで選択します。</div>
             </div>
         </div>
 
         <div class="custom-code-box">
             <h4 style="font-size:13px; color:var(--accent); margin-bottom:4px;">🛠️ AI生成コード/自作コードの持ち込み（UGC拡張）</h4>
-            <textarea id="custom-code-input" class="custom-textarea" placeholder="ここに副業用スクリプト等のコードを貼り付けると、上記で選択したモードへ動的に変換されます..."></textarea>
+            <textarea id="custom-code-input" class="custom-textarea" placeholder="ここに自作のスクリプトを貼り付けると、上記モードへ自動変換されます..."></textarea>
         </div>
     </div>
 
     <!-- Game -->
     <div id="game-screen" class="screen">
         <div class="stats-bar">
-            <div id="progress-text">タスク: 1 / 5</div>
+            <div id="progress-text">タスク: 1 / 25</div>
             <div id="combo-text">🔥 0 COMBO</div>
             <div id="accuracy-text">精度: 100%</div>
             <div id="timer-text">時間: 0秒</div>
         </div>
         
-        <!-- メイン画面 -->
         <div id="code-display" class="code-display"></div>
         
-        <!-- 入力コントロール -->
         <input type="text" id="input-field" class="input-field" placeholder="半角で正確にコードを入力してください..." autocomplete="off" style="display:none;">
         <div id="choices-container" class="choices-container" style="display:none;"></div>
         
-        <!-- ロジック解説 -->
         <div class="grammar-container">
             <div id="g-title" class="section-title"></div>
             <div class="grammar-section">
@@ -273,7 +256,7 @@
                 <div id="g-rule" class="rule-box"></div>
             </div>
             <div class="grammar-section">
-                <div class="section-lbl">💡 副業実務での活用ロジック</div>
+                <div class="section-lbl">💡 解説＆ロジック</div>
                 <div id="g-desc" class="desc-text"></div>
             </div>
         </div>
@@ -281,7 +264,7 @@
 
     <!-- Result -->
     <div id="result-screen" class="screen">
-        <h2>🎉 プログラムラン・コンプリート！</h2>
+        <h2>🎉 オールミッション・コンプリート！</h2>
         <div class="summary-stats">
             <div class="stat-card"><div>総走行時間</div><div id="total-time-val" class="stat-val">0秒</div></div>
             <div class="stat-card"><div>最終習得精度</div><div id="total-acc-val" class="stat-val">100%</div></div>
@@ -292,11 +275,40 @@
 
 <script>
     const CORE_DEFAULT_DATA = [
-        { code: "import requests", title: "副業STEP 1: WEBデータ自動収集（スクレイピング）", rule: "import モジュール名", desc: "ネット上の商品価格や株価情報を全自動でスクレイピング（収集）するための必須ライブラリを読み込みます。", dummy: ["fetch requests", "include requests", "require requests"] },
-        { code: "import pandas as pd", title: "副業STEP 2: 大量データの高速処理・Excel連携", rule: "import ライブラリ名 as 略称", desc: "数万行に及ぶExcelやCSVデータを一瞬で並び替え・集計するための最強データ処理ライブラリ『Pandas』を導入します。", dummy: ["import pandas", "import pandas with pd", "using pandas as pd"] },
-        { code: "df = pd.read_excel(\"data.xlsx\")", title: "副業STEP 3: Excelファイルの自動読込", rule: "変数 = pd.read_excel(\"ファイル名\")", desc: "指定したExcelデータの中身をプログラム内に一括で取り込み、全自動処理を行うための基盤を作ります。", dummy: ["df = open_excel(\"data.xlsx\")", "df = pd.load_excel(\"data.xlsx\")", "df = pd.read_csv(\"data.xlsx\")"] },
-        { code: "for row in range(10):", title: "副業STEP 4: ループ処理によるコピペ作業の自動化", rule: "for 変数 in range(回数):", desc: "手作業で行うと膨大な時間がかかるコピペや転記作業を、指定した回数（ここでは10回）超高速でループ実行させます。", dummy: ["for row to 10:", "loop row in 10:", "for row in range(10)"] },
-        { code: "if price >= 5000:", title: "副業STEP 5: 条件判定による自動通知（アラート）", rule: "if 条件式:", desc: "取得した商品の価格（price）が5000円以上になったかを自動判定します。副業ツールの通知トリガーの基本形です。", dummy: ["if price >= 5000", "if (price >= 5000) {", "when price >= 5000:"] }
+        // --- ジャンル1: 【超初心者】ハッカー・スターターパック ---
+        { code: "print(\"Hello\")", title: "【超初心者】STEP 1: 画面に文字を表示する", rule: "print(出力したい文字列)", desc: "すべてのプログラミングはここから始まる！指定した文字を画面に出力する最も基本的な命令です。", dummy: ["echo(\"Hello\")", "system.out(\"Hello\")", "console.log(\"Hello\")"] },
+        { code: "user_name = \"Rider\"", title: "【超初心者】STEP 2: データを記憶する（変数）", rule: "変数名 = 値", desc: "文字や数値を箱に入れて名前をつけます（代入）。これで後からいつでも使い回せるようになります。", dummy: ["let user_name = \"Rider\"", "string user_name = \"Rider\"", "user_name : \"Rider\""] },
+        { code: "score = 0", title: "【超初心者】STEP 3: 数値データの代入", rule: "変数名 = 数値", desc: "文字の時は「\"」で囲みましたが、数字はそのままでOK。ゲームの初期スコアなどを設定する基本の形です。", dummy: ["int score = 0", "score := 0", "set score = 0"] },
+        { code: "score += 100", title: "【超初心者】STEP 4: データの更新（加算）", rule: "変数名 += 加算値", desc: "現在の数値に、指定した数を足して上書きします。スコアの加算や、自動化のカウントアップで多用します。", dummy: ["score =+ 100", "score.add(100)", "increment score by 100"] },
+        { code: "print(f\"Score: {score}\")", title: "【超初心者】STEP 5: 文字と変数の合体表示", rule: "print(f\"文字列 {変数名}\")", desc: "文字列の中に変数の数値を埋め込んで表示する、超便利でモダンな書き方（f文字列）です。", dummy: ["print(\"Score: \" + score)", "print(\"Score: %s\", score)", "print(f\"Score: score\")"] },
+
+        // --- ジャンル2: 【ゲーマー特化】ゲームロジック＆ドライブ・ラン ---
+        { code: "if speed >= 180:", title: "【ゲーマー】STEP 6: 限界速度の判定（条件分岐）", rule: "if 条件式:", desc: "車のスピードが時速180km以上になったかを判定します。末尾のコロン「:」がPythonの絶対ルール！", dummy: ["if speed >= 180 {", "if (speed >= 180)", "when speed >= 180:"] },
+        { code: "drift_combo += 1", title: "【ゲーマー】STEP 7: コンボカウンターの加算", rule: "変数 += 1", desc: "綺麗にドリフトが決まるたびに、コンボ数を1ずつ増やしていくゲームの裏側で動いているロジックです。", dummy: ["drift_combo = 1+", "drift_combo.next()", "add 1 to drift_combo"] },
+        { code: "nitro_active = True", title: "【ゲーマー】STEP 8: フラグ管理（真偽値）", rule: "変数 = True / False", desc: "ニトロブーストが発動しているか（ON/OFF）を管理します。Pythonは頭文字が大文字（True）になるのが特徴。", dummy: ["nitro_active = true", "nitro_active = 1", "set nitro_active = ON"] },
+        { code: "import random", title: "【ゲーマー】STEP 9: ランダム要素（ガチャ・クリティカル）の導入", rule: "import random", desc: "ゲームのランダムドロップや、攻撃のダメージのブレを生み出すためのランダムモジュールを読み込みます。", dummy: ["from random import *", "import rand", "include random"] },
+        { code: "damage = random.randint(10, 20)", title: "【ゲーマー】STEP 10: 乱数の生成", rule: "random.randint(最小値, 最大値)", desc: "10から20の間の数字をランダムに1つ生成します。RPGの攻撃力計算や、自動化ツールの待ち時間のブレに使います。", dummy: ["damage = random(10, 20)", "damage = random.rand(10, 20)", "damage = rand.int(10, 20)"] },
+
+        // --- ジャンル3: 【副業】WEBスクレイピングデータ収集 ---
+        { code: "import requests", title: "【スクレイピング】STEP 11: ネット通信用モジュールの読込", rule: "import モジュール名", desc: "WebサイトからHTMLデータを自動ダウンロードするための必須ライブラリを読み込みます。", dummy: ["fetch requests", "include requests", "require requests"] },
+        { code: "from bs4 import BeautifulSoup", title: "【スクレイピング】STEP 12: 解析ツールの導入", rule: "from ライブラリ名 import クラス名", desc: "ダウンロードした膨大なHTMLから、欲しい文字や価格だけをピンポイントで抽出する解析ツール(BeautifulSoup)を呼び出します。", dummy: ["import beautifulsoup4", "from soup import BeautifulSoup", "import bs4.BeautifulSoup"] },
+        { code: "res = requests.get(url)", title: "【スクレイピング】STEP 13: 指定したURLへのアクセス", rule: "変数 = requests.get(ターゲットURL)", desc: "ターゲットにするWebサイトにプログラムからアクセスし、その応答(レスポンス)を丸ごと変数に格納します。", dummy: ["res = requests.open(url)", "res = fetch(url)", "res = web.get(url)"] },
+        { code: "soup = BeautifulSoup(res.text, \"html.parser\")", title: "【スクレイピング】STEP 14: HTMLデータの解析準備", rule: "変数 = BeautifulSoup(解析するテキスト, \"パーサー名\")", desc: "取得したWebサイトのテキストデータを、Pythonが検索・抽出をしやすい構造に変換(パース)します。", dummy: ["soup = res.parse(\"html\")", "soup = BeautifulSoup(res.content)", "soup = parse.html(res.text)"] },
+        { code: "for item in soup.select(\".title\"):", title: "【スクレイピング】STEP 15: 特定のクラスを持つ要素の一括抽出", rule: "for 変数 in soup.select(\".クラス名\"):", desc: "HTMLの中から「title」というクラスがついた要素を全て見つけ出し、ループ処理で順番に取り出します。", dummy: ["for item in soup.find_class(\"title\"):", "loop item in soup.select(\".title\")", "for item in soup.select(\"#title\"):"] },
+
+        // --- ジャンル4: 【副業】データ処理・Excel一括自動化 ---
+        { code: "import pandas as pd", title: "【Excel自動化】STEP 16: 最強のデータ集計ツールの読込", rule: "import ライブラリ名 as 略称", desc: "大量のデータを並び替え、フィルタリングし、ExcelやCSVとして出力するための業界標準ライブラリを導入します。", dummy: ["import pandas", "using pandas as pd", "import openpyxl as pd"] },
+        { code: "df = pd.read_excel(\"data.xlsx\")", title: "【Excel自動化】STEP 17: Excelデータの自動一括読込", rule: "変数 = pd.read_excel(\"ファイルパス\")", desc: "手作業で開くのが面倒なExcelファイルを一瞬で読み込み、データフレーム（表データ構造）として保持します。", dummy: ["df = open_excel(\"data.xlsx\")", "df = pd.load_excel(\"data.xlsx\")", "df = excel.read(\"data.xlsx\")"] },
+        { code: "df.to_csv(\"result.csv\", index=False)", title: "【Excel自動化】STEP 18: 加工データのCSV書き出し", rule: "データフレーム.to_csv(\"保存名\", index=False)", desc: "副業で最も多い『納品用CSVの作成』コマンド。余計な行番号(index)を消して綺麗に出力するのが実務のプロの技です。", dummy: ["df.save_csv(\"result.csv\")", "df.to_csv(\"result.csv\")", "pd.write_csv(df, \"result.csv\")"] },
+        { code: "import os", title: "【ファイル操作】STEP 19: OS連携モジュールの読込", rule: "import os", desc: "パソコンの中にあるフォルダを作ったり、ファイル名を一括で変更したりする「パソコン操作の自動化」の基本ライブラリです。", dummy: ["import system", "import path", "from os import system"] },
+        { code: "os.makedirs(\"output\", exist_ok=True)", title: "【ファイル操作】STEP 20: 納品用フォルダの自動作成", rule: "os.makedirs(\"フォルダ名\", exist_ok=True)", desc: "「output」という新しいフォルダを作ります。既にフォルダがあってもエラーを起こさない(exist_ok=True)実務的な書き方です。", dummy: ["os.mkdir(\"output\")", "os.create_directory(\"output\")", "os.makedirs(\"output\")"] },
+
+        // --- ジャンル5: 【副業】マナー制御＆通知API連携 ---
+        { code: "import time", title: "【自動化マナー】STEP 21: 待機処理モジュールの読込", rule: "import time", desc: "プログラムの実行速度をコントロールし、一時停止させるための時間制御ライブラリを読み込みます。", dummy: ["import sleep", "from time import sleep", "import clock"] },
+        { code: "time.sleep(3)", title: "【自動化マナー】STEP 22: サーバー負荷を防ぐ3秒間停止", rule: "time.sleep(秒数)", desc: "Webサイトから連続でデータを抜くとアクセス禁止になります。副業スクレイピング案件では『1アクセスごとに3秒待つ』のが絶対の鉄則です。", dummy: ["sleep(3)", "time.wait(3)", "time.sleep(3000)"] },
+        { code: "import json", title: "【API連携】STEP 23: データのJSON形式変換ツール", rule: "import json", desc: "DiscordやLINEの通知システムにデータを送る際、世界共通のデータ形式である「JSON」を扱うためのライブラリです。", dummy: ["import dict", "from json import parse", "import convert"] },
+        { code: "payload = {\"content\": \"通知テスト\"}", title: "【API連携】STEP 24: 送信データの作成（辞書型）", rule: "変数 = {キー: 值}", desc: "チャットツール側に送るメッセージ内容を、Pythonの「辞書型(Dictionary)」という形式で定義します。", dummy: ["payload = [\"content\": \"通知テスト\"]", "payload = \"content: 通知テスト\"", "var payload = {content: \"通知テスト\"}"] },
+        { code: "requests.post(url, json=payload)", title: "【API連携】STEP 25: チャットツールへの自動通知送信", rule: "requests.post(送信先URL, json=送信データ)", desc: "作成したメッセージデータを指定のWebhook URLへ一瞬で送信します。価格監視botなどの最終アウトプット層です。", dummy: ["requests.get(url, json=payload)", "requests.send(url, payload)", "requests.post(url, data=payload)"] }
     ];
 
     let questions = [];
@@ -335,7 +347,7 @@
                     code: line,
                     title: `持ち込みスクリプト: タスク ${idx + 1}`,
                     rule: "カスタムロジック",
-                    desc: "インポートされた副業用コードです。実際の動作と構造を意識して攻略してください。",
+                    desc: "インポートされたコードです。実際の動作と構造を意識して攻略してください。",
                     dummy: [line + ";", line.replace(/=/g, "=="), "void " + line]
                 });
             });
@@ -430,8 +442,7 @@
     });
 
     function renderQuizDisplay(q) {
-        // noteの記述通り「目的に対して正しい構文を選ぶ」UXへ変更
-        codeDisplay.innerHTML = `<span style="color:var(--accent); font-size:14px; font-weight:bold;">📝 実行したい自動化処理:</span>\n${q.title}\n\n<span style="color:var(--text-muted); font-size:13px;">これに該当する正しいPython構文を以下から選んでください。</span>`;
+        codeDisplay.innerHTML = `<span style="color:var(--accent); font-size:14px; font-weight:bold;">📝 実行したい処理:</span>\n${q.title}\n\n<span style="color:var(--text-muted); font-size:13px;">これに該当する正しいPython構文を以下から選んでください。</span>`;
         choicesContainer.innerHTML = '';
         
         const allChoices = [q.code, ...q.dummy].sort(() => Math.random() - 0.5);
@@ -452,7 +463,7 @@
 
         if (chosen === correct) {
             selectedBtn.classList.add('correct-ans');
-            codeDisplay.innerHTML = `<span style="color:var(--correct); font-weight:bold;">✔ 正解（システム承認）</span>\n\n<span style="font-family:monospace; font-size:22px;">${correct}</span>`;
+            codeDisplay.innerHTML = `<span style="color:var(--correct); font-weight:bold;">✔ 正解（システム承認）</span>\n\n<span style="font-family:monospace; font-size:20px;">${correct}</span>`;
             comboCount++;
             currentIdx++;
             setTimeout(loadQuestion, 800);
