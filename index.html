@@ -1,1 +1,428 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyType-Learner Web v1.3.0</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --container-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --correct: #4ade80;
+            --incorrect: #f87171;
+            --current-bg: rgba(56, 189, 248, 0.2);
+            --gold: #f59e0b;
+        }
 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background-color: var(--container-bg);
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        #welcome-screen {
+            text-align: center;
+        }
+
+        .high-score-board {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 10px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .features {
+            text-align: left;
+            max-width: 500px;
+            margin: 20px auto 30px auto;
+            background: rgba(0, 0, 0, 0.15);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .features ul {
+            list-style-type: none;
+        }
+
+        .features li {
+            margin-bottom: 10px;
+            font-size: 15px;
+            color: #cbd5e1;
+        }
+
+        .btn {
+            background-color: var(--accent);
+            color: #0f172a;
+            border: none;
+            padding: 12px 32px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: var(--text-muted);
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px 15px;
+            border-radius: 6px;
+        }
+
+        .code-display {
+            font-family: "Consolas", "Monaco", "Courier New", monospace;
+            font-size: 20px;
+            background-color: #0b0f19;
+            padding: 25px;
+            border-radius: 8px;
+            letter-spacing: 1px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            border: 1px solid #334155;
+        }
+
+        .char {
+            border-bottom: 2px solid transparent;
+        }
+
+        .char.pending { color: #64748b; }
+        .char.correct {
+            color: var(--correct);
+            background-color: rgba(74, 222, 128, 0.05);
+        }
+        .char.incorrect {
+            color: var(--incorrect);
+            background-color: rgba(248, 113, 113, 0.1);
+            border-bottom: 2px solid var(--incorrect);
+        }
+        .char.current {
+            color: var(--text-main);
+            background-color: var(--current-bg);
+            border-bottom: 2px solid var(--accent);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink { 50% { border-bottom-color: transparent; } }
+
+        .input-field {
+            width: 100%;
+            background-color: #0b0f19;
+            border: 1px solid #334155;
+            color: var(--text-main);
+            font-family: "Consolas", "Monaco", "Courier New", monospace;
+            font-size: 16px;
+            padding: 12px;
+            border-radius: 6px;
+            outline: none;
+            margin-bottom: 25px;
+        }
+        .input-field:focus { border-color: var(--accent); }
+
+        .explanation-box {
+            background-color: rgba(56, 189, 248, 0.05);
+            border: 1px dashed rgba(56, 189, 248, 0.3);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        .explanation-title {
+            font-weight: bold;
+            color: var(--accent);
+            font-size: 14px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .explanation-text { font-size: 15px; color: #e2e8f0; line-height: 1.6; }
+
+        #result-screen h2 { color: var(--correct); text-align: center; margin-bottom: 20px; }
+        
+        .new-record {
+            color: var(--gold);
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+            animation: pulse 1.5s infinite;
+            display: none;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+        .summary-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 30px; }
+        .stat-card { background: rgba(0, 0, 0, 0.15); padding: 15px; border-radius: 8px; text-align: center; }
+        .stat-val { font-size: 24px; font-weight: bold; color: var(--accent); margin-top: 5px; }
+
+        .review-list {
+            max-height: 250px;
+            overflow-y: auto;
+            background: #0b0f19;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            margin-bottom: 25px;
+        }
+        .review-item { padding: 10px 0; border-bottom: 1px solid #1e293b; }
+        .review-item:last-child { border-bottom: none; }
+        .review-code { font-family: monospace; color: var(--correct); font-size: 14px; margin-bottom: 4px; }
+        .review-desc { font-size: 13px; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>PyType-Learner Web</h1>
+        <div class="subtitle">製品版 v1.3.0 (サーバーデプロイ専用アセット)</div>
+    </header>
+
+    <!-- Welcome -->
+    <div id="welcome-screen" class="screen active">
+        <div id="high-score-display" class="high-score-board" style="display: none;"></div>
+        <p>Pythonの重要構文をタイピングしながら、本質的な意味を脳に叩き込むアプリです。</p>
+        <div class="features">
+            <ul>
+                <li>✨ <b>リアルタイム判定:</b> 打ったその瞬間に1文字ずつ成否を可視化。</li>
+                <li>💡 <b>本質解説の常時表示:</b> 視覚とタイピングを連動させた高効率学習。</li>
+                <li>💾 <b>データセーブ機能:</b> ブラウザにあなたの最高記録を自動保存。</li>
+            </ul>
+        </div>
+        <button class="btn" onclick="startGame()">学習を開始する</button>
+    </div>
+
+    <!-- Game -->
+    <div id="game-screen" class="screen">
+        <div class="stats-bar">
+            <div id="progress-text">問題: 1 / 10</div>
+            <div id="accuracy-text">精度: 100%</div>
+            <div id="timer-text">経過時間: 0秒</div>
+        </div>
+        <div id="code-display" class="code-display"></div>
+        <input type="text" id="input-field" class="input-field" placeholder="ここに上記のコードをタイピングしてください" autocomplete="off">
+        <div class="explanation-box">
+            <div class="explanation-title">💡 このコードの本質・解説</div>
+            <div id="explanation-text" class="explanation-text"></div>
+        </div>
+    </div>
+
+    <!-- Result -->
+    <div id="result-screen" class="screen">
+        <h2>🎉 オールクリア！</h2>
+        <div id="new-record-alert" class="new-record">👑 自己ベスト更新！レコードを保存しました！</div>
+        
+        <div class="summary-stats">
+            <div class="stat-card"><div>総所要時間</div><div id="total-time-val" class="stat-val">0秒</div></div>
+            <div class="stat-card"><div>タイピング精度</div><div id="total-acc-val" class="stat-val">100%</div></div>
+        </div>
+        <div style="font-size: 14px; margin-bottom: 10px; color: var(--text-muted);">📚 今回学んだ構文の総復習:</div>
+        <div id="review-list" class="review-list"></div>
+        <div style="text-align: center;"><button class="btn" onclick="initWelcomeScreen()">トップへ戻る</button></div>
+    </div>
+</div>
+
+<script>
+    const LEARNING_DATA = [
+        { code: "print('Hello, World!')", description: "【出力の基本】文字列を画面に表示します。シングルクォーテーションの閉じ忘れに注意。" },
+        { code: "for i in range(5):", description: "【反復処理】0から4まで5回ループします。末尾のコロン(:)と次の行のインデントが必須。" },
+        { code: "import random", description: "【モジュール】Python標準の乱数ライブラリを読み込みます。外部インストールは不要です。" },
+        { code: "numbers = [1, 2, 3]", description: "【リスト型】複数のデータを四角括弧 [ ] で囲んで、1つの変数にまとめて管理します。" },
+        { code: "def my_func():", description: "【関数定義】独自の処理をまとめた「関数」を作ります。def は definition の略です。" },
+        { code: "with open('test.txt', 'w') as f:", description: "【ファイル操作】安全にファイルを開きます。処理が終わると自動で閉じてくれます。" },
+        { code: "if user_input == 'correct':", description: "【条件分岐】値が一致しているかを判定します。比較には等号を2つ(==)使います。" },
+        { code: "try:", description: "【例外処理】エラーが発生する可能性のある処理の始まり。exceptとセットで使います。" },
+        { code: "data = {'name': 'Alice', 'age': 16}", description: "【辞書型】キーと値のペアでデータを管理します。波括弧 { } とコロンの位置に注目。" },
+        { code: "result = [x * 2 for x in range(5)]", description: "【リスト内包表記】短時間で本質を掴む上級構文。1行で効率よくリストを生成できます。" }
+    ];
+
+    let questions = [];
+    let currentIdx = 0;
+    let startTime = 0;
+    let timerInterval = null;
+    let totalErrors = 0;
+    let totalTypedChars = 0;
+
+    const welcomeScreen = document.getElementById('welcome-screen');
+    const gameScreen = document.getElementById('game-screen');
+    const resultScreen = document.getElementById('result-screen');
+    const codeDisplay = document.getElementById('code-display');
+    const inputField = document.getElementById('input-field');
+    const explanationText = document.getElementById('explanation-text');
+    const progressText = document.getElementById('progress-text');
+    const accuracyText = document.getElementById('accuracy-text');
+    const timerText = document.getElementById('timer-text');
+
+    function initWelcomeScreen() {
+        switchScreen('welcome');
+        const saved = localStorage.getItem('pytype_saved_record');
+        const scoreBoard = document.getElementById('high-score-display');
+        if (saved) {
+            const record = JSON.parse(saved);
+            scoreBoard.innerText = `🏆 現在の自己ベスト ── タイム: ${record.time}秒 / 精度: ${record.accuracy}%`;
+            scoreBoard.style.display = 'inline-block';
+        } else {
+            scoreBoard.style.display = 'none';
+        }
+    }
+
+    function startGame() {
+        questions = [...LEARNING_DATA].sort(() => Math.random() - 0.5);
+        currentIdx = 0;
+        totalErrors = 0;
+        totalTypedChars = 0;
+        switchScreen('game');
+        startTime = Date.now();
+        clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            timerText.innerText = `経過時間: ${Math.floor((Date.now() - startTime) / 1000)}秒`;
+        }, 1000);
+        loadQuestion();
+    }
+
+    function switchScreen(name) {
+        welcomeScreen.classList.remove('active');
+        gameScreen.classList.remove('active');
+        resultScreen.classList.remove('active');
+        if (name === 'welcome') welcomeScreen.classList.add('active');
+        if (name === 'game') { gameScreen.classList.add('active'); inputField.focus(); }
+        if (name === 'result') resultScreen.classList.add('active');
+    }
+
+    function loadQuestion() {
+        if (currentIdx >= questions.length) { endGame(); return; }
+        const q = questions[currentIdx];
+        progressText.innerText = `問題: ${currentIdx + 1} / ${questions.length}`;
+        explanationText.innerText = q.description;
+        inputField.value = '';
+        renderCodeDisplay(q.code, '');
+    }
+
+    function renderCodeDisplay(target, user) {
+        codeDisplay.innerHTML = '';
+        for (let i = 0; i < target.length; i++) {
+            const span = document.createElement('span');
+            span.classList.add('char');
+            span.textContent = target[i];
+            if (i < user.length) {
+                if (user[i] === target[i]) span.classList.add('correct');
+                else { span.classList.add('incorrect'); if (i === user.length - 1) totalErrors++; }
+            } else if (i === user.length) span.classList.add('current');
+            else span.classList.add('pending');
+            codeDisplay.appendChild(span);
+        }
+        if (user.length > 0) totalTypedChars++;
+        const acc = totalTypedChars > 0 ? Math.max(0, Math.min(100, Math.floor(((totalTypedChars - totalErrors) / totalTypedChars) * 100))) : 100;
+        accuracyText.innerText = `精度: ${acc}%`;
+    }
+
+    inputField.addEventListener('input', () => {
+        const target = questions[currentIdx].code;
+        const user = inputField.value;
+        renderCodeDisplay(target, user);
+        if (user === target) { currentIdx++; setTimeout(loadQuestion, 150); }
+    });
+
+    gameScreen.addEventListener('click', () => inputField.focus());
+
+    function endGame() {
+        clearInterval(timerInterval);
+        switchScreen('result');
+        const totalElapsed = Math.floor((Date.now() - startTime) / 1000);
+        const finalAcc = totalTypedChars > 0 ? Math.max(0, Math.min(100, Math.floor(((totalTypedChars - totalErrors) / totalTypedChars) * 100))) : 100;
+        
+        document.getElementById('total-time-val').innerText = `${totalElapsed}秒`;
+        document.getElementById('total-acc-val').innerText = `${finalAcc}%`;
+
+        // セーブデータ判定・保存
+        const saved = localStorage.getItem('pytype_saved_record');
+        let isNew = false;
+        if (!saved) isNew = true;
+        else {
+            const prev = JSON.parse(saved);
+            if (finalAcc > prev.accuracy || (finalAcc === prev.accuracy && totalElapsed < prev.time)) isNew = true;
+        }
+
+        if (isNew) {
+            localStorage.setItem('pytype_saved_record', JSON.stringify({ time: totalElapsed, accuracy: finalAcc }));
+            document.getElementById('new-record-alert').style.display = 'block';
+        } else {
+            document.getElementById('new-record-alert').style.display = 'none';
+        }
+
+        // 復習リスト
+        const list = document.getElementById('review-list');
+        list.innerHTML = '';
+        questions.forEach(q => {
+            const item = document.createElement('div'); item.classList.add('review-item');
+            const c = document.createElement('div'); c.classList.add('review-code'); c.textContent = q.code;
+            const d = document.createElement('div'); d.classList.add('review-desc'); d.textContent = q.description;
+            item.appendChild(c); item.appendChild(d); list.appendChild(item);
+        });
+    }
+
+    window.onload = initWelcomeScreen;
+</script>
+</body>
+</html>
