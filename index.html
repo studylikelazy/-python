@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PyType-Learner Web v1.3.0</title>
+    <title>PyType-Learner Web v1.4.0</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -15,13 +15,10 @@
             --incorrect: #f87171;
             --current-bg: rgba(56, 189, 248, 0.2);
             --gold: #f59e0b;
+            --card-bg: #0b0f19;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -40,44 +37,29 @@
             background-color: var(--container-bg);
             border-radius: 12px;
             padding: 40px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
         }
 
         header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             border-bottom: 1px solid #334155;
-            padding-bottom: 20px;
+            padding-bottom: 15px;
         }
 
-        h1 {
-            font-size: 24px;
-            color: var(--accent);
-            margin-bottom: 8px;
-        }
+        h1 { font-size: 24px; color: var(--accent); margin-bottom: 8px; }
+        .subtitle { font-size: 14px; color: var(--text-muted); }
 
-        .subtitle {
-            font-size: 14px;
-            color: var(--text-muted);
-        }
+        .screen { display: none; }
+        .screen.active { display: block; }
 
-        .screen {
-            display: none;
-        }
-
-        .screen.active {
-            display: block;
-        }
-
-        #welcome-screen {
-            text-align: center;
-        }
+        #welcome-screen { text-align: center; }
 
         .high-score-board {
             background: rgba(245, 158, 11, 0.1);
             border: 1px solid var(--gold);
             color: var(--gold);
-            padding: 10px;
+            padding: 10px 15px;
             border-radius: 6px;
             display: inline-block;
             margin-bottom: 20px;
@@ -87,23 +69,14 @@
 
         .features {
             text-align: left;
-            max-width: 500px;
+            max-width: 550px;
             margin: 20px auto 30px auto;
             background: rgba(0, 0, 0, 0.15);
             padding: 20px;
             border-radius: 8px;
             border-left: 4px solid var(--accent);
         }
-
-        .features ul {
-            list-style-type: none;
-        }
-
-        .features li {
-            margin-bottom: 10px;
-            font-size: 15px;
-            color: #cbd5e1;
-        }
+        .features li { margin-bottom: 10px; font-size: 15px; color: #cbd5e1; list-style: none; }
 
         .btn {
             background-color: var(--accent);
@@ -116,15 +89,12 @@
             cursor: pointer;
             transition: opacity 0.2s;
         }
-
-        .btn:hover {
-            opacity: 0.9;
-        }
+        .btn:hover { opacity: 0.9; }
 
         .stats-bar {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             font-size: 14px;
             color: var(--text-muted);
             background: rgba(0, 0, 0, 0.2);
@@ -134,101 +104,67 @@
 
         .code-display {
             font-family: "Consolas", "Monaco", "Courier New", monospace;
-            font-size: 20px;
-            background-color: #0b0f19;
+            font-size: 22px;
+            background-color: var(--card-bg);
             padding: 25px;
             border-radius: 8px;
             letter-spacing: 1px;
             white-space: pre-wrap;
             word-break: break-all;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             line-height: 1.5;
             border: 1px solid #334155;
         }
 
-        .char {
-            border-bottom: 2px solid transparent;
-        }
-
         .char.pending { color: #64748b; }
-        .char.correct {
-            color: var(--correct);
-            background-color: rgba(74, 222, 128, 0.05);
-        }
-        .char.incorrect {
-            color: var(--incorrect);
-            background-color: rgba(248, 113, 113, 0.1);
-            border-bottom: 2px solid var(--incorrect);
-        }
-        .char.current {
-            color: var(--text-main);
-            background-color: var(--current-bg);
-            border-bottom: 2px solid var(--accent);
-            animation: blink 1s infinite;
-        }
-
+        .char.correct { color: var(--correct); background-color: rgba(74, 222, 128, 0.05); }
+        .char.incorrect { color: var(--incorrect); background-color: rgba(248, 113, 113, 0.1); border-bottom: 2px solid var(--incorrect); }
+        .char.current { color: var(--text-main); background-color: var(--current-bg); border-bottom: 2px solid var(--accent); animation: blink 1s infinite; }
         @keyframes blink { 50% { border-bottom-color: transparent; } }
 
         .input-field {
             width: 100%;
-            background-color: #0b0f19;
+            background-color: var(--card-bg);
             border: 1px solid #334155;
             color: var(--text-main);
             font-family: "Consolas", "Monaco", "Courier New", monospace;
-            font-size: 16px;
-            padding: 12px;
+            font-size: 18px;
+            padding: 14px;
             border-radius: 6px;
             outline: none;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
         .input-field:focus { border-color: var(--accent); }
 
-        .explanation-box {
-            background-color: rgba(56, 189, 248, 0.05);
-            border: 1px dashed rgba(56, 189, 248, 0.3);
-            padding: 20px;
+        /* 初心者向け文法解説ボックスの強化 */
+        .grammar-container {
+            background-color: rgba(56, 189, 248, 0.03);
+            border: 1px solid #334155;
             border-radius: 8px;
-            margin-top: 10px;
+            padding: 20px;
         }
-        .explanation-title {
-            font-weight: bold;
-            color: var(--accent);
-            font-size: 14px;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .explanation-text { font-size: 15px; color: #e2e8f0; line-height: 1.6; }
+        .grammar-section { margin-bottom: 12px; }
+        .grammar-section:last-child { margin-bottom: 0; }
+        .section-lbl { font-size: 12px; font-weight: bold; color: var(--accent); letter-spacing: 1px; margin-bottom: 4px; text-transform: uppercase; }
+        .section-title { font-size: 16px; font-weight: bold; color: #f8fafc; margin-bottom: 8px; border-bottom: 1px solid #334155; padding-bottom: 4px; }
+        .rule-box { font-family: monospace; background: rgba(0,0,0,0.2); padding: 6px 10px; border-radius: 4px; color: #e2e8f0; font-size: 14px; }
+        .desc-text { font-size: 14px; color: #cbd5e1; line-height: 1.6; }
+        .trap-text { font-size: 13px; color: #fca5a5; background: rgba(239, 68, 68, 0.1); padding: 6px 10px; border-radius: 4px; }
 
         #result-screen h2 { color: var(--correct); text-align: center; margin-bottom: 20px; }
-        
-        .new-record {
-            color: var(--gold);
-            text-align: center;
-            font-weight: bold;
-            margin-bottom: 15px;
-            animation: pulse 1.5s infinite;
-            display: none;
-        }
+        .new-record { color: var(--gold); text-align: center; font-weight: bold; margin-bottom: 15px; animation: pulse 1.5s infinite; display: none; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
-        .summary-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 30px; }
+        .summary-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px; }
         .stat-card { background: rgba(0, 0, 0, 0.15); padding: 15px; border-radius: 8px; text-align: center; }
         .stat-val { font-size: 24px; font-weight: bold; color: var(--accent); margin-top: 5px; }
 
-        .review-list {
-            max-height: 250px;
-            overflow-y: auto;
-            background: #0b0f19;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #334155;
-            margin-bottom: 25px;
-        }
-        .review-item { padding: 10px 0; border-bottom: 1px solid #1e293b; }
+        .review-list { max-height: 250px; overflow-y: auto; background: var(--card-bg); padding: 15px; border-radius: 8px; border: 1px solid #334155; margin-bottom: 25px; }
+        .review-item { padding: 12px 0; border-bottom: 1px solid #1e293b; }
         .review-item:last-child { border-bottom: none; }
-        .review-code { font-family: monospace; color: var(--correct); font-size: 14px; margin-bottom: 4px; }
-        .review-desc { font-size: 13px; color: var(--text-muted); }
+        .review-code { font-family: monospace; color: var(--correct); font-size: 15px; margin-bottom: 4px; }
+        .review-title { font-size: 13px; font-weight: bold; color: #e2e8f0; margin-bottom: 2px; }
+        .review-desc { font-size: 12px; color: var(--text-muted); }
     </style>
 </head>
 <body>
@@ -236,21 +172,21 @@
 <div class="container">
     <header>
         <h1>PyType-Learner Web</h1>
-        <div class="subtitle">製品版 v1.3.0 (サーバーデプロイ専用アセット)</div>
+        <div class="subtitle">初心者文法特化版 v1.4.0 (解説大幅拡充モデル)</div>
     </header>
 
     <!-- Welcome -->
     <div id="welcome-screen" class="screen active">
         <div id="high-score-display" class="high-score-board" style="display: none;"></div>
-        <p>Pythonの重要構文をタイピングしながら、本質的な意味を脳に叩き込むアプリです。</p>
+        <p>タイピングしながらPythonの「基本文法」を自然にマスターできる初学者向けアプリです。</p>
         <div class="features">
             <ul>
-                <li>✨ <b>リアルタイム判定:</b> 打ったその瞬間に1文字ずつ成否を可視化。</li>
-                <li>💡 <b>本質解説の常時表示:</b> 視覚とタイピングを連動させた高効率学習。</li>
-                <li>💾 <b>データセーブ機能:</b> ブラウザにあなたの最高記録を自動保存。</li>
+                <li>🚀 <b>超・基礎からの10ステップ:</b> 変数の代入から関数の基本まで順番に学習。</li>
+                <li>📝 <b>詳しい文法解説:</b> 記号の意味や公式をタイピング中に常時チェック。</li>
+                <li>🎯 <b>リアルタイム添字:</b> ミスした文字がその場で赤く染まる安心設計。</li>
             </ul>
         </div>
-        <button class="btn" onclick="startGame()">学習を開始する</button>
+        <button class="btn" onclick="startGame()">文法学習タイピングを始める</button>
     </div>
 
     <!-- Game -->
@@ -261,40 +197,114 @@
             <div id="timer-text">経過時間: 0秒</div>
         </div>
         <div id="code-display" class="code-display"></div>
-        <input type="text" id="input-field" class="input-field" placeholder="ここに上記のコードをタイピングしてください" autocomplete="off">
-        <div class="explanation-box">
-            <div class="explanation-title">💡 このコードの本質・解説</div>
-            <div id="explanation-text" class="explanation-text"></div>
+        <input type="text" id="input-field" class="input-field" placeholder="半角英数でコードを入力してください..." autocomplete="off">
+        
+        <!-- 文法学習エリア -->
+        <div class="grammar-container">
+            <div id="g-title" class="section-title"></div>
+            <div class="grammar-section">
+                <div class="section-lbl">📐 文法ルール（公式）</div>
+                <div id="g-rule" class="rule-box"></div>
+            </div>
+            <div class="grammar-section">
+                <div class="section-lbl">💡 詳しい解説</div>
+                <div id="g-desc" class="desc-text"></div>
+            </div>
+            <div class="grammar-section">
+                <div class="section-lbl">⚠️ タイピングの罠・注意点</div>
+                <div id="g-trap" class="trap-text"></div>
+            </div>
         </div>
     </div>
 
     <!-- Result -->
     <div id="result-screen" class="screen">
-        <h2>🎉 オールクリア！</h2>
-        <div id="new-record-alert" class="new-record">👑 自己ベスト更新！レコードを保存しました！</div>
+        <h2>🎉 学習プログラム修了！</h2>
+        <div id="new-record-alert" class="new-record">👑 自己ベスト更新！成長の記録をブラウザに保存しました！</div>
         
         <div class="summary-stats">
             <div class="stat-card"><div>総所要時間</div><div id="total-time-val" class="stat-val">0秒</div></div>
             <div class="stat-card"><div>タイピング精度</div><div id="total-acc-val" class="stat-val">100%</div></div>
         </div>
-        <div style="font-size: 14px; margin-bottom: 10px; color: var(--text-muted);">📚 今回学んだ構文の総復習:</div>
+        <div style="font-size: 14px; margin-bottom: 10px; color: var(--text-muted);">📚 本日学んだ重要文法一覧:</div>
         <div id="review-list" class="review-list"></div>
-        <div style="text-align: center;"><button class="btn" onclick="initWelcomeScreen()">トップへ戻る</button></div>
+        <div style="text-align: center;"><button class="btn" onclick="initWelcomeScreen()">もう一度挑戦する</button></div>
     </div>
 </div>
 
 <script>
+    // 初心者が順番に学ぶべき10のステップ（難易度順）
     const LEARNING_DATA = [
-        { code: "print('Hello, World!')", description: "【出力の基本】文字列を画面に表示します。シングルクォーテーションの閉じ忘れに注意。" },
-        { code: "for i in range(5):", description: "【反復処理】0から4まで5回ループします。末尾のコロン(:)と次の行のインデントが必須。" },
-        { code: "import random", description: "【モジュール】Python標準の乱数ライブラリを読み込みます。外部インストールは不要です。" },
-        { code: "numbers = [1, 2, 3]", description: "【リスト型】複数のデータを四角括弧 [ ] で囲んで、1つの変数にまとめて管理します。" },
-        { code: "def my_func():", description: "【関数定義】独自の処理をまとめた「関数」を作ります。def は definition の略です。" },
-        { code: "with open('test.txt', 'w') as f:", description: "【ファイル操作】安全にファイルを開きます。処理が終わると自動で閉じてくれます。" },
-        { code: "if user_input == 'correct':", description: "【条件分岐】値が一致しているかを判定します。比較には等号を2つ(==)使います。" },
-        { code: "try:", description: "【例外処理】エラーが発生する可能性のある処理の始まり。exceptとセットで使います。" },
-        { code: "data = {'name': 'Alice', 'age': 16}", description: "【辞書型】キーと値のペアでデータを管理します。波括弧 { } とコロンの位置に注目。" },
-        { code: "result = [x * 2 for x in range(5)]", description: "【リスト内包表記】短時間で本質を掴む上級構文。1行で効率よくリストを生成できます。" }
+        {
+            code: "name = \"Alice\"",
+            title: "STEP 1: 変数への文字列の代入",
+            rule: "変数名 = \"文字列\"",
+            desc: "データを保存する『箱（変数）』を作ります。プログラミングの『＝』は等しいという意味ではなく、【右辺のデータを左辺の箱に入れる】という動作を表します。文字データは必ずクォーテーションで囲みます。",
+            trap: "「＝」の左右に半角スペースを空けると見やすくなります。全て半角で入力しましょう。"
+        },
+        {
+            code: "print(name)",
+            title: "STEP 2: 変数の中身を表示する",
+            rule: "print(変数名)",
+            desc: "画面に変数の内容を出力する命令です。STEP 1で作成した「name」という箱の中身（Alice）を呼び出しています。変数を出力するときは、クォーテーションで囲ってはいけません。",
+            trap: "小文字で print と打ち、丸括弧 ( ) の中に変数名を正確に入れましょう。"
+        },
+        {
+            code: "age = 16",
+            title: "STEP 3: 変数への数値の代入",
+            rule: "変数名 = 数字",
+            desc: "変数に「数値（整数）」を格納します。文字列とは違い、数値データはクォーテーションで囲まないルールになっています。これにより、後から足し算や引き算などの計算が可能になります。",
+            trap: "数字の「16」も必ず半角で入力します。全角の「１６」はエラーになります。"
+        },
+        {
+            code: "is_student = True",
+            title: "STEP 4: 真偽値（フラグ）の管理",
+            rule: "変数名 = True または False",
+            desc: "「はい(真)」か「いいえ(偽)」の2択を表す『真偽値（しんぎち）』というデータ型です。条件を満たしているかどうかの判定用フラグとして非常によく使われます。",
+            trap: "Pythonでは、True と False の【最初の1文字目は必ず大文字】で書かなければなりません。"
+        },
+        {
+            code: "if age >= 15:",
+            title: "STEP 5: 条件分岐（もし〜なら）の基本",
+            rule: "if 条件式 :",
+            desc: "もし条件を満たしていたら、この後の処理を実行する、という分岐を作ります。「>=」は『〜以上』という意味の比較演算子です。条件式の末尾には必ず「コロン(:)」を打つのがPythonの絶対ルールです。",
+            trap: "不等号と等号の順序（>=）に注意。また、最後の「:（コロン）」の打ち忘れが初心者のミス第1位です。"
+        },
+        {
+            code: "    print(\"OK\")",
+            title: "STEP 6: インデント（字下げ）の重要性",
+            rule: "（半角スペース4つ）処理コード",
+            desc: "if文やfor文の「中身」となる行は、先頭に【半角スペースを4つ】入れる必要があります。これを『インデント』と呼び、Pythonはこのスペースの有無で命令のまとまりを判断する画期的な文法を持っています。",
+            trap: "コードの先頭にある見えない半角スペース4つを正確にタイピングしてください！非常に重要です。"
+        },
+        {
+            code: "else:",
+            title: "STEP 7: 条件を満たさなかった場合の分岐",
+            rule: "else:",
+            desc: "if文の条件に当てはまらなかった（偽だった）場合に実行したい処理の入り口を作ります。ifと縦のライン（インデントの深さ）を揃えて記述します。こちらも末尾にコロンが必要です。",
+            trap: "インデントは無く、左端から else: と打ちます。最後のコロンを忘れないようにしましょう。"
+        },
+        {
+            code: "for i in range(3):",
+            title: "STEP 8: ループ処理（決まった回数の繰り返し）",
+            rule: "for 変数 in range(回数):",
+            desc: "同じ処理を自動で繰り返させます。「range(3)」を指定すると、変数 i に 0, 1, 2 という数字が順番に代入されながら、合計3回の繰り返しが行われます。末尾にはコロンが必要です。",
+            trap: "for、i、in、range の間にはそれぞれ半角スペースが必要です。小文字で正確に打ちましょう。"
+        },
+        {
+            code: "def greet():",
+            title: "STEP 9: 関数の定義（処理をまとめる）",
+            rule: "def 関数名():",
+            desc: "何度も使う一連の処理にオリジナルの名前をつけて、1つの命令としてパッケージ化することを「関数を定義する」と言います。def は英語の definition（定義）の略です。",
+            trap: "defの後にスペースを空け、関数名の後ろに丸括弧 () とコロン : をセットで記述します。"
+        },
+        {
+            code: "greet()",
+            title: "STEP 10: 定義した関数の呼び出し（実行）",
+            rule: "関数名()",
+            desc: "STEP 9で作ったオリジナル関数「greet」を実際に作動させる命令です。この行を実行した瞬間に、defの中に保存されていた処理が呼び出されて実行されます。",
+            trap: "呼び出しの際は先頭の def や末尾のコロンは不要です。シンプルに関数名と丸括弧 () を打ちます。"
+        }
     ];
 
     let questions = [];
@@ -309,18 +319,23 @@
     const resultScreen = document.getElementById('result-screen');
     const codeDisplay = document.getElementById('code-display');
     const inputField = document.getElementById('input-field');
-    const explanationText = document.getElementById('explanation-text');
+
+    const gTitle = document.getElementById('g-title');
+    const gRule = document.getElementById('g-rule');
+    const gDesc = document.getElementById('g-desc');
+    const gTrap = document.getElementById('g-trap');
+
     const progressText = document.getElementById('progress-text');
     const accuracyText = document.getElementById('accuracy-text');
     const timerText = document.getElementById('timer-text');
 
     function initWelcomeScreen() {
         switchScreen('welcome');
-        const saved = localStorage.getItem('pytype_saved_record');
+        const saved = localStorage.getItem('pytype_saved_record_v14');
         const scoreBoard = document.getElementById('high-score-display');
         if (saved) {
             const record = JSON.parse(saved);
-            scoreBoard.innerText = `🏆 現在の自己ベスト ── タイム: ${record.time}秒 / 精度: ${record.accuracy}%`;
+            scoreBoard.innerText = `🏆 現在のあなたの最高記録 ── タイム: ${record.time}秒 / タイピング精度: ${record.accuracy}%`;
             scoreBoard.style.display = 'inline-block';
         } else {
             scoreBoard.style.display = 'none';
@@ -328,7 +343,8 @@
     }
 
     function startGame() {
-        questions = [...LEARNING_DATA].sort(() => Math.random() - 0.5);
+        // 初心者向けにシャッフルせず、STEP1〜10の順番通りに出題して文脈（ストーリー）を持たせる
+        questions = [...LEARNING_DATA];
         currentIdx = 0;
         totalErrors = 0;
         totalTypedChars = 0;
@@ -353,8 +369,15 @@
     function loadQuestion() {
         if (currentIdx >= questions.length) { endGame(); return; }
         const q = questions[currentIdx];
-        progressText.innerText = `問題: ${currentIdx + 1} / ${questions.length}`;
-        explanationText.innerText = q.description;
+        
+        progressText.innerText = `進捗: ${currentIdx + 1} / ${questions.length}`;
+        
+        // 文法解説エリアの更新
+        gTitle.innerText = q.title;
+        gRule.innerText = q.rule;
+        gDesc.innerText = q.desc;
+        gTrap.innerText = q.trap;
+        
         inputField.value = '';
         renderCodeDisplay(q.code, '');
     }
@@ -364,7 +387,9 @@
         for (let i = 0; i < target.length; i++) {
             const span = document.createElement('span');
             span.classList.add('char');
+            // スペースを視覚的に分かりやすくするため、表示上のみ「_」や可視スペースにせず、空白を維持しつつスタイルを適用
             span.textContent = target[i];
+            
             if (i < user.length) {
                 if (user[i] === target[i]) span.classList.add('correct');
                 else { span.classList.add('incorrect'); if (i === user.length - 1) totalErrors++; }
@@ -381,7 +406,12 @@
         const target = questions[currentIdx].code;
         const user = inputField.value;
         renderCodeDisplay(target, user);
-        if (user === target) { currentIdx++; setTimeout(loadQuestion, 150); }
+        
+        // 完全一致判定（前後の余計なスペースを許容せず、コードとしての正確性を求める）
+        if (user === target) { 
+            currentIdx++; 
+            setTimeout(loadQuestion, 200); 
+        }
     });
 
     gameScreen.addEventListener('click', () => inputField.focus());
@@ -395,8 +425,8 @@
         document.getElementById('total-time-val').innerText = `${totalElapsed}秒`;
         document.getElementById('total-acc-val').innerText = `${finalAcc}%`;
 
-        // セーブデータ判定・保存
-        const saved = localStorage.getItem('pytype_saved_record');
+        // レコード保存
+        const saved = localStorage.getItem('pytype_saved_record_v14');
         let isNew = false;
         if (!saved) isNew = true;
         else {
@@ -405,7 +435,7 @@
         }
 
         if (isNew) {
-            localStorage.setItem('pytype_saved_record', JSON.stringify({ time: totalElapsed, accuracy: finalAcc }));
+            localStorage.setItem('pytype_saved_record_v14', JSON.stringify({ time: totalElapsed, accuracy: finalAcc }));
             document.getElementById('new-record-alert').style.display = 'block';
         } else {
             document.getElementById('new-record-alert').style.display = 'none';
@@ -417,8 +447,9 @@
         questions.forEach(q => {
             const item = document.createElement('div'); item.classList.add('review-item');
             const c = document.createElement('div'); c.classList.add('review-code'); c.textContent = q.code;
-            const d = document.createElement('div'); d.classList.add('review-desc'); d.textContent = q.description;
-            item.appendChild(c); item.appendChild(d); list.appendChild(item);
+            const t = document.createElement('div'); t.classList.add('review-title'); t.textContent = q.title;
+            const d = document.createElement('div'); d.classList.add('review-desc'); d.textContent = `公式: ${q.rule} ── ${q.desc}`;
+            item.appendChild(t); item.appendChild(c); item.appendChild(d); list.appendChild(item);
         });
     }
 
