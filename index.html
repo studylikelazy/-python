@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PyType-Learner Web v1.6.0</title>
+    <title>PyType-Learner Web v1.8.0</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -38,7 +38,7 @@
             max-width: 800px;
             background-color: var(--container-bg);
             border-radius: 12px;
-            padding: 40px;
+            padding: 30px;
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
         }
 
@@ -69,36 +69,46 @@
             font-size: 14px;
         }
 
-        .features {
-            text-align: left;
+        .mode-selection {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
             max-width: 550px;
-            margin: 20px auto 20px auto;
-            background: rgba(0, 0, 0, 0.15);
-            padding: 20px;
-            border-radius: 8px;
-            border-left: 4px solid var(--accent);
+            margin: 20px auto;
         }
-        .features li { margin-bottom: 10px; font-size: 15px; color: #cbd5e1; list-style: none; }
+        @media (max-width: 600px) {
+            .mode-selection { grid-template-columns: 1fr; }
+        }
 
-        /* カスタムコード入力エリアのスタイリング */
+        .mode-card {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+        .mode-card:hover { border-color: var(--accent); background: rgba(56, 189, 248, 0.05); transform: translateY(-2px); }
+        .mode-title { font-size: 16px; font-weight: bold; color: var(--text-main); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+        .mode-desc { font-size: 13px; color: var(--text-muted); line-height: 1.4; }
+
         .custom-code-box {
             text-align: left;
             max-width: 550px;
-            margin: 20px auto 20px auto;
-            background: rgba(56, 189, 248, 0.05);
-            padding: 20px;
+            margin: 20px auto 0 auto;
+            background: rgba(56, 189, 248, 0.03);
+            padding: 15px;
             border-radius: 8px;
             border: 1px dashed var(--accent);
         }
-        .custom-code-box h3 { font-size: 15px; color: var(--accent); margin-bottom: 6px; }
-        .custom-code-box p { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
         .custom-textarea {
             width: 100%;
-            height: 90px;
+            height: 70px;
             background-color: var(--card-bg);
             border: 1px solid #334155;
             color: #38bdf8;
-            font-family: "Consolas", monospace;
+            font-family: monospace;
             font-size: 13px;
             padding: 10px;
             border-radius: 6px;
@@ -106,21 +116,20 @@
             outline: none;
             margin-bottom: 10px;
         }
-        .custom-textarea:focus { border-color: var(--accent); }
 
         .btn {
             background-color: var(--accent);
             color: #0f172a;
             border: none;
-            padding: 12px 32px;
-            font-size: 16px;
+            padding: 10px 24px;
+            font-size: 15px;
             font-weight: bold;
             border-radius: 6px;
             cursor: pointer;
             transition: all 0.2s;
         }
-        .btn:hover { opacity: 0.9; transform: translateY(-1px); }
-        .btn-secondary { background-color: #475569; color: var(--text-main); padding: 8px 20px; font-size: 14px; }
+        .btn:hover { opacity: 0.9; }
+        .btn-secondary { background-color: #475569; color: var(--text-main); padding: 6px 14px; font-size: 13px; }
 
         .stats-bar {
             display: flex;
@@ -131,86 +140,83 @@
             background: rgba(0, 0, 0, 0.2);
             padding: 10px 15px;
             border-radius: 6px;
-            align-items: center;
         }
-        #combo-text { font-weight: bold; color: var(--gold); font-size: 15px; }
 
-        /* コンボに応じた疾走演出用ネオンエフェクト */
         .code-display {
-            font-family: "Consolas", "Monaco", "Courier New", monospace;
-            font-size: 22px;
+            font-family: "Consolas", monospace;
+            font-size: 20px;
             background-color: var(--card-bg);
             padding: 25px;
             border-radius: 8px;
-            letter-spacing: 1px;
             white-space: pre-wrap;
             word-break: break-all;
             margin-bottom: 15px;
-            line-height: 1.5;
+            line-height: 1.6;
             border: 1px solid #334155;
-            transition: all 0.2s ease;
+            transition: all 0.2s;
         }
-        .code-display.combo-low {
-            border-color: var(--accent);
-            box-shadow: 0 0 15px var(--neon-blue);
+        .code-display.combo-low { border-color: var(--accent); box-shadow: 0 0 15px var(--neon-blue); }
+        .code-display.combo-high { border-color: var(--correct); box-shadow: 0 0 25px var(--neon-green); animation: neon-pulse 0.8s infinite alternate; }
+        @keyframes neon-pulse { from { box-shadow: 0 0 15px rgba(74, 222, 128, 0.6); } to { box-shadow: 0 0 30px rgba(74, 222, 128, 1); } }
+
+        .choices-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
         }
-        .code-display.combo-high {
-            border-color: var(--correct);
-            box-shadow: 0 0 25px var(--neon-green);
-            animation: neon-pulse 0.8s infinite alternate;
+        @media (max-width: 600px) {
+            .choices-container { grid-template-columns: 1fr; }
         }
-        @keyframes neon-pulse {
-            from { box-shadow: 0 0 15px rgba(74, 222, 128, 0.6); }
-            to { box-shadow: 0 0 30px rgba(74, 222, 128, 1); }
+        .choice-btn {
+            background-color: #334155;
+            border: 1px solid #475569;
+            color: var(--text-main);
+            padding: 14px;
+            border-radius: 6px;
+            font-family: "Consolas", monospace;
+            font-size: 15px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.15s;
         }
+        .choice-btn:hover { background-color: #475569; border-color: var(--accent); }
+        .choice-btn.correct-ans { background-color: rgba(74, 222, 128, 0.2); border-color: var(--correct); color: var(--correct); }
+        .choice-btn.wrong-ans { background-color: rgba(248, 113, 113, 0.2); border-color: var(--incorrect); color: var(--incorrect); }
 
         .char.pending { color: #64748b; }
-        .char.correct { color: var(--correct); background-color: rgba(74, 222, 128, 0.05); }
-        .char.incorrect { color: var(--incorrect); background-color: rgba(248, 113, 113, 0.1); border-bottom: 2px solid var(--incorrect); }
-        .char.current { color: var(--text-main); background-color: var(--current-bg); border-bottom: 2px solid var(--accent); animation: blink 1s infinite; }
-        @keyframes blink { 50% { border-bottom-color: transparent; } }
+        .char.correct { color: var(--correct); }
+        .char.incorrect { color: var(--incorrect); background-color: rgba(248, 113, 113, 0.1); }
+        .char.current { color: var(--text-main); background-color: var(--current-bg); border-bottom: 2px solid var(--accent); }
 
         .input-field {
             width: 100%;
             background-color: var(--card-bg);
             border: 1px solid #334155;
             color: var(--text-main);
-            font-family: "Consolas", "Monaco", "Courier New", monospace;
+            font-family: "Consolas", monospace;
             font-size: 18px;
             padding: 14px;
             border-radius: 6px;
             outline: none;
             margin-bottom: 20px;
         }
-        .input-field:focus { border-color: var(--accent); }
 
         .grammar-container {
-            background-color: rgba(56, 189, 248, 0.03);
+            background-color: rgba(56, 189, 248, 0.02);
             border: 1px solid #334155;
             border-radius: 8px;
-            padding: 20px;
+            padding: 18px;
         }
-        .grammar-section { margin-bottom: 12px; }
-        .grammar-section:last-child { margin-bottom: 0; }
-        .section-lbl { font-size: 12px; font-weight: bold; color: var(--accent); letter-spacing: 1px; margin-bottom: 4px; text-transform: uppercase; }
+        .grammar-section { margin-bottom: 10px; }
+        .section-lbl { font-size: 11px; font-weight: bold; color: var(--accent); letter-spacing: 1px; margin-bottom: 2px; }
         .section-title { font-size: 16px; font-weight: bold; color: #f8fafc; margin-bottom: 8px; border-bottom: 1px solid #334155; padding-bottom: 4px; }
         .rule-box { font-family: monospace; background: rgba(0,0,0,0.2); padding: 6px 10px; border-radius: 4px; color: #e2e8f0; font-size: 14px; }
-        .desc-text { font-size: 14px; color: #cbd5e1; line-height: 1.6; }
-        .trap-text { font-size: 13px; color: #fca5a5; background: rgba(239, 68, 68, 0.1); padding: 6px 10px; border-radius: 4px; }
-
-        #result-screen h2 { color: var(--correct); text-align: center; margin-bottom: 20px; }
-        .new-record { color: var(--gold); text-align: center; font-weight: bold; margin-bottom: 15px; animation: pulse 1.5s infinite; display: none; }
+        .desc-text { font-size: 13px; color: #cbd5e1; line-height: 1.5; }
 
         .summary-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px; }
         .stat-card { background: rgba(0, 0, 0, 0.15); padding: 15px; border-radius: 8px; text-align: center; }
         .stat-val { font-size: 24px; font-weight: bold; color: var(--accent); margin-top: 5px; }
-
-        .review-list { max-height: 250px; overflow-y: auto; background: var(--card-bg); padding: 15px; border-radius: 8px; border: 1px solid #334155; margin-bottom: 25px; }
-        .review-item { padding: 12px 0; border-bottom: 1px solid #1e293b; }
-        .review-item:last-child { border-bottom: none; }
-        .review-code { font-family: monospace; color: var(--correct); font-size: 15px; margin-bottom: 4px; }
-        .review-title { font-size: 13px; font-weight: bold; color: #e2e8f0; margin-bottom: 2px; }
-        .review-desc { font-size: 12px; color: var(--text-muted); }
     </style>
 </head>
 <body>
@@ -218,100 +224,89 @@
 <div class="container">
     <header>
         <h1>PyType-Learner Web</h1>
-        <div class="subtitle">カスタム＆ドライブエディション v1.6.0</div>
+        <div class="subtitle">副業自動化・ドライブエディション v1.8.0</div>
     </header>
 
     <!-- Welcome -->
     <div id="welcome-screen" class="screen active">
         <div id="high-score-display" class="high-score-board" style="display: none;"></div>
-        <p>タイピングの爽快な演出と共に、Python構文をハイスピードで脳に焼き付けるアセットです。</p>
+        <p>副業・業務効率化で即戦力となるPython構文を、自身の環境に合わせて最速で攻略せよ。</p>
         
-        <div class="features">
-            <ul>
-                <li>🎮 <b>ゲームプログラミング構文:</b> 基礎から実践的なループ、乱数までを網羅。</li>
-                <li>🔥 <b>コンボドライブシステム:</b> ノーミスで連続入力すると画面がネオンに発光。</li>
-            </ul>
+        <div class="mode-selection">
+            <div class="mode-card" onclick="selectGameMode('typing')">
+                <div class="mode-title">⚡ タイピングドライブ [PC推奨]</div>
+                <div class="mode-desc">キーボード入力でコンボを繋げ、ネオンの疾走エフェクトを発生させて脳に構文を焼き付けます。</div>
+            </div>
+            <div class="mode-card" onclick="selectGameMode('quiz')">
+                <div class="mode-title">🧠 ナレッジクイズ [スマホ対応]</div>
+                <div class="mode-desc">キーボード不要。提示された自動化の目的に合致する正しいコードを4択からタップで選択します。</div>
+            </div>
         </div>
 
-        <button class="btn" onclick="startStandardGame()">標準プログラムを開始</button>
-
-        <!-- 自作コード持ち込みセクション -->
         <div class="custom-code-box">
-            <h3>🛠️ 自作コード持ち込みモード</h3>
-            <p>お手持ちのPythonスクリプトファイル（.pyなど）の中身を貼り付けて、自分専用のタイピングステージを瞬時にビルドできます。</p>
-            <textarea id="custom-code-input" class="custom-textarea" placeholder="ここにPythonコードをコピー＆ペーストしてください...&#10;例:&#10;import os&#10;print('System Active')"></textarea>
-            <div style="text-align: right;">
-                <button class="btn btn-secondary" onclick="startCustomGame()">カスタムモードで走る</button>
-            </div>
+            <h4 style="font-size:13px; color:var(--accent); margin-bottom:4px;">🛠️ AI生成コード/自作コードの持ち込み（UGC拡張）</h4>
+            <textarea id="custom-code-input" class="custom-textarea" placeholder="ここに副業用スクリプト等のコードを貼り付けると、上記で選択したモードへ動的に変換されます..."></textarea>
         </div>
     </div>
 
     <!-- Game -->
     <div id="game-screen" class="screen">
         <div class="stats-bar">
-            <div id="progress-text">問題: 1 / 10</div>
+            <div id="progress-text">タスク: 1 / 5</div>
             <div id="combo-text">🔥 0 COMBO</div>
             <div id="accuracy-text">精度: 100%</div>
-            <div id="timer-text">経過時間: 0秒</div>
+            <div id="timer-text">時間: 0秒</div>
         </div>
-        <div id="code-display" class="code-display"></div>
-        <input type="text" id="input-field" class="input-field" placeholder="半角英数でコードを正確に入力してください..." autocomplete="off">
         
-        <!-- 文法学習エリア -->
+        <!-- メイン画面 -->
+        <div id="code-display" class="code-display"></div>
+        
+        <!-- 入力コントロール -->
+        <input type="text" id="input-field" class="input-field" placeholder="半角で正確にコードを入力してください..." autocomplete="off" style="display:none;">
+        <div id="choices-container" class="choices-container" style="display:none;"></div>
+        
+        <!-- ロジック解説 -->
         <div class="grammar-container">
             <div id="g-title" class="section-title"></div>
             <div class="grammar-section">
-                <div class="section-lbl">📐 文法ルール</div>
+                <div class="section-lbl">📐 構文定義</div>
                 <div id="g-rule" class="rule-box"></div>
             </div>
             <div class="grammar-section">
-                <div class="section-lbl">💡 詳しい解説</div>
+                <div class="section-lbl">💡 副業実務での活用ロジック</div>
                 <div id="g-desc" class="desc-text"></div>
-            </div>
-            <div class="grammar-section">
-                <div class="section-lbl">⚠️ タイピングの罠・注意点</div>
-                <div id="g-trap" class="trap-text"></div>
             </div>
         </div>
     </div>
 
     <!-- Result -->
     <div id="result-screen" class="screen">
-        <h2>🎉 プログラム ラン コンプリート！</h2>
-        <div id="new-record-alert" class="new-record">👑 自己ベスト更新！パフォーマンスレコードをローカルにセーブしました！</div>
-        
+        <h2>🎉 プログラムラン・コンプリート！</h2>
         <div class="summary-stats">
-            <div class="stat-card"><div>総所要時間</div><div id="total-time-val" class="stat-val">0秒</div></div>
-            <div class="stat-card"><div>最高タイピング精度</div><div id="total-acc-val" class="stat-val">100%</div></div>
+            <div class="stat-card"><div>総走行時間</div><div id="total-time-val" class="stat-val">0秒</div></div>
+            <div class="stat-card"><div>最終習得精度</div><div id="total-acc-val" class="stat-val">100%</div></div>
         </div>
-        <div style="font-size: 14px; margin-bottom: 10px; color: var(--text-muted);">📚 今回走行したプログラムソース一覧:</div>
-        <div id="review-list" class="review-list"></div>
-        <div style="text-align: center;"><button class="btn" onclick="initWelcomeScreen()">メインメニューに戻る</button></div>
+        <div style="text-align: center;"><button class="btn" onclick="initWelcomeScreen()">メインメニューへ戻る</button></div>
     </div>
 </div>
 
 <script>
     const CORE_DEFAULT_DATA = [
-        { code: "score = 0", title: "GAME STEP 1: スコア（状態）の初期化", rule: "変数名 = 初期値", desc: "ゲーム内のあらゆる状態（スコア、所持金、レベルなど）は、このように変数を用意して管理を開始します。", trap: "すべて半角小文字。イコールの前後に半角スペースを空けるのが美しい設計です。" },
-        { code: "import random", title: "GAME STEP 2: 乱数モジュールの導入", rule: "import random", desc: "ドロップ確率や敵の出現位置など、ゲームに『偶然の要素』を取り入れるための外部ライブラリを読み込みます。", trap: "import と random の間には必ず半角スペースを1つ空けてください。" },
-        { code: "dice = random.randint(1, 6)", title: "GAME STEP 3: ランダムな整数の生成", rule: "変数 = random.randint(最小値, 最大値)", desc: "1から6までの整数をランダムに選んで変数に代入します。クリティカルダメージ計算等の基本形です。", trap: "randintの綴りに注意。括弧内のカンマ「,」の後に半角スペースが必要です。" },
-        { code: "score += 100", title: "GAME STEP 4: スコアの累積加算", rule: "変数名 += 加算値", desc: "現在のスコアに100点をプラスして上書き保存します。`score = score + 100` のスマートな短縮表記です。", trap: "「+」と「=」の順番を逆にしないこと。逆にすると単なる100の代入になります。" },
-        { code: "player_pos = [0, 0]", title: "GAME STEP 5: 座標リストによる位置管理", rule: "リスト名 = [X座標, Y座標]", desc: "キャラクターやマシンの現在位置（X軸・Y軸）を1つの『リスト型』の変数にまとめて2D空間を表現します。", trap: "四角括弧 [ ] と、区切りのカンマはすべて半角で正確に入力しましょう。" },
-        { code: "player_pos[0] += 5", title: "GAME STEP 6: キャラクターの移動処理", rule: "リスト名[インデックス] += 移動量", desc: "座標リストの0番目（X座標）に5を加算し、画面右方向へマシンを急加速させる処理です。", trap: "Pythonの配列は0から数えるため、`[0]`がX軸（横）、`[1]`がY軸（縦）を指します。" },
-        { code: "actions = [\"drift\", \"nitro\", \"brake\"]", title: "GAME STEP 7: 行動パターンのアセット化", rule: "変数名 = [\"要素1\", \"要素2\"]", desc: "ゲーム内で選択可能なアクションをリストにまとめ、敵AIの行動予測を組むための基盤とします。", trap: "ダブルクォーテーション `\"` を打ち忘れないよう注意してください。" },
-        { code: "enemy_action = random.choice(actions)", title: "GAME STEP 8: 敵AIのランダム行動選択", rule: "変数名 = random.choice(リスト名)", desc: "リストの中からランダムで要素を1つだけ自動選出します。敵の挙動を不規則にしゲーム性を高めます。", trap: "choiceの括弧の中に、対象となるリストの変数名（actions）を正確に入力します。" },
-        { code: "if hp <= 0:", title: "GAME STEP 9: ゲームオーバーの条件分岐", rule: "if 変数 <= 0:", desc: "プレイヤーの体力（hp）が0以下になったかどうかを判定し、ゲーム終了画面を呼び出すトリガーです。", trap: "比較演算子の向き（<=）に注意し、末尾の「:（コロン）」を絶対に忘れないでください。" },
-        { code: "while is_playing:", title: "GAME STEP 10: メインゲームループの駆動", rule: "while 条件式:", desc: "ゲームがプレイ中である限り、画面の更新や入力をバックグラウンドで常にループ実行し続ける心臓部です。", trap: "whileの後にスペースを空け、末尾に「:（コロン）」を打ちます。" }
+        { code: "import requests", title: "副業STEP 1: WEBデータ自動収集（スクレイピング）", rule: "import モジュール名", desc: "ネット上の商品価格や株価情報を全自動でスクレイピング（収集）するための必須ライブラリを読み込みます。", dummy: ["fetch requests", "include requests", "require requests"] },
+        { code: "import pandas as pd", title: "副業STEP 2: 大量データの高速処理・Excel連携", rule: "import ライブラリ名 as 略称", desc: "数万行に及ぶExcelやCSVデータを一瞬で並び替え・集計するための最強データ処理ライブラリ『Pandas』を導入します。", dummy: ["import pandas", "import pandas with pd", "using pandas as pd"] },
+        { code: "df = pd.read_excel(\"data.xlsx\")", title: "副業STEP 3: Excelファイルの自動読込", rule: "変数 = pd.read_excel(\"ファイル名\")", desc: "指定したExcelデータの中身をプログラム内に一括で取り込み、全自動処理を行うための基盤を作ります。", dummy: ["df = open_excel(\"data.xlsx\")", "df = pd.load_excel(\"data.xlsx\")", "df = pd.read_csv(\"data.xlsx\")"] },
+        { code: "for row in range(10):", title: "副業STEP 4: ループ処理によるコピペ作業の自動化", rule: "for 変数 in range(回数):", desc: "手作業で行うと膨大な時間がかかるコピペや転記作業を、指定した回数（ここでは10回）超高速でループ実行させます。", dummy: ["for row to 10:", "loop row in 10:", "for row in range(10)"] },
+        { code: "if price >= 5000:", title: "副業STEP 5: 条件判定による自動通知（アラート）", rule: "if 条件式:", desc: "取得した商品の価格（price）が5000円以上になったかを自動判定します。副業ツールの通知トリガーの基本形です。", dummy: ["if price >= 5000", "if (price >= 5000) {", "when price >= 5000:"] }
     ];
 
     let questions = [];
     let currentIdx = 0;
     let startTime = 0;
     let timerInterval = null;
+    let currentMode = 'typing';
+    
     let totalErrors = 0;
     let totalTypedChars = 0;
-    
-    // コンボシステム制御用変数
     let comboCount = 0;
     let lastUserLength = 0;
 
@@ -320,63 +315,32 @@
     const resultScreen = document.getElementById('result-screen');
     const codeDisplay = document.getElementById('code-display');
     const inputField = document.getElementById('input-field');
-
-    const gTitle = document.getElementById('g-title');
-    const gRule = document.getElementById('g-rule');
-    const gDesc = document.getElementById('g-desc');
-    const gTrap = document.getElementById('g-trap');
-
-    const progressText = document.getElementById('progress-text');
-    const comboText = document.getElementById('combo-text');
-    const accuracyText = document.getElementById('accuracy-text');
-    const timerText = document.getElementById('timer-text');
+    const choicesContainer = document.getElementById('choices-container');
 
     function initWelcomeScreen() {
-        switchScreen('welcome');
-        const saved = localStorage.getItem('pytype_saved_record_v16');
-        const scoreBoard = document.getElementById('high-score-display');
-        if (saved) {
-            const record = JSON.parse(saved);
-            scoreBoard.innerText = `🏆 現在のシステム最高記録 ── タイム: ${record.time}秒 / 精度: ${record.accuracy}%`;
-            scoreBoard.style.display = 'inline-block';
-        } else {
-            scoreBoard.style.display = 'none';
-        }
+        welcomeScreen.classList.add('active');
+        gameScreen.classList.remove('active');
+        resultScreen.classList.remove('active');
     }
 
-    function startStandardGame() {
-        questions = [...CORE_DEFAULT_DATA];
-        launchEngine();
-    }
-
-    function startCustomGame() {
+    function selectGameMode(mode) {
+        currentMode = mode;
         const rawText = document.getElementById('custom-code-input').value;
-        if (!rawText.trim()) {
-            alert("エラー: テキストエリアにPythonコードが入力されていません。");
-            return;
-        }
         
-        const lines = rawText.split('\n');
-        questions = [];
-        let stepNum = 1;
-        
-        lines.forEach((line) => {
-            // 完全な空行はタイピング不可のため自動スキップ
-            if (line.trim() === '') return;
-            
-            questions.push({
-                code: line,
-                title: `CUSTOM STEP ${stepNum}: ユーザー定義コードの実行`,
-                rule: "持ち込みスクリプト",
-                desc: "リソース提供者様がインポートした独自のPythonコードです。インデントのスペース数や構造を意識しながらタイピングしてください。",
-                trap: "インデント（先頭のスペース）および末尾のコロンなどの記号ミスに細心の注意を払いましょう。"
+        if (rawText.trim()) {
+            questions = [];
+            rawText.split('\n').forEach((line, idx) => {
+                if (!line.trim()) return;
+                questions.push({
+                    code: line,
+                    title: `持ち込みスクリプト: タスク ${idx + 1}`,
+                    rule: "カスタムロジック",
+                    desc: "インポートされた副業用コードです。実際の動作と構造を意識して攻略してください。",
+                    dummy: [line + ";", line.replace(/=/g, "=="), "void " + line]
+                });
             });
-            stepNum++;
-        });
-
-        if (questions.length === 0) {
-            alert("エラー: 有効なソースコード行が検出されませんでした。");
-            return;
+        } else {
+            questions = [...CORE_DEFAULT_DATA];
         }
         launchEngine();
     }
@@ -387,136 +351,138 @@
         totalTypedChars = 0;
         comboCount = 0;
         lastUserLength = 0;
-        updateComboUI();
-        switchScreen('game');
+        
+        welcomeScreen.classList.remove('active');
+        gameScreen.classList.add('active');
+        
+        if (currentMode === 'typing') {
+            inputField.style.display = 'block';
+            choicesContainer.style.display = 'none';
+            inputField.focus();
+        } else {
+            inputField.style.display = 'none';
+            choicesContainer.style.display = 'grid';
+        }
+        
         startTime = Date.now();
         clearInterval(timerInterval);
         timerInterval = setInterval(() => {
-            timerText.innerText = `経過時間: ${Math.floor((Date.now() - startTime) / 1000)}秒`;
+            document.getElementById('timer-text').innerText = `時間: ${Math.floor((Date.now() - startTime) / 1000)}秒`;
         }, 1000);
+        
         loadQuestion();
-    }
-
-    function switchScreen(name) {
-        welcomeScreen.classList.remove('active');
-        gameScreen.classList.remove('active');
-        resultScreen.classList.remove('active');
-        if (name === 'welcome') welcomeScreen.classList.add('active');
-        if (name === 'game') { gameScreen.classList.add('active'); inputField.focus(); }
-        if (name === 'result') resultScreen.classList.add('active');
     }
 
     function loadQuestion() {
         if (currentIdx >= questions.length) { endGame(); return; }
         const q = questions[currentIdx];
         
-        progressText.innerText = `進捗: ${currentIdx + 1} / ${questions.length}`;
+        document.getElementById('progress-text').innerText = `タスク: ${currentIdx + 1} / ${questions.length}`;
+        document.getElementById('g-title').innerText = q.title;
+        document.getElementById('g-rule').innerText = q.rule;
+        document.getElementById('g-desc').innerText = q.desc;
         
-        gTitle.innerText = q.title;
-        gRule.innerText = q.rule;
-        gDesc.innerText = q.desc;
-        gTrap.innerText = q.trap;
+        codeDisplay.className = 'code-display';
         
-        inputField.value = '';
-        renderCodeDisplay(q.code, '');
+        if (currentMode === 'typing') {
+            inputField.value = '';
+            renderTypingDisplay(q.code, '');
+        } else {
+            renderQuizDisplay(q);
+        }
     }
 
-    function renderCodeDisplay(target, user) {
+    function renderTypingDisplay(target, user) {
         codeDisplay.innerHTML = '';
         for (let i = 0; i < target.length; i++) {
             const span = document.createElement('span');
-            span.classList.add('char');
             span.textContent = target[i];
-            
             if (i < user.length) {
-                if (user[i] === target[i]) {
-                    span.classList.add('correct');
-                } else {
-                    span.classList.add('incorrect');
-                    if (i === user.length - 1) totalErrors++;
-                }
-            } else if (i === user.length) span.classList.add('current');
-            else span.classList.add('pending');
+                span.className = (user[i] === target[i]) ? 'char correct' : 'char incorrect';
+                if (i === user.length - 1 && user[i] !== target[i]) totalErrors++;
+            } else if (i === user.length) span.className = 'char current';
+            else span.className = 'char pending';
             codeDisplay.appendChild(span);
         }
         if (user.length > 0) totalTypedChars++;
-        const acc = totalTypedChars > 0 ? Math.max(0, Math.min(100, Math.floor(((totalTypedChars - totalErrors) / totalTypedChars) * 100))) : 100;
-        accuracyText.innerText = `精度: ${acc}%`;
+        updateAccuracyUI();
     }
 
-    // リアルタイム・コンボ判定処理
     inputField.addEventListener('input', () => {
         const target = questions[currentIdx].code;
         const user = inputField.value;
-
         if (user.length > lastUserLength) {
-            const lastIdx = user.length - 1;
-            // 入力された直近の1文字が正しいか検証
-            if (user[lastIdx] === target[lastIdx]) {
-                comboCount++;
-            } else {
-                comboCount = 0; // 1文字でもミスがあればコンボ即時破綻
-            }
+            if (user[user.length - 1] === target[user.length - 1]) comboCount++;
+            else comboCount = 0;
         }
         lastUserLength = user.length;
-
-        renderCodeDisplay(target, user);
-        updateComboUI();
+        renderTypingDisplay(target, user);
         
-        if (user === target) { 
-            currentIdx++; 
+        if (comboCount >= 15) codeDisplay.classList.add('combo-high');
+        else if (comboCount >= 5) codeDisplay.classList.add('combo-low');
+        document.getElementById('combo-text').innerText = `🔥 ${comboCount} COMBO`;
+
+        if (user === target) {
+            currentIdx++;
             lastUserLength = 0;
-            setTimeout(loadQuestion, 200); 
+            setTimeout(loadQuestion, 200);
         }
     });
 
-    // コンボ数に応じた視覚エフェクトの動的切り替え
-    function updateComboUI() {
-        comboText.innerText = `🔥 ${comboCount} COMBO`;
-        codeDisplay.className = 'code-display';
+    function renderQuizDisplay(q) {
+        // noteの記述通り「目的に対して正しい構文を選ぶ」UXへ変更
+        codeDisplay.innerHTML = `<span style="color:var(--accent); font-size:14px; font-weight:bold;">📝 実行したい自動化処理:</span>\n${q.title}\n\n<span style="color:var(--text-muted); font-size:13px;">これに該当する正しいPython構文を以下から選んでください。</span>`;
+        choicesContainer.innerHTML = '';
         
-        if (comboCount >= 15) {
-            codeDisplay.classList.add('combo-high');
-        } else if (comboCount >= 5) {
-            codeDisplay.classList.add('combo-low');
-        }
+        const allChoices = [q.code, ...q.dummy].sort(() => Math.random() - 0.5);
+        
+        allChoices.forEach(choiceText => {
+            const btn = document.createElement('button');
+            btn.className = 'choice-btn';
+            btn.textContent = choiceText;
+            btn.onclick = () => handleQuizAnswer(btn, choiceText, q.code);
+            choicesContainer.appendChild(btn);
+        });
     }
 
-    gameScreen.addEventListener('click', () => inputField.focus());
+    function handleQuizAnswer(selectedBtn, chosen, correct) {
+        totalTypedChars++;
+        const buttons = choicesContainer.querySelectorAll('.choice-btn');
+        buttons.forEach(b => b.removeAttribute('onclick'));
+
+        if (chosen === correct) {
+            selectedBtn.classList.add('correct-ans');
+            codeDisplay.innerHTML = `<span style="color:var(--correct); font-weight:bold;">✔ 正解（システム承認）</span>\n\n<span style="font-family:monospace; font-size:22px;">${correct}</span>`;
+            comboCount++;
+            currentIdx++;
+            setTimeout(loadQuestion, 800);
+        } else {
+            selectedBtn.classList.add('wrong-ans');
+            totalErrors++;
+            comboCount = 0;
+            buttons.forEach(b => { if(b.textContent === correct) b.classList.add('correct-ans'); });
+            currentIdx++;
+            setTimeout(loadQuestion, 1600);
+        }
+        document.getElementById('combo-text').innerText = `🔥 ${comboCount} COMBO`;
+        updateAccuracyUI();
+    }
+
+    function updateAccuracyUI() {
+        const acc = totalTypedChars > 0 ? Math.max(0, Math.min(100, Math.floor(((totalTypedChars - totalErrors) / totalTypedChars) * 100))) : 100;
+        document.getElementById('accuracy-text').innerText = `精度: ${acc}%`;
+    }
 
     function endGame() {
         clearInterval(timerInterval);
-        switchScreen('result');
+        gameScreen.classList.remove('active');
+        resultScreen.classList.add('active');
+        
         const totalElapsed = Math.floor((Date.now() - startTime) / 1000);
         const finalAcc = totalTypedChars > 0 ? Math.max(0, Math.min(100, Math.floor(((totalTypedChars - totalErrors) / totalTypedChars) * 100))) : 100;
         
         document.getElementById('total-time-val').innerText = `${totalElapsed}秒`;
         document.getElementById('total-acc-val').innerText = `${finalAcc}%`;
-
-        const saved = localStorage.getItem('pytype_saved_record_v16');
-        let isNew = false;
-        if (!saved) isNew = true;
-        else {
-            const prev = JSON.parse(saved);
-            if (finalAcc > prev.accuracy || (finalAcc === prev.accuracy && totalElapsed < prev.time)) isNew = true;
-        }
-
-        if (isNew) {
-            localStorage.setItem('pytype_saved_record_v16', JSON.stringify({ time: totalElapsed, accuracy: finalAcc }));
-            document.getElementById('new-record-alert').style.display = 'block';
-        } else {
-            document.getElementById('new-record-alert').style.display = 'none';
-        }
-
-        const list = document.getElementById('review-list');
-        list.innerHTML = '';
-        questions.forEach(q => {
-            const item = document.createElement('div'); item.classList.add('review-item');
-            const c = document.createElement('div'); c.classList.add('review-code'); c.textContent = q.code;
-            const t = document.createElement('div'); t.classList.add('review-title'); t.textContent = q.title;
-            const d = document.createElement('div'); d.classList.add('review-desc'); d.textContent = `${q.desc}`;
-            item.appendChild(t); item.appendChild(c); item.appendChild(d); list.appendChild(item);
-        });
     }
 
     window.onload = initWelcomeScreen;
