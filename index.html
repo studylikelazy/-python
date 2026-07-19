@@ -13,7 +13,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Typing Drift - Programming & English Edition (v2.0.0)</title>
+    <title>Typing Drift - Custom Code Edition (v2.0.0)</title>
     <style>
         :root {
             --bg-color: #0d0f14;
@@ -80,7 +80,35 @@
             display: block;
         }
 
-        /* Start Screen */
+        /* Start Screen (Custom Code Input) */
+        .instruction {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: var(--text-main);
+            text-align: left;
+        }
+
+        .code-input-area {
+            width: 100%;
+            height: 200px;
+            background: #11161f;
+            border: 1px solid #2a354a;
+            border-radius: 12px;
+            color: #39ff14;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 15px;
+            font-size: 1rem;
+            resize: none;
+            margin-bottom: 20px;
+            outline: none;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        .code-input-area:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.2), inset 0 0 10px rgba(0,0,0,0.5);
+        }
+
         .btn {
             background: linear-gradient(135deg, var(--accent-cyan), #4facfe);
             color: #000;
@@ -92,7 +120,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0, 242, 254, 0.4);
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         .btn:hover {
@@ -156,23 +184,24 @@
         }
 
         .word-display {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             letter-spacing: 1px;
             margin-bottom: 40px;
             line-height: 1.6;
-            min-height: 60px;
+            min-height: 80px;
             background: #11161f;
             padding: 20px;
             border-radius: 12px;
             border-left: 5px solid var(--accent-magenta);
             text-align: left;
+            white-space: pre-wrap;
             word-break: break-all;
+            font-family: 'Courier New', Courier, monospace;
         }
 
         .char-correct {
             color: var(--correct-color);
             text-shadow: 0 0 8px rgba(57, 255, 20, 0.6);
-            border-bottom: 2px solid transparent;
         }
 
         .char-current {
@@ -190,13 +219,6 @@
 
         @keyframes blink {
             50% { background-color: transparent; border-bottom-color: transparent; }
-        }
-
-        /* Input Shield (invisible listener fallback but we use window listener) */
-        .hidden-input {
-            position: absolute;
-            opacity: 0;
-            pointer-events: none;
         }
 
         /* Result Screen */
@@ -243,14 +265,18 @@
 
 <div class="container">
     <h1>TYPING DRIFT</h1>
-    <div class="subtitle">v2.0.0 大容量25問選抜・GA4アナリティクス連動版</div>
+    <div class="subtitle">v2.0.0 コード持ち込みカスタム機能・GA4連動完全版</div>
 
-    <!-- START SCREEN -->
+    <!-- START SCREEN (Code Input) -->
     <div id="start-screen" class="screen active">
-        <p style="margin-bottom: 25px; line-height: 1.6; color: var(--text-main);">
-            プログラミング基本構文＆高校英語から厳選された<b>全25問</b>のタイピングコース。<br>
-            ミスを抑えてトップスピードで駆け抜けろ！
-        </p>
+        <div class="instruction">
+            <h3>【コード持ち込み機能】</h3>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 10px;">
+                練習したいPythonやJavaScriptなどのソースコード、またはテキストを下のエリアに貼り付けてください。自分だけのオリジナルコースでドリフトを開始できます！
+            </p>
+        </div>
+        <textarea id="custom-code-input" class="code-input-area" placeholder='# ここに自分のコードを貼り付けてください&#10;print("Hello, World!")&#10;for i in range(5):&#10;    print(i)'></textarea>
+        <br>
         <button class="btn" onclick="startGame()">DRIVE START</button>
     </div>
 
@@ -266,7 +292,7 @@
         <div class="stats-row">
             <div class="stat-box">
                 <div class="label">Progress</div>
-                <div id="stat-progress" class="value">1 / 25</div>
+                <div id="stat-progress" class="value">0%</div>
             </div>
             <div class="stat-box">
                 <div class="label">WPM</div>
@@ -304,36 +330,7 @@
 </div>
 
 <script>
-    // 25 Custom personalized phrases (Python basic syntax + Freshman level English + Drift themes)
-    const PHRASES = [
-        'print("Hello, World!")',
-        'import random',
-        'for i in range(5):',
-        'if speed > 100:',
-        'def drive_car():',
-        'learning to code is fun',
-        'python study sidebar',
-        'github pages deployment',
-        'skyline r34 gt-r',
-        'drift around the corner',
-        'break through the wall',
-        'never give up coding',
-        'high school freshman',
-        'variable assignment',
-        'while loop execution',
-        'list comprehension',
-        'execute the script',
-        'debugging the error',
-        'open source repository',
-        'google analytics tracking',
-        'note article publication',
-        'full speed ahead',
-        'perfect accuracy bonus',
-        'master of programming',
-        'mission accomplished'
-    ];
-
-    let currentIndex = 0;
+    let textToType = "";
     let currentCharIndex = 0;
     let startTime = null;
     let totalKeystrokes = 0;
@@ -346,18 +343,29 @@
     const wordDisplay = document.getElementById('word-display');
     const car = document.getElementById('car');
     const focusNotice = document.getElementById('focus-notice');
+    const customCodeInput = document.getElementById('custom-code-input');
 
     // UI Updates
     const statProgress = document.getElementById('stat-progress');
     const statWpm = document.getElementById('stat-wpm');
     const statAccuracy = document.getElementById('stat-accuracy');
 
+    // Default template text if input is empty
+    const defaultCode = `print("Hello, World!")\nimport random\nfor i in range(5):\n    print("Drifting...")`;
+
     function startGame() {
+        // Fetch input text
+        let rawInput = customCodeInput.value.trim();
+        if (!rawInput) {
+            textToType = defaultCode;
+        } else {
+            textToType = rawInput;
+        }
+
         startScreen.classList.remove('active');
         resultScreen.classList.remove('active');
         gameScreen.classList.add('active');
         
-        currentIndex = 0;
         currentCharIndex = 0;
         totalKeystrokes = 0;
         correctKeystrokes = 0;
@@ -365,42 +373,53 @@
         gameActive = true;
 
         updateProgress();
-        renderPhrase();
+        renderText();
         
         // GA4 Custom Event: Game Start
         if (typeof gtag === 'function') {
             gtag('event', 'game_start', {
                 'event_category': 'Game',
-                'event_label': 'Typing Drift v2.0.0'
+                'event_label': 'Typing Drift Custom Edition'
             });
         }
     }
 
-    function renderPhrase() {
-        const currentPhrase = PHRASES[currentIndex];
+    function renderText() {
         wordDisplay.innerHTML = '';
-        for (let i = 0; i < currentPhrase.length; i++) {
+        for (let i = 0; i < textToType.length; i++) {
             const span = document.createElement('span');
-            span.textContent = currentPhrase[i];
+            // Show visible block for line breaks to guide the user
+            if (textToType[i] === '\n') {
+                span.innerHTML = '↵\n';
+            } else {
+                span.textContent = textToType[i];
+            }
+            
             if (i === currentCharIndex) {
                 span.className = 'char-current';
             }
             wordDisplay.appendChild(span);
         }
+        scrollCurrentCharIntoView();
+    }
+
+    function scrollCurrentCharIntoView() {
+        const currentSpan = wordDisplay.children[currentCharIndex];
+        if (currentSpan) {
+            currentSpan.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
     }
 
     function updateProgress() {
-        statProgress.textContent = `${currentIndex + 1} / ${PHRASES.length}`;
-        const progressPercent = (currentIndex / PHRASES.length) * 100;
+        const progressPercent = textToType.length > 0 ? Math.round((currentCharIndex / textToType.length) * 100) : 0;
+        statProgress.textContent = `${progressPercent}%`;
         car.style.left = `${progressPercent}%`;
     }
 
-    // Real-time WPM & Accuracy math
     function updateLiveStats() {
         if (!startTime) return;
         const elapsedMinutes = (Date.now() - startTime) / 60000;
         
-        // WPM calculation (standard: 5 keystrokes = 1 word)
         const wpm = elapsedMinutes > 0 ? Math.round((correctKeystrokes / 5) / elapsedMinutes) : 0;
         statWpm.textContent = wpm;
 
@@ -412,33 +431,36 @@
     window.addEventListener('keydown', (e) => {
         if (!gameActive) return;
 
-        // Ignore utility keys (Shift, Ctrl, Alt, etc.)
-        if (e.key.length !== 1) return;
+        let targetChar = textToType[currentCharIndex];
+        let inputKey = e.key;
+
+        // Handle Enter key for line breaks
+        if (targetChar === '\n' && inputKey === 'Enter') {
+            inputKey = '\n';
+        }
+
+        // Ignore utility keys except Enter
+        if (e.key.length !== 1 && e.key !== 'Enter') return;
+        
+        // Prevent default browser action for Space and Enter to avoid page scrolling
+        if (e.key === ' ' || e.key === 'Enter') {
+            e.preventDefault();
+        }
 
         totalKeystrokes++;
-        const currentPhrase = PHRASES[currentIndex];
-        const targetChar = currentPhrase[currentCharIndex];
-
         const spans = wordDisplay.querySelectorAll('span');
 
-        if (e.key === targetChar) {
+        if (inputKey === targetChar) {
             correctKeystrokes++;
             spans[currentCharIndex].className = 'char-correct';
             currentCharIndex++;
 
-            if (currentCharIndex >= currentPhrase.length) {
-                // Phrase complete
-                currentIndex++;
-                currentCharIndex = 0;
-                
-                if (currentIndex >= PHRASES.length) {
-                    endGame();
-                    return;
-                }
-                updateProgress();
+            if (currentCharIndex >= textToType.length) {
+                endGame();
+                return;
             }
+            updateProgress();
         } else {
-            // Miskey
             spans[currentCharIndex].className = 'char-current char-incorrect';
         }
 
@@ -446,6 +468,7 @@
             if (spans[currentCharIndex]) {
                 spans[currentCharIndex].className = 'char-current';
             }
+            scrollCurrentCharIntoView();
             updateLiveStats();
         }
     });
@@ -470,7 +493,7 @@
 
         document.getElementById('res-rank').textContent = rank;
 
-        // GA4 Custom Event: Game End (with custom dimensions)
+        // GA4 Custom Event: Game End
         if (typeof gtag === 'function') {
             gtag('event', 'game_complete', {
                 'score_wpm': finalWpm,
@@ -481,7 +504,9 @@
     }
 
     function restartGame() {
-        startGame();
+        startScreen.classList.add('active');
+        gameScreen.classList.remove('active');
+        resultScreen.classList.remove('active');
     }
 
     // Tab Focus warning fallback
