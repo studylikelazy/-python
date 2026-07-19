@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyType-Learner Web v1.2.0</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --container-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --correct: #4ade80;
+            --incorrect: #f87171;
+            --current-bg: rgba(56, 189, 248, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background-color: var(--container-bg);
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        /* Welcome Screen */
+        #welcome-screen {
+            text-align: center;
+        }
+
+        .features {
+            text-align: left;
+            max-width: 500px;
+            margin: 30px auto;
+            background: rgba(0, 0, 0, 0.15);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .features ul {
+            list-style-type: none;
+        }
+
+        .features li {
+            margin-bottom: 10px;
+            font-size: 15px;
+            color: #cbd5e1;
+        }
+
+        .btn {
+            background-color: var(--accent);
+            color: #0f172a;
+            border: none;
+            padding: 12px 32px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Game Screen */
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: var(--text-muted);
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px 15px;
+            border-radius: 6px;
+        }
+
+        .code-display {
+            font-family: "Consolas", "Monaco", "Courier New", monospace;
+            font-size: 20px;
+            background-color: #0b0f19;
+            padding: 25px;
+            border-radius: 8px;
+            letter-spacing: 1px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            border: 1px solid #334155;
+        }
+
+        .char {
+            border-bottom: 2px solid transparent;
+        }
+
+        .char.pending {
+            color: #64748b;
+        }
+
+        .char.correct {
+            color: var(--correct);
+            background-color: rgba(74, 222, 128, 0.05);
+        }
+
+        .char.incorrect {
+            color: var(--incorrect);
+            background-color: rgba(248, 113, 113, 0.1);
+            border-bottom: 2px solid var(--incorrect);
+        }
+
+        .char.current {
+            color: var(--text-main);
+            background-color: var(--current-bg);
+            border-bottom: 2px solid var(--accent);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            50% { border-bottom-color: transparent; }
+        }
+
+        .input-field {
+            width: 100%;
+            background-color: #0b0f19;
+            border: 1px solid #334155;
+            color: var(--text-main);
+            font-family: "Consolas", "Monaco", "Courier New", monospace;
+            font-size: 16px;
+            padding: 12px;
+            border-radius: 6px;
+            outline: none;
+            margin-bottom: 25px;
+        }
+
+        .input-field:focus {
+            border-color: var(--accent);
+        }
+
+        .explanation-box {
+            background-color: rgba(56, 189, 248, 0.05);
+            border: 1px dashed rgba(56, 189, 248, 0.3);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .explanation-title {
+            font-weight: bold;
+            color: var(--accent);
+            font-size: 14px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .explanation-text {
+            font-size: 15px;
+            color: #e2e8f0;
+            line-height: 1.6;
+        }
+
+        /* Result Screen */
+        #result-screen h2 {
+            color: var(--correct);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(0, 0, 0, 0.15);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-val {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--accent);
+            margin-top: 5px;
+        }
+
+        .review-list {
+            max-height: 300px;
+            overflow-y: auto;
+            background: #0b0f19;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            margin-bottom: 25px;
+        }
+
+        .review-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .review-item:last-child {
+            border-bottom: none;
+        }
+
+        .review-code {
+            font-family: monospace;
+            color: var(--correct);
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .review-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>PyType-Learner Web</h1>
+        <div class="subtitle">完全自律型プロダクト v1.2.0 (リアルタイムハイライト実装版)</div>
+    </header>
+
+    <!-- Welcome Screen -->
+    <div id="welcome-screen" class="screen active">
+        <p>Pythonの重要構文をタイピングしながら、本質的な意味を脳に叩き込むアプリです。</p>
+        <div class="features">
+            <ul>
+                <li>✨ <b>リアルタイムフィードバック:</b> 1文字打つごとに合否を即座に判定。</li>
+                <li>💡 <b>本質解説の常時表示:</b> コードの意味を常に確認しながらタイピング可能。</li>
+                <li>🚀 <b>実戦的な10の課題:</b> 基本出力から高度な内包表記まで網羅。</li>
+            </ul>
+        </div>
+        <button class="btn" onclick="startGame()">学習を開始する</button>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen">
+        <div class="stats-bar">
+            <div id="progress-text">問題: 1 / 10</div>
+            <div id="accuracy-text">精度: 100%</div>
+            <div id="timer-text">経過時間: 0秒</div>
+        </div>
+
+        <!-- リアルタイムに文字が変化するコード表示エリア -->
+        <div id="code-display" class="code-display"></div>
+
+        <!-- 入力フィールド -->
+        <input type="text" id="input-field" class="input-field" placeholder="ここに上記のコードをタイピングしてください" autocomplete="off" autofocus>
+
+        <!-- 常に表示される解説ボックス -->
+        <div class="explanation-box">
+            <div class="explanation-title">💡 このコードの本質・解説</div>
+            <div id="explanation-text" class="explanation-text">解説がここに表示されます。</div>
+        </div>
+    </div>
+
+    <!-- Result Screen -->
+    <div id="result-screen" class="screen">
+        <h2>🎉 オールクリア！</h2>
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 20px;">全メニューのタイピングと学習が終了しました。</p>
+        
+        <div class="summary-stats">
+            <div class="stat-card">
+                <div>総所要時間</div>
+                <div id="total-time-val" class="stat-val">0秒</div>
+            </div>
+            <div class="stat-card">
+                <div>最終タイピング精度</div>
+                <div id="total-acc-val" class="stat-val">100%</div>
+            </div>
+        </div>
+
+        <div style="font-size: 14px; margin-bottom: 10px; color: var(--text-muted);">📚 今回学んだ構文の総復習:</div>
+        <div id="review-list" class="review-list"></div>
+
+        <div style="text-align: center;">
+            <button class="btn" onclick="resetGame()">もう一度挑戦する</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 問題データアセット (10問)
+    const LEARNING_DATA = [
+        {
+            code: "print('Hello, World!')",
+            description: "【出力の基本】文字列を画面に表示します。シングルクォーテーションの閉じ忘れに注意。"
+        },
+        {
+            code: "for i in range(5):",
+            description: "【反復処理】0から4まで5回ループします。末尾のコロン(:)と、次の行のインデントが必須です。"
+        },
+        {
+            code: "import random",
+            description: "【モジュール】Python標準の乱数ライブラリを読み込みます。外部インストールは不要です。"
+        },
+        {
+            code: "numbers = [1, 2, 3]",
+            description: "【リスト型】複数のデータを四角括弧 [ ] で囲んで、1つの変数にまとめて管理します。"
+        },
+        {
+            code: "def my_func():",
+            description: "【関数定義】独自の処理をまとめた「関数」を作ります。def は definition の略です。"
+        },
+        {
+            code: "with open('test.txt', 'w') as f:",
+            description: "【ファイル操作】安全にファイルを開きます。処理が終わると自動でファイルを閉じてくれます（重要）。"
+        },
+        {
+            code: "if user_input == 'correct':",
+            description: "【条件分岐】値が一致しているかを判定します。比較には等号を2つ(==)使います。"
+        },
+        {
+            code: "try:",
+            description: "【例外処理】エラーが発生する可能性のある処理の始まりを指定します。exceptとセットで使います。"
+        },
+        {
+            code: "data = {'name': 'Alice', 'age': 16}",
+            description: "【辞書型】キーと値のペアでデータを管理します。波括弧 { } とコロン、カンマの位置に注目。"
+        },
+        {
+            code: "result = [x * 2 for x in range(5)]",
+            description: "【リスト内包表記】短時間で本質を掴むための上級構文。1行で効率よくリストを生成できます。"
+        }
+    ];
+
+    let questions = [];
+    let currentIdx = 0;
+    let startTime = 0;
+    let timerInterval = null;
+    let totalErrors = 0;
+    let totalTypedChars = 0;
+
+    const welcomeScreen = document.getElementById('welcome-screen');
+    const gameScreen = document.getElementById('game-screen');
+    const resultScreen = document.getElementById('result-screen');
+    const codeDisplay = document.getElementById('code-display');
+    const inputField = document.getElementById('input-field');
+    const explanationText = document.getElementById('explanation-text');
+    const progressText = document.getElementById('progress-text');
+    const accuracyText = document.getElementById('accuracy-text');
+    const timerText = document.getElementById('timer-text');
+
+    function startGame() {
+        // 問題をシャッフル
+        questions = [...LEARNING_DATA].sort(() => Math.random() - 0.5);
+        currentIdx = 0;
+        totalErrors = 0;
+        totalTypedChars = 0;
+        
+        switchScreen('game');
+        startTime = Date.now();
+        startTimer();
+        loadQuestion();
+    }
+
+    function switchScreen(screenName) {
+        welcomeScreen.classList.remove('active');
+        gameScreen.classList.remove('active');
+        resultScreen.classList.remove('active');
+
+        if (screenName === 'welcome') welcomeScreen.classList.add('active');
+        if (screenName === 'game') {
+            gameScreen.classList.add('active');
+            inputField.focus();
+        }
+        if (screenName === 'result') resultScreen.classList.add('active');
+    }
+
+    function startTimer() {
+        clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            timerText.innerText = `経過時間: ${elapsed}秒`;
+        }, 1000);
+    }
+
+    function loadQuestion() {
+        if (currentIdx >= questions.length) {
+            endGame();
+            return;
+        }
+
+        const currentQuestion = questions[currentIdx];
+        progressText.innerText = `問題: ${currentIdx + 1} / ${questions.length}`;
+        explanationText.innerText = currentQuestion.description;
+        inputField.value = '';
+
+        // コード表示の初期化（全文字をpending状態でspan化）
+        renderCodeDisplay(currentQuestion.code, '');
+    }
+
+    function renderCodeDisplay(targetCode, userInput) {
+        codeDisplay.innerHTML = '';
+        totalTypedChars += 1; // タイピングの進行を追跡用
+
+        for (let i = 0; i < targetCode.length; i++) {
+            const span = document.createElement('span');
+            span.classList.add('char');
+            span.textContent = targetCode[i];
+
+            if (i < userInput.length) {
+                if (userInput[i] === targetCode[i]) {
+                    span.classList.add('correct');
+                } else {
+                    span.classList.add('incorrect');
+                    // 入力イベントごとに最初に見つかった新規エラーをカウント
+                    if (i === userInput.length - 1) {
+                        totalErrors++;
+                    }
+                }
+            } else if (i === userInput.length) {
+                span.classList.add('current');
+            } else {
+                span.classList.add('pending');
+            }
+            codeDisplay.appendChild(span);
+        }
+
+        // リアルタイム精度の計算
+        const currentAccuracy = totalTypedChars > 0 ? Math.max(0, Math.min(100, Math.floor(((totalTypedChars - totalErrors) / totalTypedChars) * 100))) : 100;
+        accuracyText.innerText = `精度: ${currentAccuracy}%`;
+    }
+
+    inputField.addEventListener('input', (e) => {
+        const targetCode = questions[currentIdx].code;
+        const userInput = inputField.value;
+
+        renderCodeDisplay(targetCode, userInput);
+
+        // 完全に一致したら次の問題へ
+        if (userInput === targetCode) {
+            currentIdx++;
+            setTimeout(() => {
+                loadQuestion();
+            }, 150); // 少し余韻を持たせてから次へ
+        }
+    });
+
+    // 画面のどこをクリックしても入力欄にフォーカスが戻るようにする
+    gameScreen.addEventListener('click', () => {
+        inputField.focus();
+    });
+
+    function endGame() {
+        clearInterval(timerInterval);
+        switchScreen('result');
+
+        const totalElapsed = Math.floor((Date.now() - startTime) / 1000);
+        document.getElementById('total-time-val').innerText = `${totalElapsed}秒`;
+
+        const finalAccuracy = totalTypedChars > 0 ? Math.max(0, Math.min(100, Math.floor(((totalTypedChars - totalErrors) / totalTypedChars) * 100))) : 100;
+        document.getElementById('total-acc-val').innerText = `${finalAccuracy}%`;
+
+        // 復習リストの生成
+        const reviewList = document.getElementById('review-list');
+        reviewList.innerHTML = '';
+        questions.forEach(q => {
+            const item = document.createElement('div');
+            item.classList.add('review-item');
+            
+            const codeDiv = document.createElement('div');
+            codeDiv.classList.add('review-code');
+            codeDiv.textContent = q.code;
+
+            const descDiv = document.createElement('div');
+            descDiv.classList.add('review-desc');
+            descDiv.textContent = q.description;
+
+            item.appendChild(codeDiv);
+            item.appendChild(descDiv);
+            reviewList.appendChild(item);
+        });
+    }
+
+    function resetGame() {
+        switchScreen('welcome');
+    }
+</script>
+
+</body>
+</html>
