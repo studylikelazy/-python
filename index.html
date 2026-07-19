@@ -2,59 +2,31 @@
 <html lang="ja">
 <head>
 <!-- Google tag (gtag.js) -->
-
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-2TJ29KSJP4"></script>
-
 <script>
-
 window.dataLayer = window.dataLayer || [];
-
 function gtag(){dataLayer.push(arguments);}
-
 gtag('js', new Date());
 
-
-
 gtag('config', 'G-2TJ29KSJP4');
-
-</script> 
-
-
-
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-2TJ29KSJP4"></script>
-
-<script>
-
-window.dataLayer = window.dataLayer || [];
-
-function gtag(){dataLayer.push(arguments);}
-
-gtag('js', new Date());
-
-
-
-gtag('config', 'G-2TJ29KSJP4');
-
-</script> 
-
+</script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PyType-Learner Web v1.9.0</title>
+    <title>PyType-Learner Web v1.9.0 改訂版</title>
     <style>
         :root {
-            --bg-color: #0f172a;
-            --container-bg: #1e293b;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent: #38bdf8;
-            --correct: #4ade80;
-            --incorrect: #f87171;
-            --current-bg: rgba(56, 189, 248, 0.2);
-            --gold: #f59e0b;
-            --card-bg: #0b0f19;
-            --neon-blue: rgba(56, 189, 248, 0.6);
-            --neon-green: rgba(74, 222, 128, 0.8);
+            --bg-color: #f1f5f9;      /* 明るく落ち着いたライトグレー */
+            --container-bg: #ffffff;  /* 集中しやすいクリーンな白 */
+            --text-main: #1e293b;     /* ダークスレート（視認性の高い文字色） */
+            --text-muted: #64748b;    /* 控えめなグレー */
+            --accent: #2563eb;        /* プレーンなブルー */
+            --correct: #16a34a;       /* 正解時のグリーン */
+            --incorrect: #dc2626;     /* ミス時のレッド */
+            --current-bg: rgba(37, 99, 235, 0.08);
+            --gold: #d97706;
+            --card-bg: #f8fafc;       /* プレーンなカード背景用グレー */
+            --border-color: #cbd5e1;  /* 境界線用のニュートラルグレー */
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -74,15 +46,16 @@ gtag('config', 'G-2TJ29KSJP4');
             width: 100%;
             max-width: 800px;
             background-color: var(--container-bg);
-            border-radius: 12px;
+            border-radius: 8px;
             padding: 30px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
         }
 
         header {
             text-align: center;
             margin-bottom: 25px;
-            border-bottom: 1px solid #334155;
+            border-bottom: 1px solid var(--border-color);
             padding-bottom: 15px;
         }
 
@@ -106,15 +79,19 @@ gtag('config', 'G-2TJ29KSJP4');
         }
 
         .mode-card {
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid #334155;
-            border-radius: 8px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
             padding: 20px;
             cursor: pointer;
             transition: all 0.2s;
             text-align: left;
         }
-        .mode-card:hover { border-color: var(--accent); background: rgba(56, 189, 248, 0.05); transform: translateY(-2px); }
+        .mode-card:hover { 
+            border-color: var(--accent); 
+            background: rgba(37, 99, 235, 0.02); 
+            transform: translateY(-1px); 
+        }
         .mode-title { font-size: 16px; font-weight: bold; color: var(--text-main); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
         .mode-desc { font-size: 13px; color: var(--text-muted); line-height: 1.4; }
 
@@ -122,21 +99,21 @@ gtag('config', 'G-2TJ29KSJP4');
             text-align: left;
             max-width: 550px;
             margin: 20px auto 0 auto;
-            background: rgba(56, 189, 248, 0.03);
+            background: rgba(37, 99, 235, 0.02);
             padding: 15px;
-            border-radius: 8px;
+            border-radius: 6px;
             border: 1px dashed var(--accent);
         }
         .custom-textarea {
             width: 100%;
             height: 70px;
-            background-color: var(--card-bg);
-            border: 1px solid #334155;
-            color: #38bdf8;
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
+            color: var(--accent);
             font-family: monospace;
             font-size: 13px;
             padding: 10px;
-            border-radius: 6px;
+            border-radius: 4px;
             resize: none;
             outline: none;
             margin-bottom: 10px;
@@ -144,12 +121,12 @@ gtag('config', 'G-2TJ29KSJP4');
 
         .btn {
             background-color: var(--accent);
-            color: #0f172a;
+            color: #ffffff;
             border: none;
             padding: 10px 24px;
             font-size: 15px;
             font-weight: bold;
-            border-radius: 6px;
+            border-radius: 4px;
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -161,9 +138,10 @@ gtag('config', 'G-2TJ29KSJP4');
             margin-bottom: 15px;
             font-size: 14px;
             color: var(--text-muted);
-            background: rgba(0, 0, 0, 0.2);
+            background: var(--card-bg);
             padding: 10px 15px;
             border-radius: 6px;
+            border: 1px solid var(--border-color);
         }
 
         .code-display {
@@ -171,17 +149,18 @@ gtag('config', 'G-2TJ29KSJP4');
             font-size: 18px;
             background-color: var(--card-bg);
             padding: 25px;
-            border-radius: 8px;
+            border-radius: 6px;
             white-space: pre-wrap;
             word-break: break-all;
             margin-bottom: 15px;
             line-height: 1.6;
-            border: 1px solid #334155;
+            border: 1px solid var(--border-color);
             transition: all 0.2s;
+            color: var(--text-main);
         }
-        .code-display.combo-low { border-color: var(--accent); box-shadow: 0 0 15px var(--neon-blue); }
-        .code-display.combo-high { border-color: var(--correct); box-shadow: 0 0 25px var(--neon-green); animation: neon-pulse 0.8s infinite alternate; }
-        @keyframes neon-pulse { from { box-shadow: 0 0 15px rgba(74, 222, 128, 0.6); } to { box-shadow: 0 0 30px rgba(74, 222, 128, 1); } }
+        /* ネオン調から、集中を妨げないプレーンな枠線ハイライトへ変更 */
+        .code-display.combo-low { border-color: var(--accent); box-shadow: 0 0 8px rgba(37, 99, 235, 0.15); }
+        .code-display.combo-high { border-color: var(--correct); box-shadow: 0 0 12px rgba(22, 163, 74, 0.2); }
 
         .choices-container {
             display: grid;
@@ -193,53 +172,56 @@ gtag('config', 'G-2TJ29KSJP4');
             .choices-container { grid-template-columns: 1fr; }
         }
         .choice-btn {
-            background-color: #334155;
-            border: 1px solid #475569;
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
             color: var(--text-main);
             padding: 14px;
-            border-radius: 6px;
+            border-radius: 4px;
             font-family: "Consolas", monospace;
             font-size: 14px;
             text-align: left;
             cursor: pointer;
             transition: all 0.15s;
         }
-        .choice-btn:hover { background-color: #475569; border-color: var(--accent); }
-        .choice-btn.correct-ans { background-color: rgba(74, 222, 128, 0.2); border-color: var(--correct); color: var(--correct); }
-        .choice-btn.wrong-ans { background-color: rgba(248, 113, 113, 0.2); border-color: var(--incorrect); color: var(--incorrect); }
+        .choice-btn:hover { background-color: var(--card-bg); border-color: var(--accent); }
+        .choice-btn.correct-ans { background-color: rgba(22, 163, 74, 0.08); border-color: var(--correct); color: var(--correct); }
+        .choice-btn.wrong-ans { background-color: rgba(220, 38, 38, 0.08); border-color: var(--incorrect); color: var(--incorrect); }
 
-        .char.pending { color: #64748b; }
+        .char.pending { color: #94a3b8; }
         .char.correct { color: var(--correct); }
-        .char.incorrect { color: var(--incorrect); background-color: rgba(248, 113, 113, 0.1); }
+        .char.incorrect { color: var(--incorrect); background-color: rgba(220, 38, 38, 0.08); }
         .char.current { color: var(--text-main); background-color: var(--current-bg); border-bottom: 2px solid var(--accent); }
 
         .input-field {
             width: 100%;
-            background-color: var(--card-bg);
-            border: 1px solid #334155;
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
             color: var(--text-main);
             font-family: "Consolas", monospace;
             font-size: 18px;
             padding: 14px;
-            border-radius: 6px;
+            border-radius: 4px;
             outline: none;
             margin-bottom: 20px;
         }
+        .input-field:focus {
+            border-color: var(--accent);
+        }
 
         .grammar-container {
-            background-color: rgba(56, 189, 248, 0.02);
-            border: 1px solid #334155;
-            border-radius: 8px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
             padding: 18px;
         }
         .grammar-section { margin-bottom: 10px; }
         .section-lbl { font-size: 11px; font-weight: bold; color: var(--accent); letter-spacing: 1px; margin-bottom: 2px; }
-        .section-title { font-size: 15px; font-weight: bold; color: #f8fafc; margin-bottom: 8px; border-bottom: 1px solid #334155; padding-bottom: 4px; }
-        .rule-box { font-family: monospace; background: rgba(0,0,0,0.2); padding: 6px 10px; border-radius: 4px; color: #e2e8f0; font-size: 13px; }
-        .desc-text { font-size: 13px; color: #cbd5e1; line-height: 1.5; }
+        .section-title { font-size: 15px; font-weight: bold; color: var(--text-main); margin-bottom: 8px; border-bottom: 1px solid var(--border-color); padding-bottom: 4px; }
+        .rule-box { font-family: monospace; background: #ffffff; border: 1px solid var(--border-color); padding: 6px 10px; border-radius: 4px; color: var(--text-main); font-size: 13px; }
+        .desc-text { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
 
         .summary-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px; }
-        .stat-card { background: rgba(0, 0, 0, 0.15); padding: 15px; border-radius: 8px; text-align: center; }
+        .stat-card { background: var(--card-bg); border: 1px solid var(--border-color); padding: 15px; border-radius: 6px; text-align: center; }
         .stat-val { font-size: 24px; font-weight: bold; color: var(--accent); margin-top: 5px; }
     </style>
 </head>
@@ -248,17 +230,17 @@ gtag('config', 'G-2TJ29KSJP4');
 <div class="container">
     <header>
         <h1>PyType-Learner Web</h1>
-        <div class="subtitle">副業自動化・フルスタックパック v1.9.0</div>
+        <div class="subtitle">副業自動化・フルスタックパック v1.9.0 改訂版</div>
     </header>
 
     <!-- Welcome -->
     <div id="welcome-screen" class="screen active">
-        <p>副業・業務効率化で即戦力となる15の必須構文を最速で攻略せよ。</p>
+        <p style="margin-bottom: 15px; color: var(--text-muted);">副業・業務効率化で即戦力となる必須構文を最速で攻略せよ。</p>
         
         <div class="mode-selection">
             <div class="mode-card" onclick="selectGameMode('typing')">
                 <div class="mode-title">⚡ タイピングドライブ [PC推奨]</div>
-                <div class="mode-desc">正確なキー入力でネオンコンボを発動し、コードの構造を脳に焼き付けます。</div>
+                <div class="mode-desc">正確なキー入力でコンボを発動し、コードの構造を脳に焼き付けます。</div>
             </div>
             <div class="mode-card" onclick="selectGameMode('quiz')">
                 <div class="mode-title">🧠 ナレッジクイズ [スマホ対応]</div>
@@ -275,7 +257,7 @@ gtag('config', 'G-2TJ29KSJP4');
     <!-- Game -->
     <div id="game-screen" class="screen">
         <div class="stats-bar">
-            <div id="progress-text">タスク: 1 / 15</div>
+            <div id="progress-text">タスク: 1 / 35</div>
             <div id="combo-text">🔥 0 COMBO</div>
             <div id="accuracy-text">精度: 100%</div>
             <div id="timer-text">時間: 0秒</div>
@@ -301,7 +283,7 @@ gtag('config', 'G-2TJ29KSJP4');
 
     <!-- Result -->
     <div id="result-screen" class="screen">
-        <h2>🎉 プログラムラン・全タスク完了！</h2>
+        <h2 style="text-align: center; margin-bottom: 20px;">🎉 プログラムラン・全タスク完了！</h2>
         <div class="summary-stats">
             <div class="stat-card"><div>総走行時間</div><div id="total-time-val" class="stat-val">0秒</div></div>
             <div class="stat-card"><div>最終習得精度</div><div id="total-acc-val" class="stat-val">100%</div></div>
@@ -311,31 +293,56 @@ gtag('config', 'G-2TJ29KSJP4');
 </div>
 
 <script>
+    // 基礎25問 ＋ 追加10問 ＝ 全35問の固定データ
     const CORE_DEFAULT_DATA = [
-        // --- ジャンル1: WEBスクレイピング基礎 ---
+        // --- ジャンル1: WEBスクレイピング基礎 (1-4) ---
         { code: "import requests", title: "【スクレイピング】STEP 1: ネット通信用モジュールの読込", rule: "import モジュール名", desc: "WebサイトからHTMLデータを自動ダウンロードするための必須ライブラリを読み込みます。", dummy: ["fetch requests", "include requests", "require requests"] },
         { code: "from bs4 import BeautifulSoup", title: "【スクレイピング】STEP 2: 解析ツールの導入", rule: "from ライブラリ名 import クラス名", desc: "ダウンロードした膨大なHTMLから、欲しい文字や価格だけをピンポイントで抽出する解析ツール(BeautifulSoup)を呼び出します。", dummy: ["import beautifulsoup4", "from soup import BeautifulSoup", "import bs4.BeautifulSoup"] },
         { code: "res = requests.get(url)", title: "【スクレイピング】STEP 3: 指定したURLへのアクセス", rule: "変数 = requests.get(ターゲットURL)", desc: "ターゲットにするWebサイトにプログラムからアクセスし、その応答(レスポンス)を丸ごと変数に格納します。", dummy: ["res = requests.open(url)", "res = fetch(url)", "res = web.get(url)"] },
         { code: "soup = BeautifulSoup(res.text, \"html.parser\")", title: "【スクレイピング】STEP 4: HTMLデータの解析準備", rule: "変数 = BeautifulSoup(解析するテキスト, \"パーサー名\")", desc: "取得したWebサイトのテキストデータを、Pythonが検索・抽出をしやすい構造に変換(パース)します。", dummy: ["soup = res.parse(\"html\")", "soup = BeautifulSoup(res.content)", "soup = parse.html(res.text)"] },
         
-        // --- ジャンル2: データ処理・Excel操作 ---
+        // --- ジャンル2: データ処理・Excel操作 (5-7) ---
         { code: "import pandas as pd", title: "【データ自動化】STEP 5: 最強のデータ集計ツールの読込", rule: "import ライブラリ名 as 略称", desc: "大量のデータを並び替え、フィルタリングし、ExcelやCSVとして出力するための業界標準ライブラリを「pd」という短い名前で導入します。", dummy: ["import pandas", "using pandas as pd", "import openpyxl as pd"] },
         { code: "df = pd.read_excel(\"data.xlsx\")", title: "【データ自動化】STEP 6: Excelデータの自動一括読込", rule: "変数 = pd.read_excel(\"ファイルパス\")", desc: "手作業で開くのが面倒なExcelファイルを一瞬で読み込み、データフレーム（表データ構造）として保持します。", dummy: ["df = open_excel(\"data.xlsx\")", "df = pd.load_excel(\"data.xlsx\")", "df = excel.read(\"data.xlsx\")"] },
         { code: "df.to_csv(\"result.csv\", index=False)", title: "【データ自動化】STEP 7: 加工データのCSV書き出し", rule: "データフレーム.to_csv(\"保存名\", index=False)", desc: "副業で最も多い『納品用CSVの作成』コマンド。余計な行番号(index)を消して綺麗に出力するのが実務のプロの技です。", dummy: ["df.save_csv(\"result.csv\")", "df.to_csv(\"result.csv\")", "pd.write_csv(df, \"result.csv\")"] },
 
-        // --- ジャンル3: ファイル・システム操作 ---
+        // --- ジャンル3: ファイル・システム操作 (8-10) ---
         { code: "import os", title: "【ファイル操作】STEP 8: OS連携モジュールの読込", rule: "import os", desc: "パソコンの中にあるフォルダを作ったり、ファイル名を一括で変更したりする「パソコン操作の自動化」の基本ライブラリです。", dummy: ["import system", "import path", "from os import system"] },
         { code: "os.makedirs(\"output\", exist_ok=True)", title: "【ファイル操作】STEP 9: 納品用フォルダの自動作成", rule: "os.makedirs(\"フォルダ名\", exist_ok=True)", desc: "「output」という新しいフォルダを作ります。既にフォルダがあってもエラーを起こさない(exist_ok=True)実務的な書き方です。", dummy: ["os.mkdir(\"output\")", "os.create_directory(\"output\")", "os.makedirs(\"output\")"] },
         { code: "import shutil", title: "【ファイル操作】STEP 10: 高度なファイル移動・コピー", rule: "import shutil", desc: "ファイルを別のフォルダに一括移動したり、フォルダごと丸ごとコピー・削除したりするための強力なライブラリです。", dummy: ["import filemove", "import os.shutil", "from os import shutil"] },
 
-        // --- ジャンル4: 制御・マナー（スクレイピングの鉄則） ---
+        // --- ジャンル4: 制御・マナー (11-12) ---
         { code: "import time", title: "【時間制御】STEP 11: 待機処理モジュールの読込", rule: "import time", desc: "プログラムの実行速度をコントロールし、一時停止させるための時間制御ライブラリを読み込みます。", dummy: ["import sleep", "from time import sleep", "import clock"] },
         { code: "time.sleep(3)", title: "【時間制御】STEP 12: サーバー負荷を防ぐ3秒間停止", rule: "time.sleep(秒数)", desc: "Webサイトから連続でデータを抜くとアクセス禁止になります。副業スクレイピング案件では『1アクセスごとに3秒待つ』のが絶対の鉄則です。", dummy: ["sleep(3)", "time.wait(3)", "time.sleep(3000)"] },
 
-        // --- ジャンル5: API通知（LINE・Discord連携） ---
+        // --- ジャンル5: API通知 (13-15) ---
         { code: "import json", title: "【API連携】STEP 13: データのJSON形式変換ツール", rule: "import json", desc: "DiscordやLINEの通知システムにデータを送る際、世界共通のデータ形式である「JSON」を扱うためのライブラリです。", dummy: ["import dict", "from json import parse", "import convert"] },
         { code: "payload = {\"content\": \"通知テスト\"}", title: "【API連携】STEP 14: 送信データの作成（辞書型）", rule: "変数 = {キー: 値}", desc: "チャットツール側に送るメッセージ内容を、Pythonの「辞書型(Dictionary)」という形式で定義します。", dummy: ["payload = [\"content\": \"通知テスト\"]", "payload = \"content: 通知テスト\"", "var payload = {content: \"通知テスト\"}"] },
-        { code: "requests.post(url, json=payload)", title: "【API連携】STEP 15: Discord/LINEへの自動通知送信", rule: "requests.post(送信先URL, json=送信データ)", desc: "作成したメッセージデータを指定のWebhook URLへ一瞬で送信します。価格監視botなどの最終アウトプット層です。", dummy: ["requests.get(url, json=payload)", "requests.send(url, payload)", "requests.post(url, data=payload)"] }
+        { code: "requests.post(url, json=payload)", title: "【API連携】STEP 15: Discord/LINEへの自動通知送信", rule: "requests.post(送信先URL, json=送信データ)", desc: "作成したメッセージデータを指定のWebhook URLへ一瞬で送信します。価格監視botなどの最終アウトプット層です。", dummy: ["requests.get(url, json=payload)", "requests.send(url, payload)", "requests.post(url, data=payload)"], },
+
+        // --- 基礎追加枠 (16-25) ---
+        { code: "import glob", title: "【ファイル操作】STEP 16: 特定パターンファイルの検索", rule: "import glob", desc: "特定の拡張子（.txtや.csvなど）を持つファイルをまとめて検索・取得するための標準ライブラリです。", dummy: ["import filefind", "import os.glob", "from path import glob"] },
+        { code: "files = glob.glob(\"*.xlsx\")", title: "【ファイル操作】STEP 17: Excelファイル一覧の取得", rule: "変数 = glob.glob(\"検索パターン\")", desc: "現在のフォルダ内にある拡張子が「.xlsx」のExcelファイルをすべて取得し、リスト形式で変数に格納します。", dummy: ["files = glob.find(\"*.xlsx\")", "files = os.glob(\"*.xlsx\")", "files = glob(\"*.xlsx\")"] },
+        { code: "import datetime", title: "【時間制御】STEP 18: 日付・時刻処理の読込", rule: "import datetime", desc: "ファイル名に日付を付与したり、実行日時に合わせた処理を行ったりするための日付・時間モジュールです。", dummy: ["import date", "import time.date", "from time import datetime"] },
+        { code: "today = datetime.date.today()", title: "【時間制御】STEP 19: 本日の日付の取得", rule: "変数 = datetime.date.today()", desc: "今日の日付情報を「YYYY-MM-DD」形式で取得し、変数に格納します。売上レポートの日付スタンプ等に使います。", dummy: ["today = date.today()", "today = datetime.now()", "today = datetime.get_today()"] },
+        { code: "with open(\"log.txt\", \"a\") as f:", title: "【ファイル操作】STEP 20: ログ書き込み用のファイルオープン", rule: "with open(\"パス\", \"モード\") as 変数:", desc: "追記モード(\"a\")でファイルを開き、処理完了後に自動で閉じる安全なファイル操作手法です。", dummy: ["f = open(\"log.txt\", \"a\")", "with file(\"log.txt\", \"w\") as f:", "open log.txt with append as f:"] },
+        { code: "    f.write(\"done\\n\")", title: "【ファイル操作】STEP 21: テキストファイルへのデータ書き込み", rule: "    変数.write(\"書き込む文字列\")", desc: "開いたファイルに対して「done」と改行コードを書き込み、処理の履歴をログファイルに記録します。(半角スペース4つのインデントに対応)", dummy: ["    f.print(\"done\\n\")", "    f.save(\"done\\n\")", "    write(f, \"done\\n\")"] },
+        { code: "import openpyxl", title: "【データ自動化】STEP 22: Excel制御ライブラリの読込", rule: "import openpyxl", desc: "Pandasよりも細かくExcelのセル位置やスタイル（フォント、色、罫線など）を制御するライブラリを読み込みます。", dummy: ["import xlsxwriter", "from excel import openpyxl", "import xlrd"] },
+        { code: "wb = openpyxl.load_workbook(\"data.xlsx\")", title: "【データ自動化】STEP 23: Excelワークブックの読み込み", rule: "変数 = openpyxl.load_workbook(\"ファイルパス\")", desc: "指定されたExcelファイルをメモリ上に読み込み、セルやシートの編集準備を整えます。", dummy: ["wb = openpyxl.read_excel(\"data.xlsx\")", "wb = openpyxl.open(\"data.xlsx\")", "wb = openpyxl.Workbook(\"data.xlsx\")"] },
+        { code: "ws = wb.active", title: "【データ自動化】STEP 24: アクティブシートの取得", rule: "変数 = ワークブック.active", desc: "Excelファイルを開いたときに最初に表示される「アクティブなシート」を取得します。", dummy: ["ws = wb.get_sheet()", "ws = wb.sheet[0]", "ws = wb.active_sheet()"] },
+        { code: "wb.save(\"data.xlsx\")", title: "【データ自動化】STEP 25: Excelファイルの変更保存", rule: "ワークブック.save(\"保存名\")", desc: "編集したExcelデータを元のファイル（または別名）に上書き保存し、編集結果を確定させます。", dummy: ["wb.close()", "wb.write(\"data.xlsx\")", "wb.save_workbook(\"data.xlsx\")"] },
+
+        // --- 追加10問：実践制御・例外処理・文字列処理 (26-35) ---
+        { code: "try:", title: "【例外処理】STEP 26: エラー対策（試行ブロック）", rule: "try:", desc: "エラーが発生する可能性のある処理（通信障害など）を実行する前に、エラー検知のための監視を開始します。", dummy: ["catch:", "error:", "attempt:"] },
+        { code: "    res = requests.get(url)", title: "【例外処理】STEP 27: エラー発生の恐れがある処理の実行", rule: "    監視対象の処理", desc: "通信相手のサーバーダウン等により、プログラムが強制終了するリスクのある処理を安全に試行します。(半角スペース4つのインデントに対応)", dummy: ["    requests.get(url)", "    res = fetch(url)", "    res = requests.open(url)"] },
+        { code: "except Exception as e:", title: "【例外処理】STEP 28: エラーの捕捉と変数格納", rule: "except Exception as 変数:", desc: "エラーが発生した場合に強制終了させず、発生したエラー内容を変数「e」に格納して次の処理へ移ります。", dummy: ["catch Exception as e:", "except Error as e:", "on error resume next"] },
+        { code: "    print(e)", title: "【例外処理】STEP 29: エラー内容の画面表示", rule: "    print(エラー変数)", desc: "捕捉したエラーの中身をコンソールに表示し、どこで問題が起きたかを開発者に知らせます。(半角スペース4つのインデントに対応)", dummy: ["    log(e)", "    console.log(e)", "    show(e)"] },
+        { code: "import re", title: "【文字列操作】STEP 30: 正規表現ライブラリの読込", rule: "import re", desc: "テキストデータから「電話番号」「メールアドレス」「金額」など特定のパターンを持つ文字列を高速検索する標準モジュールです。", dummy: ["import regex", "from string import re", "import match"] },
+        { code: "pattern = re.compile(r\"\\d+\")", title: "【文字列操作】STEP 31: 抽出パターンを作成", rule: "変数 = re.compile(r\"正規表現パターン\")", desc: "「連続する半角数字」を意味する正規表現（\\d+）を事前コンパイルし、高速で抽出できるように準備します。", dummy: ["pattern = re.match(r\"\\d+\")", "pattern = re.compile(\"\\d+\")", "pattern = re.filter(r\"\\d+\")"] },
+        { code: "import sqlite3", title: "【データベース】STEP 32: SQLiteライブラリの読込", rule: "import sqlite3", desc: "副業で顧客情報やスクレイピングデータを蓄積する際に便利な、軽量ローカルデータベース「SQLite」の操作モジュールです。", dummy: ["import sql", "import database", "from db import sqlite3"] },
+        { code: "conn = sqlite3.connect(\"db.sqlite3\")", title: "【データベース】STEP 33: データベースへの接続", rule: "変数 = sqlite3.connect(\"ファイル名\")", desc: "指定したデータベースファイル（なければ自動新規作成）に接続し、操作用のコネクションを確立します。", dummy: ["conn = sqlite3.open(\"db.sqlite3\")", "conn = sqlite3.db(\"db.sqlite3\")", "conn = db.connect(\"db.sqlite3\")"] },
+        { code: "cur = conn.cursor()", title: "【データベース】STEP 34: カーソルの生成", rule: "変数 = コネクション.cursor()", desc: "SQLコマンド（データの挿入や読み込み）を発行するための操作窓口（カーソル）を作成します。", dummy: ["cur = conn.get_cursor()", "cur = conn.query()", "cur = sqlite3.cursor()"] },
+        { code: "conn.close()", title: "【データベース】STEP 35: 接続の切断", rule: "コネクション.close()", desc: "すべてのデータベース処理が終了した後に、ファイルロックを解除して安全に接続を終了します。", dummy: ["conn.exit()", "conn.disconnect()", "conn.save()"] }
     ];
 
     let questions = [];
@@ -355,6 +362,13 @@ gtag('config', 'G-2TJ29KSJP4');
     const codeDisplay = document.getElementById('code-display');
     const inputField = document.getElementById('input-field');
     const choicesContainer = document.getElementById('choices-container');
+
+    // スペースキーによる画面の誤スクロールを防止（inputフォーカス時でもbodyのデフォルトスクロールのみを防止）
+    window.addEventListener('keydown', function(e) {
+        if (e.code === 'Space' && e.target === document.body) {
+            e.preventDefault();
+        }
+    });
 
     function initWelcomeScreen() {
         welcomeScreen.classList.add('active');
@@ -401,6 +415,14 @@ gtag('config', 'G-2TJ29KSJP4');
         } else {
             inputField.style.display = 'none';
             choicesContainer.style.display = 'grid';
+        }
+        
+        // GA4: ゲーム開始イベント送信
+        if (typeof gtag === 'function') {
+            gtag('event', 'typing_start', {
+                'event_category': 'game',
+                'event_label': currentMode
+            });
         }
         
         startTime = Date.now();
@@ -521,6 +543,16 @@ gtag('config', 'G-2TJ29KSJP4');
         
         document.getElementById('total-time-val').innerText = `${totalElapsed}秒`;
         document.getElementById('total-acc-val').innerText = `${finalAcc}%`;
+
+        // GA4: ゲーム完了イベント送信
+        if (typeof gtag === 'function') {
+            gtag('event', 'typing_complete', {
+                'event_category': 'game',
+                'event_label': currentMode,
+                'accuracy': finalAcc,
+                'time': totalElapsed
+            });
+        }
     }
 
     window.onload = initWelcomeScreen;
