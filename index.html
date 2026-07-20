@@ -131,6 +131,12 @@ gtag('config', 'G-2TJ29KSJP4');
             transition: all 0.2s;
         }
         .btn:hover { opacity: 0.9; }
+        
+        .btn-share {
+            background-color: #0f1419; /* 𝕏(Twitter)ブラック */
+            color: #ffffff;
+        }
+        .btn-share:hover { background-color: #272c30; }
 
         .stats-bar {
             display: flex;
@@ -158,7 +164,6 @@ gtag('config', 'G-2TJ29KSJP4');
             transition: all 0.2s;
             color: var(--text-main);
         }
-        /* ネオン調から、集中を妨げないプレーンな枠線ハイライトへ変更 */
         .code-display.combo-low { border-color: var(--accent); box-shadow: 0 0 8px rgba(37, 99, 235, 0.15); }
         .code-display.combo-high { border-color: var(--correct); box-shadow: 0 0 12px rgba(22, 163, 74, 0.2); }
 
@@ -288,12 +293,14 @@ gtag('config', 'G-2TJ29KSJP4');
             <div class="stat-card"><div>総走行時間</div><div id="total-time-val" class="stat-val">0秒</div></div>
             <div class="stat-card"><div>最終習得精度</div><div id="total-acc-val" class="stat-val">100%</div></div>
         </div>
-        <div style="text-align: center;"><button class="btn" onclick="initWelcomeScreen()">メインメニューへ戻る</button></div>
+        <div style="text-align: center; display: flex; justify-content: center; gap: 15px;">
+            <button class="btn" onclick="initWelcomeScreen()">メインメニューへ戻る</button>
+            <button id="share-btn" class="btn btn-share">𝕏 で結果をポスト</button>
+        </div>
     </div>
 </div>
 
 <script>
-    // 基礎25問 ＋ 追加10問 ＝ 全35問の固定データ
     const CORE_DEFAULT_DATA = [
         // --- ジャンル1: WEBスクレイピング基礎 (1-4) ---
         { code: "import requests", title: "【スクレイピング】STEP 1: ネット通信用モジュールの読込", rule: "import モジュール名", desc: "WebサイトからHTMLデータを自動ダウンロードするための必須ライブラリを読み込みます。", dummy: ["fetch requests", "include requests", "require requests"] },
@@ -324,7 +331,7 @@ gtag('config', 'G-2TJ29KSJP4');
         { code: "import glob", title: "【ファイル操作】STEP 16: 特定パターンファイルの検索", rule: "import glob", desc: "特定の拡張子（.txtや.csvなど）を持つファイルをまとめて検索・取得するための標準ライブラリです。", dummy: ["import filefind", "import os.glob", "from path import glob"] },
         { code: "files = glob.glob(\"*.xlsx\")", title: "【ファイル操作】STEP 17: Excelファイル一覧の取得", rule: "変数 = glob.glob(\"検索パターン\")", desc: "現在のフォルダ内にある拡張子が「.xlsx」のExcelファイルをすべて取得し、リスト形式で変数に格納します。", dummy: ["files = glob.find(\"*.xlsx\")", "files = os.glob(\"*.xlsx\")", "files = glob(\"*.xlsx\")"] },
         { code: "import datetime", title: "【時間制御】STEP 18: 日付・時刻処理の読込", rule: "import datetime", desc: "ファイル名に日付を付与したり、実行日時に合わせた処理を行ったりするための日付・時間モジュールです。", dummy: ["import date", "import time.date", "from time import datetime"] },
-        { code: "today = datetime.date.today()", title: "【時間制御】STEP 19: 本日の日付の取得", rule: "変数 = datetime.date.today()", desc: "今日の日付情報を「YYYY-MM-DD」形式で取得し、変数に格納します。売上レポートの日付スタンプ等に使います。", dummy: ["today = date.today()", "today = datetime.now()", "today = datetime.get_today()"] },
+        { code: "today = datetime.date.today()", title: "【時間制御】STEP 19: 本日の日付の取得", rule: "変数 = datetime.date.today()", desc: "今日の日付情報を「YYYY-MM-DD」形式で取得し、売上レポートの日付スタンプ等に使います。", dummy: ["today = date.today()", "today = datetime.now()", "today = datetime.get_today()"] },
         { code: "with open(\"log.txt\", \"a\") as f:", title: "【ファイル操作】STEP 20: ログ書き込み用のファイルオープン", rule: "with open(\"パス\", \"モード\") as 変数:", desc: "追記モード(\"a\")でファイルを開き、処理完了後に自動で閉じる安全なファイル操作手法です。", dummy: ["f = open(\"log.txt\", \"a\")", "with file(\"log.txt\", \"w\") as f:", "open log.txt with append as f:"] },
         { code: "    f.write(\"done\\n\")", title: "【ファイル操作】STEP 21: テキストファイルへのデータ書き込み", rule: "    変数.write(\"書き込む文字列\")", desc: "開いたファイルに対して「done」と改行コードを書き込み、処理の履歴をログファイルに記録します。(半角スペース4つのインデントに対応)", dummy: ["    f.print(\"done\\n\")", "    f.save(\"done\\n\")", "    write(f, \"done\\n\")"] },
         { code: "import openpyxl", title: "【データ自動化】STEP 22: Excel制御ライブラリの読込", rule: "import openpyxl", desc: "Pandasよりも細かくExcelのセル位置やスタイル（フォント、色、罫線など）を制御するライブラリを読み込みます。", dummy: ["import xlsxwriter", "from excel import openpyxl", "import xlrd"] },
@@ -334,7 +341,7 @@ gtag('config', 'G-2TJ29KSJP4');
 
         // --- 追加10問：実践制御・例外処理・文字列処理 (26-35) ---
         { code: "try:", title: "【例外処理】STEP 26: エラー対策（試行ブロック）", rule: "try:", desc: "エラーが発生する可能性のある処理（通信障害など）を実行する前に、エラー検知のための監視を開始します。", dummy: ["catch:", "error:", "attempt:"] },
-        { code: "    res = requests.get(url)", title: "【例外処理】STEP 27: エラー発生の恐れがある処理の実行", rule: "    監視対象の処理", desc: "通信相手のサーバーダウン等により、プログラムが強制終了するリスクのある処理を安全に試行します。(半角スペース4つのインデントに対応)", dummy: ["    requests.get(url)", "    res = fetch(url)", "    res = requests.open(url)"] },
+        { code: "    res = requests.get(url)", title: "【例外処理】STEP 27: エラー発生の恐れがある処理の実行", rule: "    監視対象 of 処理", desc: "通信相手のサーバーダウン等により、プログラムが強制終了するリスクのある処理を安全に試行します。(半角スペース4つのインデントに対応)", dummy: ["    requests.get(url)", "    res = fetch(url)", "    res = requests.open(url)"] },
         { code: "except Exception as e:", title: "【例外処理】STEP 28: エラーの捕捉と変数格納", rule: "except Exception as 変数:", desc: "エラーが発生した場合に強制終了させず、発生したエラー内容を変数「e」に格納して次の処理へ移ります。", dummy: ["catch Exception as e:", "except Error as e:", "on error resume next"] },
         { code: "    print(e)", title: "【例外処理】STEP 29: エラー内容の画面表示", rule: "    print(エラー変数)", desc: "捕捉したエラーの中身をコンソールに表示し、どこで問題が起きたかを開発者に知らせます。(半角スペース4つのインデントに対応)", dummy: ["    log(e)", "    console.log(e)", "    show(e)"] },
         { code: "import re", title: "【文字列操作】STEP 30: 正規表現ライブラリの読込", rule: "import re", desc: "テキストデータから「電話番号」「メールアドレス」「金額」など特定のパターンを持つ文字列を高速検索する標準モジュールです。", dummy: ["import regex", "from string import re", "import match"] },
@@ -376,6 +383,61 @@ gtag('config', 'G-2TJ29KSJP4');
         resultScreen.classList.remove('active');
     }
 
+    // UGC：持ち込みコード用の簡易解説判定ロジック
+    function getUgcExplanation(line) {
+        let rule = "カスタムコード";
+        let desc = "持ち込まれたコードです。コードの構成を意識して攻略しましょう。";
+        
+        const trimmed = line.trim();
+        if (trimmed.startsWith("import ") || trimmed.startsWith("from ")) {
+            rule = "import モジュール名 / from ライブラリ import クラス";
+            desc = "外部のライブラリや機能をプログラム内に導入し、便利な命令を使えるように準備しています。";
+        } else if (trimmed.startsWith("def ")) {
+            rule = "def 関数名(引数):";
+            desc = "一連の処理をまとめた「オリジナル関数」を定義しています。実務で繰り返し使う処理を共通化するための基本です。";
+        } else if (trimmed.startsWith("if ") || trimmed.startsWith("elif ")) {
+            rule = "if 条件式:";
+            desc = "条件が成り立つかどうかを判定し、処理を分岐させています。自動化時のエラー回避などによく使われます。";
+        } else if (trimmed.startsWith("for ") || trimmed.startsWith("while ")) {
+            rule = "for 変数 in 繰り返し対象:";
+            desc = "データ群や回数に合わせて、同じ処理を何度も繰り返し実行するループ（反復）制御です。";
+        } else if (trimmed.includes("print(")) {
+            rule = "print(出力したいデータ)";
+            desc = "処理の経過や結果をコンソールに表示して、動作が正しいか確認（デバッグ）するための命令です。";
+        } else if (trimmed.includes("try:") || trimmed.startsWith("except ")) {
+            rule = "try: / except 例外クラス:";
+            desc = "通信エラーや予期せぬトラブルが発生した際に、プログラムの強制終了を防ぐための防壁です。";
+        } else if (trimmed.includes("=")) {
+            rule = "変数 = 代入する値";
+            desc = "右辺のデータや処理結果を、左辺に用意した「変数」に格納して、後から使い回せるようにしています。";
+        }
+        return { rule, desc };
+    }
+
+    // UGC：持ち込みコード用の4択クイズのダミー自動生成ロジック
+    function generateDummyChoices(line) {
+        const trimmed = line.trim();
+        if (line.includes("=")) {
+            return [
+                line.replace(/=/g, "=="),
+                line + ";",
+                "void " + line
+            ];
+        } else if (line.includes("(")) {
+            return [
+                line.replace(/\(/g, "["),
+                line.replace(/\)/g, ""),
+                line + ";"
+            ];
+        } else {
+            return [
+                line + ";",
+                "const " + trimmed,
+                trimmed.toLowerCase() === trimmed ? trimmed.toUpperCase() : trimmed.toLowerCase()
+            ];
+        }
+    }
+
     function selectGameMode(mode) {
         currentMode = mode;
         const rawText = document.getElementById('custom-code-input').value;
@@ -384,12 +446,13 @@ gtag('config', 'G-2TJ29KSJP4');
             questions = [];
             rawText.split('\n').forEach((line, idx) => {
                 if (!line.trim()) return;
+                const explain = getUgcExplanation(line);
                 questions.push({
                     code: line,
-                    title: `持ち込みスクリプト: タスク ${idx + 1}`,
-                    rule: "カスタムロジック",
-                    desc: "インポートされたコードです。実際の動作と構造を意識して攻略してください。",
-                    dummy: [line + ";", line.replace(/=/g, "=="), "void " + line]
+                    title: `持ち込みコード: タスク ${idx + 1}`,
+                    rule: explain.rule,
+                    desc: explain.desc,
+                    dummy: generateDummyChoices(line)
                 });
             });
         } else {
@@ -543,6 +606,14 @@ gtag('config', 'G-2TJ29KSJP4');
         
         document.getElementById('total-time-val').innerText = `${totalElapsed}秒`;
         document.getElementById('total-acc-val').innerText = `${finalAcc}%`;
+
+        // 𝕏(Twitter) へのシェアポストリンクを動的に生成
+        const shareBtn = document.getElementById('share-btn');
+        const shareText = `PyType-Learner Web でPython自動化の学習を完了しました！\n\nモード: ${currentMode === 'typing' ? 'タイピングドライブ ⚡' : 'ナレッジクイズ 🧠'}\n完了時間: ${totalElapsed}秒\n習得精度: ${finalAcc}%\n\n#Python #プログラミング初心者 #PyType_Learner\n`;
+        const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(window.location.href)}`;
+        shareBtn.onclick = () => {
+            window.open(shareUrl, '_blank');
+        };
 
         // GA4: ゲーム完了イベント送信
         if (typeof gtag === 'function') {
