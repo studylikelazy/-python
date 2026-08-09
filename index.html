@@ -3,26 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PyType-Learner Web v1.9.0 改訂版</title>
+    <title>PyType-Learner Web v2.0.0</title>
     
     <script>
-    // --- 【プロ仕様】自分自身のアクセス除外プログラム ---
+    // --- 自分自身のアクセス除外プログラム ---
     (function() {
-        // 1. ローカル開発環境の判定（ファイルを直開きした時や、localhostの場合）
         const isLocal = location.hostname === "localhost" || location.hostname === "127.0.0.1" || location.protocol === "file:";
-        
-        // 2. URLパラメータ「?dev=1」の検知（開発者除外用フラグの設定）
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('dev') === '1') {
             localStorage.setItem('exclude_ga', 'true');
             alert('⚙️ 開発者モードを設定しました。このブラウザからのアクセスは今後GA4に送信されません。');
         }
-        
-        // 3. ローカルストレージに除外フラグがあるかチェック
         const isExcluded = localStorage.getItem('exclude_ga') === 'true';
 
         if (!isLocal && !isExcluded) {
-            // 本番かつ除外フラグがない一般ユーザーの場合のみ、GA4タグを動的に読み込んで起動する
             const script = document.createElement('script');
             script.async = true;
             script.src = "https://www.googletagmanager.com/gtag/js?id=G-2TJ29KSJP4";
@@ -34,7 +28,6 @@
             gtag('config', 'G-2TJ29KSJP4');
             console.log("GA4: 読み込み完了（計測中）");
         } else {
-            // ローカル環境や除外対象のブラウザの場合、エラー防止用のダミー関数を用意（コンソールへの出力のみ）
             window.gtag = function() {
                 console.log("GA4 (計測除外中):", ...arguments);
             };
@@ -46,7 +39,7 @@
         :root {
             --bg-color: #f1f5f9;      /* 明るく落ち着いたライトグレー */
             --container-bg: #ffffff;  /* 集中しやすいクリーンな白 */
-            --text-main: #1e293b;     /* ダークスレート（視認性の高い文字色） */
+            --text-main: #1e293b;     /* ダークスレート */
             --text-muted: #64748b;    /* 控えめなグレー */
             --accent: #2563eb;        /* プレーンなブルー */
             --correct: #16a34a;       /* 正解時のグリーン */
@@ -77,7 +70,7 @@
             border-radius: 8px;
             padding: 30px;
             border: 1px solid var(--border-color);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
 
         header {
@@ -95,6 +88,7 @@
 
         #welcome-screen { text-align: center; }
 
+        /* モード選択エリア */
         .mode-selection {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -108,26 +102,82 @@
 
         .mode-card {
             background: var(--card-bg);
-            border: 1px solid var(--border-color);
+            border: 2px solid var(--border-color);
             border-radius: 6px;
-            padding: 20px;
+            padding: 15px;
             cursor: pointer;
             transition: all 0.2s;
             text-align: left;
         }
-        .mode-card:hover { 
-            border-color: var(--accent); 
-            background: rgba(37, 99, 235, 0.02); 
-            transform: translateY(-1px); 
+        .mode-card.selected {
+            border-color: var(--accent);
+            background: rgba(37, 99, 235, 0.02);
         }
-        .mode-title { font-size: 16px; font-weight: bold; color: var(--text-main); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
-        .mode-desc { font-size: 13px; color: var(--text-muted); line-height: 1.4; }
+        .mode-title { font-size: 15px; font-weight: bold; color: var(--text-main); margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+        .mode-desc { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+
+        /* セクション（ビンゴ風）選択グリッド */
+        .section-selection-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--text-main);
+            margin: 25px auto 10px auto;
+            max-width: 550px;
+            text-align: left;
+            border-left: 3px solid var(--accent);
+            padding-left: 8px;
+        }
+        .section-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            max-width: 550px;
+            margin: 10px auto;
+        }
+        @media (max-width: 600px) {
+            .section-grid { grid-template-columns: 1fr; }
+        }
+        .section-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            position: relative;
+        }
+        .section-card:hover {
+            border-color: var(--accent);
+            background: rgba(37, 99, 235, 0.01);
+            transform: translateY(-1px);
+        }
+        .section-card.completed {
+            border-color: var(--correct);
+            background: rgba(22, 163, 74, 0.02);
+        }
+        .section-badge {
+            font-size: 10px;
+            font-weight: bold;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .section-card.completed .section-badge {
+            color: var(--correct);
+        }
+        .section-name {
+            font-size: 13px;
+            font-weight: bold;
+            color: var(--text-main);
+        }
 
         .custom-code-box {
             text-align: left;
             max-width: 550px;
-            margin: 20px auto 0 auto;
-            background: rgba(37, 99, 235, 0.02);
+            margin: 25px auto 0 auto;
+            background: rgba(37, 99, 235, 0.01);
             padding: 15px;
             border-radius: 6px;
             border: 1px dashed var(--accent);
@@ -161,7 +211,7 @@
         .btn:hover { opacity: 0.9; }
         
         .btn-share {
-            background-color: #0f1419; /* 𝕏(Twitter)ブラック */
+            background-color: #0f1419;
             color: #ffffff;
         }
         .btn-share:hover { background-color: #272c30; }
@@ -178,6 +228,7 @@
             border: 1px solid var(--border-color);
         }
 
+        /* アニメーション対応のコード表示エリア */
         .code-display {
             font-family: "Consolas", monospace;
             font-size: 18px;
@@ -189,11 +240,31 @@
             margin-bottom: 15px;
             line-height: 1.6;
             border: 1px solid var(--border-color);
-            transition: all 0.2s;
+            transition: transform 0.1s ease-in-out, border-color 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
             color: var(--text-main);
         }
-        .code-display.combo-low { border-color: var(--accent); box-shadow: 0 0 8px rgba(37, 99, 235, 0.15); }
-        .code-display.combo-high { border-color: var(--correct); box-shadow: 0 0 12px rgba(22, 163, 74, 0.2); }
+        
+        /* 1. ミス時の左右シェイク */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+        .code-display.shake {
+            animation: shake 0.12s ease-in-out;
+            border-color: var(--incorrect);
+            background: rgba(220, 38, 38, 0.01);
+        }
+
+        /* 2. 正解時の緑色パルス */
+        @keyframes pulse-correct {
+            0% { border-color: var(--border-color); box-shadow: none; }
+            50% { border-color: var(--correct); box-shadow: 0 0 10px rgba(22, 163, 74, 0.3); }
+            100% { border-color: var(--border-color); box-shadow: none; }
+        }
+        .code-display.pulse-ok {
+            animation: pulse-correct 0.3s ease-in-out;
+        }
 
         .choices-container {
             display: grid;
@@ -263,34 +334,43 @@
 <div class="container">
     <header>
         <h1>PyType-Learner Web</h1>
-        <div class="subtitle">副業自動化・フルスタックパック v1.9.0 改訂版</div>
+        <div class="subtitle">副業自動化・フルスタックパック v2.0.0</div>
     </header>
 
     <!-- Welcome -->
     <div id="welcome-screen" class="screen active">
         <p style="margin-bottom: 15px; color: var(--text-muted);">副業・業務効率化で即戦力となる必須構文を最速で攻略せよ。</p>
         
+        <!-- モード選択 -->
         <div class="mode-selection">
-            <div class="mode-card" onclick="selectGameMode('typing')">
+            <div id="mode-typing" class="mode-card selected" onclick="toggleGameMode('typing')">
                 <div class="mode-title">⚡ タイピングドライブ [PC推奨]</div>
                 <div class="mode-desc">正確なキー入力でコンボを発動し、コードの構造を脳に焼き付けます。</div>
             </div>
-            <div class="mode-card" onclick="selectGameMode('quiz')">
+            <div id="mode-quiz" class="mode-card" onclick="toggleGameMode('quiz')">
                 <div class="mode-title">🧠 ナレッジクイズ [スマホ対応]</div>
                 <div class="mode-desc">目的の自動化処理に対応する正しいPython構文を4択からタップで選択します。</div>
             </div>
         </div>
 
+        <!-- セクション（ビンゴ風）選択 -->
+        <div id="section-selection-area">
+            <div class="section-selection-title">🗺️ クエストを選択してスタート（各5問）</div>
+            <div id="section-grid" class="section-grid"></div>
+        </div>
+
+        <!-- UGC 持ち込みボックス -->
         <div class="custom-code-box">
             <h4 style="font-size:13px; color:var(--accent); margin-bottom:4px;">🛠️ AI生成コード/自作コードの持ち込み（UGC拡張）</h4>
             <textarea id="custom-code-input" class="custom-textarea" placeholder="ここに自作のスクリプトを貼り付けると、上記モードへ自動変換されます..."></textarea>
+            <div style="text-align: right;"><button class="btn" style="padding: 6px 14px; font-size: 12px;" onclick="startUgcMode()">持ち込みコードで開始 ➔</button></div>
         </div>
     </div>
 
     <!-- Game -->
     <div id="game-screen" class="screen">
         <div class="stats-bar">
-            <div id="progress-text">タスク: 1 / 35</div>
+            <div id="progress-text">タスク: 1 / 5</div>
             <div id="combo-text">🔥 0 COMBO</div>
             <div id="accuracy-text">精度: 100%</div>
             <div id="timer-text">時間: 0秒</div>
@@ -316,13 +396,13 @@
 
     <!-- Result -->
     <div id="result-screen" class="screen">
-        <h2 style="text-align: center; margin-bottom: 20px;">🎉 プログラムラン・全タスク完了！</h2>
+        <h2 id="result-title" style="text-align: center; margin-bottom: 20px;">🎉 クエスト・ミッション完了！</h2>
         <div class="summary-stats">
-            <div class="stat-card"><div>総走行時間</div><div id="total-time-val" class="stat-val">0秒</div></div>
-            <div class="stat-card"><div>最終習得精度</div><div id="total-acc-val" class="stat-val">100%</div></div>
+            <div class="stat-card"><div>走行時間</div><div id="total-time-val" class="stat-val">0秒</div></div>
+            <div class="stat-card"><div>習得精度</div><div id="total-acc-val" class="stat-val">100%</div></div>
         </div>
         <div style="text-align: center; display: flex; justify-content: center; gap: 15px;">
-            <button class="btn" onclick="initWelcomeScreen()">メインメニューへ戻る</button>
+            <button class="btn" onclick="backToMenu()">メインメニューへ戻る</button>
             <button id="share-btn" class="btn btn-share">𝕏 で結果をポスト</button>
         </div>
     </div>
@@ -330,49 +410,49 @@
 
 <script>
     const CORE_DEFAULT_DATA = [
-        // --- ジャンル1: WEBスクレイピング基礎 (1-4) ---
+        // --- セクション1: WEBスクレイピング基礎 ---
         { code: "import requests", title: "【スクレイピング】STEP 1: ネット通信用モジュールの読込", rule: "import モジュール名", desc: "WebサイトからHTMLデータを自動ダウンロードするための必須ライブラリを読み込みます。", dummy: ["fetch requests", "include requests", "require requests"] },
         { code: "from bs4 import BeautifulSoup", title: "【スクレイピング】STEP 2: 解析ツールの導入", rule: "from ライブラリ名 import クラス名", desc: "ダウンロードした膨大なHTMLから、欲しい文字や価格だけをピンポイントで抽出する解析ツール(BeautifulSoup)を呼び出します。", dummy: ["import beautifulsoup4", "from soup import BeautifulSoup", "import bs4.BeautifulSoup"] },
         { code: "res = requests.get(url)", title: "【スクレイピング】STEP 3: 指定したURLへのアクセス", rule: "変数 = requests.get(ターゲットURL)", desc: "ターゲットにするWebサイトにプログラムからアクセスし、その応答(レスポンス)を丸ごと変数に格納します。", dummy: ["res = requests.open(url)", "res = fetch(url)", "res = web.get(url)"] },
         { code: "soup = BeautifulSoup(res.text, \"html.parser\")", title: "【スクレイピング】STEP 4: HTMLデータの解析準備", rule: "変数 = BeautifulSoup(解析するテキスト, \"パーサー名\")", desc: "取得したWebサイトのテキストデータを、Pythonが検索・抽出をしやすい構造に変換(パース)します。", dummy: ["soup = res.parse(\"html\")", "soup = BeautifulSoup(res.content)", "soup = parse.html(res.text)"] },
-        
-        // --- ジャンル2: データ処理・Excel操作 (5-7) ---
         { code: "import pandas as pd", title: "【データ自動化】STEP 5: 最強のデータ集計ツールの読込", rule: "import ライブラリ名 as 略称", desc: "大量のデータを並び替え、フィルタリングし、ExcelやCSVとして出力するための業界標準ライブラリを「pd」という短い名前で導入します。", dummy: ["import pandas", "using pandas as pd", "import openpyxl as pd"] },
+        
+        // --- セクション2: データ自動化＆ファイル操作 ---
         { code: "df = pd.read_excel(\"data.xlsx\")", title: "【データ自動化】STEP 6: Excelデータの自動一括読込", rule: "変数 = pd.read_excel(\"ファイルパス\")", desc: "手作業で開くのが面倒なExcelファイルを一瞬で読み込み、データフレーム（表データ構造）として保持します。", dummy: ["df = open_excel(\"data.xlsx\")", "df = pd.load_excel(\"data.xlsx\")", "df = excel.read(\"data.xlsx\")"] },
         { code: "df.to_csv(\"result.csv\", index=False)", title: "【データ自動化】STEP 7: 加工データのCSV書き出し", rule: "データフレーム.to_csv(\"保存名\", index=False)", desc: "副業で最も多い『納品用CSVの作成』コマンド。余計な行番号(index)を消して綺麗に出力するのが実務のプロの技です。", dummy: ["df.save_csv(\"result.csv\")", "df.to_csv(\"result.csv\")", "pd.write_csv(df, \"result.csv\")"] },
-
-        // --- ジャンル3: ファイル・システム操作 (8-10) ---
         { code: "import os", title: "【ファイル操作】STEP 8: OS連携モジュールの読込", rule: "import os", desc: "パソコンの中にあるフォルダを作ったり、ファイル名を一括で変更したりする「パソコン操作の自動化」の基本ライブラリです。", dummy: ["import system", "import path", "from os import system"] },
         { code: "os.makedirs(\"output\", exist_ok=True)", title: "【ファイル操作】STEP 9: 納品用フォルダの自動作成", rule: "os.makedirs(\"フォルダ名\", exist_ok=True)", desc: "「output」という新しいフォルダを作ります。既にフォルダがあってもエラーを起こさない(exist_ok=True)実務的な書き方です。", dummy: ["os.mkdir(\"output\")", "os.create_directory(\"output\")", "os.makedirs(\"output\")"] },
         { code: "import shutil", title: "【ファイル操作】STEP 10: 高度なファイル移動・コピー", rule: "import shutil", desc: "ファイルを別のフォルダに一括移動したり、フォルダごと丸ごとコピー・削除したりするための強力なライブラリです。", dummy: ["import filemove", "import os.shutil", "from os import shutil"] },
 
-        // --- ジャンル4: 制御・マナー (11-12) ---
+        // --- セクション3: 時間制御＆API自動通知 ---
         { code: "import time", title: "【時間制御】STEP 11: 待機処理モジュールの読込", rule: "import time", desc: "プログラムの実行速度をコントロールし、一時停止させるための時間制御ライブラリを読み込みます。", dummy: ["import sleep", "from time import sleep", "import clock"] },
         { code: "time.sleep(3)", title: "【時間制御】STEP 12: サーバー負荷を防ぐ3秒間停止", rule: "time.sleep(秒数)", desc: "Webサイトから連続でデータを抜くとアクセス禁止になります。副業スクレイピング案件では『1アクセスごとに3秒待つ』のが絶対の鉄則です。", dummy: ["sleep(3)", "time.wait(3)", "time.sleep(3000)"] },
-
-        // --- ジャンル5: API通知 (13-15) ---
         { code: "import json", title: "【API連携】STEP 13: データのJSON形式変換ツール", rule: "import json", desc: "DiscordやLINEの通知システムにデータを送る際、世界共通のデータ形式である「JSON」を扱うためのライブラリです。", dummy: ["import dict", "from json import parse", "import convert"] },
         { code: "payload = {\"content\": \"通知テスト\"}", title: "【API連携】STEP 14: 送信データの作成（辞書型）", rule: "変数 = {キー: 値}", desc: "チャットツール側に送るメッセージ内容を、Pythonの「辞書型(Dictionary)」という形式で定義します。", dummy: ["payload = [\"content\": \"通知テスト\"]", "payload = \"content: 通知テスト\"", "var payload = {content: \"通知テスト\"}"] },
         { code: "requests.post(url, json=payload)", title: "【API連携】STEP 15: Discord/LINEへの自動通知送信", rule: "requests.post(送信先URL, json=送信データ)", desc: "作成したメッセージデータを指定のWebhook URLへ一瞬で送信します。価格監視botなどの最終アウトプット層です。", dummy: ["requests.get(url, json=payload)", "requests.send(url, payload)", "requests.post(url, data=payload)"], },
 
-        // --- 基礎追加枠 (16-25) ---
+        // --- セクション4: ファイル詳細操作＆日付処理 ---
         { code: "import glob", title: "【ファイル操作】STEP 16: 特定パターンファイルの検索", rule: "import glob", desc: "特定の拡張子（.txtや.csvなど）を持つファイルをまとめて検索・取得するための標準ライブラリです。", dummy: ["import filefind", "import os.glob", "from path import glob"] },
         { code: "files = glob.glob(\"*.xlsx\")", title: "【ファイル操作】STEP 17: Excelファイル一覧の取得", rule: "変数 = glob.glob(\"検索パターン\")", desc: "現在のフォルダ内にある拡張子が「.xlsx」のExcelファイルをすべて取得し、リスト形式で変数に格納します。", dummy: ["files = glob.find(\"*.xlsx\")", "files = os.glob(\"*.xlsx\")", "files = glob(\"*.xlsx\")"] },
         { code: "import datetime", title: "【時間制御】STEP 18: 日付・時刻処理の読込", rule: "import datetime", desc: "ファイル名に日付を付与したり、実行日時に合わせた処理を行ったりするための日付・時間モジュールです。", dummy: ["import date", "import time.date", "from time import datetime"] },
         { code: "today = datetime.date.today()", title: "【時間制御】STEP 19: 本日の日付の取得", rule: "変数 = datetime.date.today()", desc: "今日の日付情報を「YYYY-MM-DD」形式で取得し、売上レポートの日付スタンプ等に使います。", dummy: ["today = date.today()", "today = datetime.now()", "today = datetime.get_today()"] },
         { code: "with open(\"log.txt\", \"a\") as f:", title: "【ファイル操作】STEP 20: ログ書き込み用のファイルオープン", rule: "with open(\"パス\", \"モード\") as 変数:", desc: "追記モード(\"a\")でファイルを開き、処理完了後に自動で閉じる安全なファイル操作手法です。", dummy: ["f = open(\"log.txt\", \"a\")", "with file(\"log.txt\", \"w\") as f:", "open log.txt with append as f:"] },
+
+        // --- セクション5: 高度なExcelデータ制御 ---
         { code: "    f.write(\"done\\n\")", title: "【ファイル操作】STEP 21: テキストファイルへのデータ書き込み", rule: "    変数.write(\"書き込む文字列\")", desc: "開いたファイルに対して「done」と改行コードを書き込み、処理の履歴をログファイルに記録します。(半角スペース4つのインデントに対応)", dummy: ["    f.print(\"done\\n\")", "    f.save(\"done\\n\")", "    write(f, \"done\\n\")"] },
         { code: "import openpyxl", title: "【データ自動化】STEP 22: Excel制御ライブラリの読込", rule: "import openpyxl", desc: "Pandasよりも細かくExcelのセル位置やスタイル（フォント、色、罫線など）を制御するライブラリを読み込みます。", dummy: ["import xlsxwriter", "from excel import openpyxl", "import xlrd"] },
         { code: "wb = openpyxl.load_workbook(\"data.xlsx\")", title: "【データ自動化】STEP 23: Excelワークブックの読み込み", rule: "変数 = openpyxl.load_workbook(\"ファイルパス\")", desc: "指定されたExcelファイルをメモリ上に読み込み、セルやシートの編集準備を整えます。", dummy: ["wb = openpyxl.read_excel(\"data.xlsx\")", "wb = openpyxl.open(\"data.xlsx\")", "wb = openpyxl.Workbook(\"data.xlsx\")"] },
         { code: "ws = wb.active", title: "【データ自動化】STEP 24: アクティブシートの取得", rule: "変数 = ワークブック.active", desc: "Excelファイルを開いたときに最初に表示される「アクティブなシート」を取得します。", dummy: ["ws = wb.get_sheet()", "ws = wb.sheet[0]", "ws = wb.active_sheet()"] },
         { code: "wb.save(\"data.xlsx\")", title: "【データ自動化】STEP 25: Excelファイルの変更保存", rule: "ワークブック.save(\"保存名\")", desc: "編集したExcelデータを元のファイル（または別名）に上書き保存し、編集結果を確定させます。", dummy: ["wb.close()", "wb.write(\"data.xlsx\")", "wb.save_workbook(\"data.xlsx\")"] },
 
-        // --- 追加10問：実践制御・例外処理・文字列処理 (26-35) ---
+        // --- セクション6: try-except例外・バグ対策 ---
         { code: "try:", title: "【例外処理】STEP 26: エラー対策（試行ブロック）", rule: "try:", desc: "エラーが発生する可能性のある処理（通信障害など）を実行する前に、エラー検知のための監視を開始します。", dummy: ["catch:", "error:", "attempt:"] },
         { code: "    res = requests.get(url)", title: "【例外処理】STEP 27: エラー発生の恐れがある処理の実行", rule: "    監視対象 of 処理", desc: "通信相手のサーバーダウン等により、プログラムが強制終了するリスクのある処理を安全に試行します。(半角スペース4つのインデントに対応)", dummy: ["    requests.get(url)", "    res = fetch(url)", "    res = requests.open(url)"] },
         { code: "except Exception as e:", title: "【例外処理】STEP 28: エラーの捕捉と変数格納", rule: "except Exception as 変数:", desc: "エラーが発生した場合に強制終了させず、発生したエラー内容を変数「e」に格納して次の処理へ移ります。", dummy: ["catch Exception as e:", "except Error as e:", "on error resume next"] },
         { code: "    print(e)", title: "【例外処理】STEP 29: エラー内容の画面表示", rule: "    print(エラー変数)", desc: "捕捉したエラーの中身をコンソールに表示し、どこで問題が起きたかを開発者に知らせます。(半角スペース4つのインデントに対応)", dummy: ["    log(e)", "    console.log(e)", "    show(e)"] },
         { code: "import re", title: "【文字列操作】STEP 30: 正規表現ライブラリの読込", rule: "import re", desc: "テキストデータから「電話番号」「メールアドレス」「金額」など特定のパターンを持つ文字列を高速検索する標準モジュールです。", dummy: ["import regex", "from string import re", "import match"] },
+
+        // --- セクション7: データベース＆SQLite3連携 ---
         { code: "pattern = re.compile(r\"\\d+\")", title: "【文字列操作】STEP 31: 抽出パターンを作成", rule: "変数 = re.compile(r\"正規表現パターン\")", desc: "「連続する半角数字」を意味する正規表現（\\d+）を事前コンパイルし、高速で抽出できるように準備します。", dummy: ["pattern = re.match(r\"\\d+\")", "pattern = re.compile(\"\\d+\")", "pattern = re.filter(r\"\\d+\")"] },
         { code: "import sqlite3", title: "【データベース】STEP 32: SQLiteライブラリの読込", rule: "import sqlite3", desc: "副業で顧客情報やスクレイピングデータを蓄積する際に便利な、軽量ローカルデータベース「SQLite」の操作モジュールです。", dummy: ["import sql", "import database", "from db import sqlite3"] },
         { code: "conn = sqlite3.connect(\"db.sqlite3\")", title: "【データベース】STEP 33: データベースへの接続", rule: "変数 = sqlite3.connect(\"ファイル名\")", desc: "指定したデータベースファイル（なければ自動新規作成）に接続し、操作用のコネクションを確立します。", dummy: ["conn = sqlite3.open(\"db.sqlite3\")", "conn = sqlite3.db(\"db.sqlite3\")", "conn = db.connect(\"db.sqlite3\")"] },
@@ -380,11 +460,23 @@
         { code: "conn.close()", title: "【データベース】STEP 35: 接続の切断", rule: "コネクション.close()", desc: "すべてのデータベース処理が終了した後に、ファイルロックを解除して安全に接続を終了します。", dummy: ["conn.exit()", "conn.disconnect()", "conn.save()"] }
     ];
 
+    // 全7セクションの定義（1セクションにつき5問ずつ）
+    const SECTIONS = [
+        { id: 1, name: "Webスクレイピング基礎", range: [0, 4] },
+        { id: 2, name: "データ自動化＆ファイル操作", range: [5, 9] },
+        { id: 3, name: "時間制御＆API自動通知", range: [10, 14] },
+        { id: 4, name: "ファイル詳細操作＆日付処理", range: [15, 19] },
+        { id: 5, name: "高度なExcelデータ制御", range: [20, 24] },
+        { id: 6, name: "try-except例外・バグ対策", range: [25, 29] },
+        { id: 7, name: "データベース＆SQLite3連携", range: [30, 34] }
+    ];
+
     let questions = [];
     let currentIdx = 0;
     let startTime = 0;
     let timerInterval = null;
     let currentMode = 'typing';
+    let currentSection = null; // nullの場合は持ち込みUGCモード
     
     let totalErrors = 0;
     let totalTypedChars = 0;
@@ -398,24 +490,55 @@
     const inputField = document.getElementById('input-field');
     const choicesContainer = document.getElementById('choices-container');
 
-    // スペースキーによる画面の誤スクロールを防止（inputフォーカス時でもbodyのデフォルトスクロールのみを防止）
+    // スペースキーによる画面の誤スクロールを防止
     window.addEventListener('keydown', function(e) {
         if (e.code === 'Space' && e.target === document.body) {
             e.preventDefault();
         }
     });
 
+    // モード切替のUI更新
+    function toggleGameMode(mode) {
+        currentMode = mode;
+        document.getElementById('mode-typing').classList.toggle('selected', mode === 'typing');
+        document.getElementById('mode-quiz').classList.toggle('selected', mode === 'quiz');
+    }
+
+    // メニュー画面の初期化＆セクション選択グリッドの描画
     function initWelcomeScreen() {
         welcomeScreen.classList.add('active');
         gameScreen.classList.remove('active');
         resultScreen.classList.remove('active');
+        renderSectionGrid();
     }
 
-    // UGC：持ち込みコード用の簡易解説判定ロジック
+    // セクション選択グリッドの動的描画（進捗セーブ機能付き）
+    function renderSectionGrid() {
+        const grid = document.getElementById('section-grid');
+        grid.innerHTML = '';
+        
+        SECTIONS.forEach(s => {
+            const isCompleted = localStorage.getItem(`pytype_section_completed_${s.id}`) === 'true';
+            
+            const card = document.createElement('div');
+            card.className = `section-card ${isCompleted ? 'completed' : ''}`;
+            card.onclick = () => startSection(s.id);
+            
+            card.innerHTML = `
+                <div class="section-badge">
+                    <span>QUEST ${s.id}</span>
+                    <span>${isCompleted ? '✓ クリア済' : '未クリア'}</span>
+                </div>
+                <div class="section-name">${s.name}</div>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    // 自作コード持ち込み時の簡易解析
     function getUgcExplanation(line) {
         let rule = "カスタムコード";
         let desc = "持ち込まれたコードです。コードの構成を意識して攻略しましょう。";
-        
         const trimmed = line.trim();
         if (trimmed.startsWith("import ") || trimmed.startsWith("from ")) {
             rule = "import モジュール名 / from ライブラリ import クラス";
@@ -442,7 +565,7 @@
         return { rule, desc };
     }
 
-    // UGC：持ち込みコード用の4択クイズのダミー自動生成ロジック
+    // UGC用のダミー自動生成
     function generateDummyChoices(line) {
         const trimmed = line.trim();
         if (line.includes("=")) {
@@ -466,26 +589,35 @@
         }
     }
 
-    function selectGameMode(mode) {
-        currentMode = mode;
+    // 特定のセクションを選択してゲームスタート
+    function startSection(sectionId) {
+        currentSection = SECTIONS.find(s => s.id === sectionId);
+        questions = CORE_DEFAULT_DATA.slice(currentSection.range[0], currentSection.range[1] + 1);
+        launchEngine();
+    }
+
+    // UGC持ち込みモードでゲームスタート
+    function startUgcMode() {
         const rawText = document.getElementById('custom-code-input').value;
-        
-        if (rawText.trim()) {
-            questions = [];
-            rawText.split('\n').forEach((line, idx) => {
-                if (!line.trim()) return;
-                const explain = getUgcExplanation(line);
-                questions.push({
-                    code: line,
-                    title: `持ち込みコード: タスク ${idx + 1}`,
-                    rule: explain.rule,
-                    desc: explain.desc,
-                    dummy: generateDummyChoices(line)
-                });
-            });
-        } else {
-            questions = [...CORE_DEFAULT_DATA];
+        if (!rawText.trim()) {
+            alert("持ち込み用のコードをテキストエリアに入力してください。");
+            return;
         }
+        
+        currentSection = null; // 持ち込みモードはセクションなし
+        questions = [];
+        rawText.split('\n').forEach((line, idx) => {
+            if (!line.trim()) return;
+            const explain = getUgcExplanation(line);
+            questions.push({
+                code: line,
+                title: `持ち込みコード: タスク ${idx + 1}`,
+                rule: explain.rule,
+                desc: explain.desc,
+                dummy: generateDummyChoices(line)
+            });
+        });
+        
         launchEngine();
     }
 
@@ -512,7 +644,7 @@
         if (typeof gtag === 'function') {
             gtag('event', 'typing_start', {
                 'event_category': 'game',
-                'event_label': currentMode
+                'event_label': currentSection ? `section_${currentSection.id}_${currentMode}` : `ugc_${currentMode}`
             });
         }
         
@@ -551,7 +683,10 @@
             span.textContent = target[i];
             if (i < user.length) {
                 span.className = (user[i] === target[i]) ? 'char correct' : 'char incorrect';
-                if (i === user.length - 1 && user[i] !== target[i]) totalErrors++;
+                if (i === user.length - 1 && user[i] !== target[i]) {
+                    totalErrors++;
+                    triggerFeedbackAnimation(false);
+                }
             } else if (i === user.length) span.className = 'char current';
             else span.className = 'char pending';
             codeDisplay.appendChild(span);
@@ -560,12 +695,28 @@
         updateAccuracyUI();
     }
 
+    // 正解・ミス時のアニメーションフィードバック（3番目の改善）
+    function triggerFeedbackAnimation(isCorrect) {
+        codeDisplay.classList.remove('shake', 'pulse-ok');
+        // ブラウザの再描画（リフロー）を強制してアニメーションをリセット
+        void codeDisplay.offsetWidth; 
+        
+        if (isCorrect) {
+            codeDisplay.classList.add('pulse-ok');
+        } else {
+            codeDisplay.classList.add('shake');
+        }
+    }
+
     inputField.addEventListener('input', () => {
         const target = questions[currentIdx].code;
         const user = inputField.value;
         if (user.length > lastUserLength) {
-            if (user[user.length - 1] === target[user.length - 1]) comboCount++;
-            else comboCount = 0;
+            if (user[user.length - 1] === target[user.length - 1]) {
+                comboCount++;
+            } else {
+                comboCount = 0;
+            }
         }
         lastUserLength = user.length;
         renderTypingDisplay(target, user);
@@ -575,9 +726,10 @@
         document.getElementById('combo-text').innerText = `🔥 ${comboCount} COMBO`;
 
         if (user === target) {
+            triggerFeedbackAnimation(true);
             currentIdx++;
             lastUserLength = 0;
-            setTimeout(loadQuestion, 200);
+            setTimeout(loadQuestion, 300); // アニメーションの余韻を持たせて次へ
         }
     });
 
@@ -603,12 +755,14 @@
 
         if (chosen === correct) {
             selectedBtn.classList.add('correct-ans');
+            triggerFeedbackAnimation(true);
             codeDisplay.innerHTML = `<span style="color:var(--correct); font-weight:bold;">✔ 正解（システム承認）</span>\n\n<span style="font-family:monospace; font-size:20px;">${correct}</span>`;
             comboCount++;
             currentIdx++;
             setTimeout(loadQuestion, 800);
         } else {
             selectedBtn.classList.add('wrong-ans');
+            triggerFeedbackAnimation(false);
             totalErrors++;
             comboCount = 0;
             buttons.forEach(b => { if(b.textContent === correct) b.classList.add('correct-ans'); });
@@ -635,9 +789,19 @@
         document.getElementById('total-time-val').innerText = `${totalElapsed}秒`;
         document.getElementById('total-acc-val').innerText = `${finalAcc}%`;
 
+        // セクション完了の永続化セーブ（4番目の改善）
+        let shareSectionName = "カスタム持ち込み";
+        if (currentSection) {
+            localStorage.setItem(`pytype_section_completed_${currentSection.id}`, 'true');
+            shareSectionName = `Quest ${currentSection.id}: ${currentSection.name}`;
+            document.getElementById('result-title').innerText = `🎉 クエスト「${currentSection.name}」完了！`;
+        } else {
+            document.getElementById('result-title').innerText = "🎉 持ち込みコード・全タスク完了！";
+        }
+
         // 𝕏(Twitter) へのシェアポストリンクを動的に生成
         const shareBtn = document.getElementById('share-btn');
-        const shareText = `PyType-Learner Web でPython自動化の学習を完了しました！\n\nモード: ${currentMode === 'typing' ? 'タイピングドライブ ⚡' : 'ナレッジクイズ 🧠'}\n完了時間: ${totalElapsed}秒\n習得精度: ${finalAcc}%\n\n#Python #プログラミング初心者 #PyType_Learner\n`;
+        const shareText = `PyType-Learner Web で自動化のクエストを完了！\n\nセクション: ${shareSectionName}\nモード: ${currentMode === 'typing' ? 'タイピングドライブ ⚡' : 'ナレッジクイズ 🧠'}\nクリア時間: ${totalElapsed}秒\n習得精度: ${finalAcc}%\n\n#Python #プログラミング初心者 #PyType_Learner\n`;
         const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(window.location.href)}`;
         shareBtn.onclick = () => {
             window.open(shareUrl, '_blank');
@@ -647,11 +811,16 @@
         if (typeof gtag === 'function') {
             gtag('event', 'typing_complete', {
                 'event_category': 'game',
-                'event_label': currentMode,
+                'event_label': currentSection ? `section_${currentSection.id}_${currentMode}` : `ugc_${currentMode}`,
                 'accuracy': finalAcc,
                 'time': totalElapsed
             });
         }
+    }
+
+    // メメインメニューに戻る（進捗グリッドを再描画）
+    function backToMenu() {
+        initWelcomeScreen();
     }
 
     window.onload = initWelcomeScreen;
