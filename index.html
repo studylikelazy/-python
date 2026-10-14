@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0F172A">
 <title>PyType Quest | 1日5分でPythonを「読める→書ける」へ</title>
-<meta name="description" content="Python初心者のための1日5分ゲーム型学習アプリ。全8クエスト40問。4択→穴埋め→タイピングで「わかる」から「書ける」へ。登録不要・無料。">
+<meta name="description" content="Python初心者のための1日5分ゲーム型学習アプリ。全8クエスト160問。4択→穴埋め→タイピングで「わかる」から「書ける」へ。登録不要・無料。">
 <meta property="og:title" content="PyType Quest | 1日5分でPythonを「読める→書ける」へ">
 <meta property="og:description" content="4択→穴埋め→タイピングの3段階でPythonをマスター。登録不要・無料で今すぐ1問体験できます。">
 <meta property="og:type" content="website">
@@ -33,7 +33,6 @@
 <style>
 /* ============================================================
    PyType Quest v4.0.0 - Style (Tailwind風モダンUI)
-   編集ガイド: 色やレイアウトはCSS変数とクラスで直感的に変更できます
    ============================================================ */
 :root {
   --bg: #F8FAFC;
@@ -322,7 +321,7 @@ header {
           <h1 class="hero-title">Pythonを<br>「読める」から<br><span>「書ける」へ。</span></h1>
           <p class="hero-desc">
             4択 → 穴埋め → タイピングの3段階で、意味を理解してから手を動かす。
-            全8クエスト40問、間違えた問題は自動で復習リストへ。
+            全8クエスト160問、間違えた問題は自動で復習リストへ。
             参考書で挫折した人のための、ゲーム型・再出発カリキュラムです。
           </p>
         </div>
@@ -332,7 +331,7 @@ header {
             <a href="#quests" class="btn-secondary">全8章マップを見る</a>
           </div>
           <div class="hero-stats-row">
-            <div><div class="hero-stat-num" id="stat-total-q">40</div><div class="hero-stat-label">収録問題数</div></div>
+            <div><div class="hero-stat-num" id="stat-total-q">160</div><div class="hero-stat-label">収録問題数</div></div>
             <div><div class="hero-stat-num" id="stat-cleared">0/8</div><div class="hero-stat-label">クリア章数</div></div>
             <div><div class="hero-stat-num" id="stat-acc">100%</div><div class="hero-stat-label">平均正答率</div></div>
           </div>
@@ -380,9 +379,9 @@ header {
     <section class="quick-grid">
       <button onclick="startMission()" class="quick-card mission">
         <span style="font-size:1.5rem">🎯</span>
-        <h3 style="font-size:1.1rem;font-weight:900;margin-top:0.35rem">今日の5分ミッション</h3>
+        <h3 style="font-size:1.1rem;font-weight:900;margin-top:0.35rem">今日のミッション</h3>
         <p style="font-size:0.85rem;opacity:0.9;margin-top:0.25rem">「何を勉強する？」を考えなくてOK。次の未クリア章へ直行。</p>
-        <span class="quick-tag" style="display:inline-block;padding:0.2rem 0.6rem;border-radius:9999px;font-size:0.75rem;font-weight:800;margin-top:0.75rem">5問 / 約5分 / +100XP</span>
+        <span class="quick-tag" style="display:inline-block;padding:0.2rem 0.6rem;border-radius:9999px;font-size:0.75rem;font-weight:800;margin-top:0.75rem">20問 / 約15分 / +400XP</span>
       </button>
 
       <button onclick="startReview()" class="quick-card">
@@ -404,7 +403,7 @@ header {
     <section id="quests">
       <div class="section-head">
         <div>
-          <h2 class="section-title">🗺️ クエストマップ — 全8章40問</h2>
+          <h2 class="section-title">🗺️ クエストマップ — 全8章160問</h2>
           <p class="section-sub">前の章をクリアすると次が解放されます。7・8章はPro先行登録で解放。</p>
         </div>
       </div>
@@ -445,7 +444,7 @@ header {
         <span style="background:#FEF3C7;color:#B45309;padding:0.25rem 0.6rem;border-radius:9999px;font-size:0.75rem;font-weight:900">先行登録中</span>
         <h2 style="font-size:1.75rem;font-weight:900;margin-top:0.5rem">👑 Proプラン先行登録（クエスト7・8が即解放）</h2>
         <p style="color:var(--text-muted);font-size:0.92rem;margin-top:0.5rem;line-height:1.7">
-          まずは無料の1〜6章（30問）で学んでいただき、もっと先（関数・実務データ処理）へ進みたい方向けのプランです。
+          まずは無料の1〜6章（120問）で学んでいただき、もっと先（関数・実務データ処理）へ進みたい方向けのプランです。
           登録いただくと7・8章が解放されます（課金はまだ発生しません）。
         </p>
 
@@ -470,7 +469,7 @@ header {
 
     <!-- FOOTER -->
     <footer style="margin:4rem 0 2rem;padding-top:2rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;font-size:0.85rem;color:var(--text-muted)">
-      <div><b>PyType Quest</b> — Python初心者のための5分学習ゲーム（MIT License）</div>
+      <div><b>PyType Quest</b> — Python初心者のための学習ゲーム（MIT License）</div>
       <div>
         <button onclick="showScreen('growth')" style="font-weight:800;color:var(--primary);text-decoration:underline">運営者向け Growth分析</button>
         <span style="margin:0 0.5rem">|</span>
@@ -494,7 +493,7 @@ header {
 
     <!-- STATS BAR -->
     <div class="game-stats-bar">
-      <div class="game-stat-box"><div class="game-stat-val" id="g-prog">1/5</div><div class="game-stat-lbl">進捗</div></div>
+      <div class="game-stat-box"><div class="game-stat-val" id="g-prog">1/20</div><div class="game-stat-lbl">進捗</div></div>
       <div class="game-stat-box"><div class="game-stat-val" id="g-combo">0</div><div class="game-stat-lbl">COMBO</div></div>
       <div class="game-stat-box"><div class="game-stat-val" id="g-acc">100%</div><div class="game-stat-lbl">正答率</div></div>
       <div class="game-stat-box"><div class="game-stat-val" id="g-xp">+0</div><div class="game-stat-lbl">今回XP</div></div>
@@ -636,116 +635,232 @@ header {
 <!-- ==================== JAVASCRIPT ==================== -->
 <script>
 // ============================================================
-// PyType Quest v4.0.0 - 全ロジック & 問題データ
-// 編集ガイド:
-//   - 問題を追加/変更したい場合: QUESTS 配列を編集
-//   - 新しい note タイトルを追加したい場合: NOTE_TITLES 配列を編集
-//   - ストレージ保存キー: 'pytype-quest-v4' (localStorage)
+// PyType Quest v4.0.0 - 各章20問（全160問）完全データ
 // ============================================================
 
 const QUESTS = [
   {
-    id: 1, title: "Pythonの第一歩", subtitle: "文字を表示する", minutes: 3, isPro: false,
+    id: 1, title: "Pythonの第一歩", subtitle: "文字を表示する", minutes: 12, isPro: false,
     outcome: "自分の好きな文字や計算結果を画面に出力できる",
-    skills: ["print", "文字列", "数値"],
+    skills: ["print", "文字列", "数値", "コメント", "エスケープシーケンス"],
     bg: "#ECFDF5", color: "#065F46",
     questions: [
-      { id: "q1_1", type: "choice", prompt: "画面に「Hello」と表示する正しいPythonコードは？", code: "", choices: ['print("Hello")', 'echo "Hello"', 'console.log("Hello")', 'display("Hello")'], answer: 'print("Hello")', explanation: "Pythonで画面に文字を表示するには print() を使います。ダブルクォーテーションで文字を囲みます。", hint: "Pythonは print()", skill: "print文", xp: 20 },
+      { id: "q1_1", type: "choice", prompt: "画面に「Hello」と表示する正しいPythonコードは？", code: "", choices: ['print("Hello")', 'echo "Hello"', 'console.log("Hello")', 'display("Hello")'], answer: 'print("Hello")', explanation: "Pythonで画面に文字を表示するには print() を使います。", hint: "Pythonは print()", skill: "print文", xp: 20 },
       { id: "q1_2", type: "fill", prompt: "printを使って数値の 100 を表示するコードを完成させてください", code: "___(100)", answer: "print", explanation: "数値はクォーテーションで囲まずにそのまま print(100) と書きます。", hint: "表示の命令", skill: "数値表示", xp: 20 },
       { id: "q1_3", type: "choice", prompt: "次のコードを実行すると何が表示されますか？", code: 'print("3 + 5")\nprint(3 + 5)', choices: ["3 + 5 と 8", "8 と 8", "3 + 5 と 3 + 5", "エラーになる"], answer: "3 + 5 と 8", explanation: '" "で囲むと文字としてそのまま表示され、囲まないと計算結果の8が表示されます。', hint: "クォーテーションの有無に注目", skill: "文字と数値", xp: 25 },
       { id: "q1_4", type: "typing", prompt: "「Python」と表示するコードを正確に入力してください", code: "", answer: 'print("Python")', explanation: 'print("Python") と半角英数・カッコ・クォーテーションを正しく打ちます。', hint: 'print("Python")', skill: "正確なタイピング", xp: 25 },
-      { id: "q1_5", type: "choice", prompt: "改行せずに2つの単語を並べて表示する print の書き方は？", code: 'print("Hello", "World")', choices: ["Hello World", "HelloWorld", "Hello, World", "エラー"], answer: "Hello World", explanation: "カンマで区切ると、半角スペースで区切られて順番に表示されます。", hint: "カンマ区切りはスペースが入る", skill: "複数出力", xp: 30 }
+      { id: "q1_5", type: "choice", prompt: "改行せずに2つの単語を並べて表示する print の書き方は？", code: 'print("Hello", "World")', choices: ["Hello World", "HelloWorld", "Hello, World", "エラー"], answer: "Hello World", explanation: "カンマで区切ると、半角スペースで区切られて順番に表示されます。", hint: "カンマ区切りはスペースが入る", skill: "複数出力", xp: 25 },
+      { id: "q1_6", type: "choice", prompt: "シングルクォーテーション(')で文字列を作っても問題ない？", code: "print('Cat')", choices: ["問題なく「Cat」と表示される", "エラーになる", "ダブルクォーテーションでないと動かない", "Noneと表示される"], answer: "問題なく「Cat」と表示される", explanation: "Pythonではシングル(')とダブル(\")のどちらを使っても文字列を表現できます。", hint: "どちらでも同じように使えます", skill: "クォーテーション", xp: 20 },
+      { id: "q1_7", type: "fill", prompt: "文字列同士を連結して「AB」と表示する記号を埋めてください", code: 'print("A" ___ "B")', answer: "+", explanation: "文字列同士を + で結ぶと繋げることができます（連結）。", hint: "足し算の記号", skill: "文字列連結", xp: 20 },
+      { id: "q1_8", type: "choice", prompt: 'print("Hi" * 3) を実行するとどうなる？', code: 'print("Hi" * 3)', choices: ["HiHiHi", "Hi 3", "エラー", "Hi*3"], answer: "HiHiHi", explanation: "文字列に * 数値を掛けると、その回数分繰り返されます。", hint: "掛け算で繰り返し", skill: "文字列の乗算", xp: 25 },
+      { id: "q1_9", type: "typing", prompt: "数値の 42 を表示するコードを入力してください", code: "", answer: "print(42)", explanation: "数値なのでクォーテーションは付けずに print(42) と書きます。", hint: "print(42)", skill: "数値出力", xp: 25 },
+      { id: "q1_10", type: "choice", prompt: 'type("Hello") の結果として返される型はどれ？', code: 'print(type("Hello"))', choices: ["<class 'str'>", "<class 'int'>", "<class 'text'>", "<class 'string'>"], answer: "<class 'str'>", explanation: "Pythonで文字列の型名は str（stringの略）です。", hint: "str型", skill: "データ型確認", xp: 25 },
+      { id: "q1_11", type: "fill", prompt: "データ型を調べるための関数名を埋めてください", code: "print(___(123))", answer: "type", explanation: "type() 関数を使うとそのデータの型を調べることができます。", hint: "型を表す英単語", skill: "type関数", xp: 20 },
+      { id: "q1_12", type: "choice", prompt: 'print("1" + "2") の実行結果は何になる？', code: 'print("1" + "2")', choices: ["12", "3", "エラー", "1+2"], answer: "12", explanation: '"1" も "2" も文字列なので、文字の連結として「12」になります。', hint: "クォーテーションで囲まれているので文字", skill: "文字の足し算", xp: 20 },
+      { id: "q1_13", type: "typing", prompt: "「Good morning」と表示するprint文を入力してください", code: "", answer: 'print("Good morning")', explanation: 'print("Good morning") とスペースも含めて正確に入力します。', hint: 'print("Good morning")', skill: "文章の表示", xp: 25 },
+      { id: "q1_14", type: "choice", prompt: "Pythonの行末でコードを無視させる（コメント化する）記号は？", code: "# これはメモです", choices: ["#", "//", "/*", "--"], answer: "#", explanation: "Pythonでは # の後ろに書かれた内容はコメントとみなされ、実行されません。", hint: "シャープ記号", skill: "コメント構文", xp: 20 },
+      { id: "q1_15", type: "fill", prompt: "printの末尾で改行しないようにする引数を埋めてください", code: 'print("Hello", ___="")', answer: "end", explanation: "end='' を指定すると、printの標準である改行を行わずに末尾を出力できます。", hint: "終わりの英単語", skill: "print引数", xp: 25 },
+      { id: "q1_16", type: "choice", prompt: "改行を表す特殊な文字（エスケープシーケンス）はどれ？", code: 'print("A\\nB")', choices: ["\\n", "\\t", "\\b", "\\r"], answer: "\\n", explanation: "\\n は改行を意味するエスケープシーケンスです。", hint: "new line の n", skill: "エスケープ文字", xp: 25 },
+      { id: "q1_17", type: "typing", prompt: "文字列として「100」を出力するコードを入力してください", code: "", answer: 'print("100")', explanation: '文字列なのでクォーテーションで囲んで print("100") とします。', hint: 'print("100")', skill: "数字文字列", xp: 25 },
+      { id: "q1_18", type: "choice", prompt: "複数行にわたる長い文字列を作るための記号は？", code: '"""複数行の\nテキスト"""', choices: ['""" (トリプルクォート)', "'''...''' のみ", "///", "[[ ... ]]"], answer: '""" (トリプルクォート)', explanation: '""" または \'\'\' で囲むと改行を含んだ複数行文字列が作れます。', hint: "クォートを3つ並べる", skill: "複数行文字列", xp: 25 },
+      { id: "q1_19", type: "fill", prompt: "コメント行を作る記号を埋めてください", code: "___ Pythonの学習をスタート", answer: "#", explanation: "# から始まる行はプログラムとして実行されません。", hint: "ハッシュ記号", skill: "コメント", xp: 20 },
+      { id: "q1_20", type: "choice", prompt: "タブ（字下げ）を表現するエスケープシーケンスはどれ？", code: 'print("A\\tB")', choices: ["\\t", "\\n", "\\s", "\\a"], answer: "\\t", explanation: "\\t は水平タブを表します。", hint: "tab の t", skill: "タブ文字", xp: 25 }
     ]
   },
   {
-    id: 2, title: "変数とデータ", subtitle: "値に名前をつけて覚える", minutes: 5, isPro: false,
+    id: 2, title: "変数とデータ", subtitle: "値に名前をつけて覚える", minutes: 12, isPro: false,
     outcome: "点数やユーザー名を保存し、後から呼び出して使える",
-    skills: ["変数定義", "代入", "文字列結合"],
+    skills: ["変数定義", "代入", "文字列結合", "型変換", "f文字列"],
     bg: "#EFF6FF", color: "#1E40AF",
     questions: [
       { id: "q2_1", type: "choice", prompt: "変数 name に「太郎」という文字を入れる正しい書き方は？", code: "", choices: ['name = "太郎"', 'name == "太郎"', '"太郎" = name', 'var name = "太郎"'], answer: 'name = "太郎"', explanation: "= は数学の「等しい」ではなく「右の値を左の変数に入れる（代入）」という意味です。", hint: "左に変数の名前、右に値", skill: "変数代入", xp: 20 },
       { id: "q2_2", type: "fill", prompt: "変数 score に 80 を代入するコードを完成させてください", code: "score ___ 80", answer: "=", explanation: "代入には = 記号を1つ使います。", hint: "イコール記号", skill: "代入演算子", xp: 20 },
-      { id: "q2_3", type: "choice", prompt: "次のコードを実行したときの表示結果は？", code: 'x = 10\nx = 20\nprint(x)', choices: ["20", "10", "30", "エラー"], answer: "20", explanation: "変数は後から新しい値を入れると、上書きされて最後の値だけが残ります。", hint: "変数は上書きされる", skill: "再代入", xp: 25 },
+      { id: "q2_3", type: "choice", prompt: "次のコードを実行したときの表示結果は？", code: "x = 10\nx = 20\nprint(x)", choices: ["20", "10", "30", "エラー"], answer: "20", explanation: "変数は後から新しい値を入れると、上書きされて最後の値だけが残ります。", hint: "変数は上書きされる", skill: "再代入", xp: 25 },
       { id: "q2_4", type: "typing", prompt: "変数 user に「ゲスト」を代入する1行を入力してください", code: "", answer: 'user = "ゲスト"', explanation: 'user = "ゲスト" で文字列を記憶させます。', hint: 'user = "ゲスト"', skill: "変数入力", xp: 25 },
-      { id: "q2_5", type: "choice", prompt: "f文字列を使って変数を埋め込む正しい書き方は？", code: 'name = "花子"', choices: ['print(f"こんにちは、{name}さん")', 'print("こんにちは、{name}さん")', 'print(f"こんにちは、nameさん")', 'print("こんにちは" + {name})'], answer: 'print(f"こんにちは、{name}さん")', explanation: "文字列の前に f をつけ、{変数名} と書くとその場所に変数の値が埋め込まれます（f文字列）。", hint: "先頭に f を置く", skill: "f文字列", xp: 30 }
+      { id: "q2_5", type: "choice", prompt: "f文字列を使って変数を埋め込む正しい書き方は？", code: 'name = "花子"', choices: ['print(f"こんにちは、{name}さん")', 'print("こんにちは、{name}さん")', 'print(f"こんにちは、nameさん")', 'print("こんにちは" + {name})'], answer: 'print(f"こんにちは、{name}さん")', explanation: "文字列の前に f をつけ、{変数名} と書くとその場所に変数の値が埋め込まれます（f文字列）。", hint: "先頭に f を置く", skill: "f文字列", xp: 30 },
+      { id: "q2_6", type: "fill", prompt: "f文字列で変数 total を埋め込む波カッコを埋めてください", code: 'print(f"合計は_{total}_円です")', answer: "{total}", explanation: "変数を囲むには中括弧 { } を使います。", hint: "{変数名}", skill: "f文字列変数埋め込み", xp: 20 },
+      { id: "q2_7", type: "choice", prompt: "Pythonの変数名として【使えない（文法エラーになる）】ものはどれ？", code: "", choices: ["1st_score", "score_1", "_user", "totalAmount"], answer: "1st_score", explanation: "変数名の先頭に数字を使うことはできません。", hint: "数字から始まってはいけない", skill: "命名規則", xp: 25 },
+      { id: "q2_8", type: "choice", prompt: 'int("10") を実行するとどうなる？', code: 'a = int("10")', choices: ["数値の 10 に変換される", "文字列の \"10\" のまま", "エラーになる", "0 になる"], answer: "数値の 10 に変換される", explanation: "int() 関数は文字列や小数を整数型（int）に変換します。", hint: "integer（整数）の略", skill: "型変換(int)", xp: 25 },
+      { id: "q2_9", type: "fill", prompt: "数値を文字列に変換する関数名を埋めてください", code: "text = ___(500)", answer: "str", explanation: "str() 関数を使うと数値を文字列に変換できます。", hint: "stringの略", skill: "型変換(str)", xp: 20 },
+      { id: "q2_10", type: "choice", prompt: "float(5) を実行したときの値は？", code: "x = float(5)", choices: ["5.0", "5", '"5.0"', "エラー"], answer: "5.0", explanation: "float() は小数を表す浮動小数点数型に変換するため、5.0 になります。", hint: "小数点がつく", skill: "型変換(float)", xp: 25 },
+      { id: "q2_11", type: "typing", prompt: "変数 age に 20 を代入するコードを入力してください", code: "", answer: "age = 20", explanation: "age = 20 と入力します。数値なのでクォーテーションは不要です。", hint: "age = 20", skill: "数値変数", xp: 25 },
+      { id: "q2_12", type: "choice", prompt: "真偽値を表すブール型（bool）の2つの値はどれ？", code: "", choices: ["True と False", "true と false", "YES と NO", "1 と 0 のみ"], answer: "True と False", explanation: "Pythonでは頭文字が大文字の True と False を使います。", hint: "頭文字が大文字", skill: "真偽値", xp: 25 },
+      { id: "q2_13", type: "fill", prompt: "変数 is_ok に「真（正しい）」を代入するキーワードを埋めてください", code: "is_ok = ___", answer: "True", explanation: "真を表す定数は先頭大文字の True です。", hint: "先頭大文字", skill: "bool値", xp: 20 },
+      { id: "q2_14", type: "choice", prompt: "複数の変数に同時に代入する書き方 a, b = 1, 2 の実行結果は？", code: "a, b = 1, 2", choices: ["aに1、bに2が入る", "エラーになる", "aもbも[1, 2]になる", "aに2が入る"], answer: "aに1、bに2が入る", explanation: "カンマで区切ることで、複数の変数にまとめて代入できます（アンパック代入）。", hint: "順番に対応して代入", skill: "多重代入", xp: 25 },
+      { id: "q2_15", type: "choice", prompt: "「値が存在しない・空である」ことを表すPython特別な定数は？", code: "result = None", choices: ["None", "null", "nil", "undefined"], answer: "None", explanation: "Pythonでは他言語のnullに相当するものを None と呼びます。", hint: "先頭大文字のNone", skill: "None型", xp: 25 },
+      { id: "q2_16", type: "typing", prompt: "変数 price に 500 を代入するコードを入力してください", code: "", answer: "price = 500", explanation: "price = 500 と入力します。", hint: "price = 500", skill: "変数代入", xp: 25 },
+      { id: "q2_17", type: "choice", prompt: "変数名は大文字と小文字が区別される？", code: "Score = 10\nscore = 20", choices: ["区別される（別の変数になる）", "区別されない（同じ変数になる）", "エラーになる", "自動で小文字に統一される"], answer: "区別される（別の変数になる）", explanation: "Pythonは大文字小文字を厳密に区別するため、Score と score は別物です。", hint: "厳格に区別されます", skill: "変数スコープ命名", xp: 25 },
+      { id: "q2_18", type: "fill", prompt: "変数 message に「OK」を代入するコードを完成させてください", code: 'message = ___OK___', answer: '"OK"', explanation: '文字列を代入するときはダブルまたはシングルクォーテーションで囲みます。', hint: '"OK"', skill: "文字列代入", xp: 20 },
+      { id: "q2_19", type: "choice", prompt: 'int("hello") を実行するとどうなる？', code: 'x = int("hello")', choices: ["ValueErrorのエラーになる", "0 になる", "None になる", "hello のまま"], answer: "ValueErrorのエラーになる", explanation: "数字に変換できない文字を int() に渡すと ValueError が発生します。", hint: "数値に変換できない文字はエラー", skill: "型変換例外", xp: 25 },
+      { id: "q2_20", type: "typing", prompt: "変数 text に「Python」を代入するコードを入力してください", code: "", answer: 'text = "Python"', explanation: 'text = "Python" と代入します。', hint: 'text = "Python"', skill: "文字列変数", xp: 25 }
     ]
   },
   {
-    id: 3, title: "計算と演算子", subtitle: "コンピュータに計算させる", minutes: 5, isPro: false,
+    id: 3, title: "計算と演算子", subtitle: "コンピュータに計算させる", minutes: 12, isPro: false,
     outcome: "合計金額・割引額・平均値の計算ロジックが書ける",
-    skills: ["四則演算", "割り算の余り", "累積代入"],
+    skills: ["四則演算", "剰余算", "累乗", "累積代入", "比較演算"],
     bg: "#FEF3C7", color: "#92400E",
     questions: [
       { id: "q3_1", type: "choice", prompt: "Pythonで掛け算を表す記号はどれ？", code: "", choices: ["*", "×", "x", "**"], answer: "*", explanation: "プログラミングでの掛け算は *（アスタリスク）を使います。** はべき乗（○乗）です。", hint: "アスタリスク", skill: "掛け算", xp: 20 },
       { id: "q3_2", type: "fill", prompt: "7 を 3 で割った「余り（1）」を求める演算子は何？", code: "amari = 7 ___ 3", answer: "%", explanation: "% は割り算の余りを求めます。偶数・奇数の判定によく使われます。", hint: "パーセント記号", skill: "剰余算", xp: 20 },
       { id: "q3_3", type: "choice", prompt: "次のコードの出力結果は何ですか？", code: "total = 100\ntotal += 50\nprint(total)", choices: ["150", "100", "50", "total50"], answer: "150", explanation: "total += 50 は total = total + 50 の省略形で、元の値に50を加算します。", hint: "+= は足し算して上書き", skill: "累積代入", xp: 25 },
       { id: "q3_4", type: "typing", prompt: "10 を 2 で割った商（5.0）を print するコードを書いてください", code: "", answer: "print(10 / 2)", explanation: "スラッシュ1つの割り算は小数の結果（float）を返します。", hint: "print(10 / 2)", skill: "除算", xp: 25 },
-      { id: "q3_5", type: "choice", prompt: "整数部分だけを求める（切り捨て割り算）記号はどれ？", code: "print(7 // 2)", choices: ["3", "3.5", "4", "1"], answer: "3", explanation: "// は小数点以下を切り捨てて整数の商を返します。7 // 2 は 3 になります。", hint: "スラッシュ2つは切り捨て", skill: "整除", xp: 30 }
+      { id: "q3_5", type: "choice", prompt: "整数部分だけを求める（切り捨て割り算）記号はどれ？", code: "print(7 // 2)", choices: ["3", "3.5", "4", "1"], answer: "3", explanation: "// は小数点以下を切り捨てて整数の商を返します。7 // 2 は 3 になります。", hint: "スラッシュ2つは切り捨て", skill: "整除", xp: 30 },
+      { id: "q3_6", type: "choice", prompt: "2の3乗（2の三乗＝8）を計算する演算子は？", code: "print(2 ** 3)", choices: ["8", "6", "5", "エラー"], answer: "8", explanation: "** はべき乗を計算します。2 ** 3 は 2×2×2 = 8 です。", hint: "アスタリスク2つ", skill: "累乗", xp: 25 },
+      { id: "q3_7", type: "fill", prompt: "変数 x から 5 を引き算して代入し直す複合演算子を埋めてください", code: "x ___ 5", answer: "-=", explanation: "x -= 5 は x = x - 5 と同じ意味です。", hint: "マイナスとイコール", skill: "減算代入", xp: 20 },
+      { id: "q3_8", type: "choice", prompt: "10 - 3 * 2 の計算結果は何？", code: "print(10 - 3 * 2)", choices: ["4", "14", "20", "エラー"], answer: "4", explanation: "算数と同じく、足し引きより掛け算割り算が先に計算されます（3*2=6、10-6=4）。", hint: "掛け算が優先", skill: "演算子の優先順位", xp: 25 },
+      { id: "q3_9", type: "typing", prompt: "変数 count に 1 を加算する省略形のコードを入力してください", code: "", answer: "count += 1", explanation: "count += 1 で1増やします。", hint: "count += 1", skill: "インクリメント", xp: 25 },
+      { id: "q3_10", type: "choice", prompt: "4 / 2 を実行したときの結果のデータ型は何になる？", code: "result = 4 / 2", choices: ["float (2.0)", "int (2)", "str ('2')", "エラー"], answer: "float (2.0)", explanation: "Pythonのスラッシュ1つの割り算は、割り切れても必ず小数（float）型になります。", hint: "小数の 2.0 になる", skill: "除算と型", xp: 25 },
+      { id: "q3_11", type: "fill", prompt: "10 を 3 で割った整数の商（3）を求める演算子を埋めてください", code: "ans = 10 ___ 3", answer: "//", explanation: "// を使うと小数点以下を切り捨てた整数の商が求まります。", hint: "スラッシュ2つ", skill: "整数除算", xp: 20 },
+      { id: "q3_12", type: "choice", prompt: "ある数 num が偶数かどうかを判定する正しい条件式は？", code: "", choices: ["num % 2 == 0", "num / 2 == 0", "num // 2 == 0", "num % 2 == 1"], answer: "num % 2 == 0", explanation: "2で割った余り（% 2）が 0 であれば偶数です。", hint: "2で割った余りがゼロ", skill: "偶数判定", xp: 25 },
+      { id: "q3_13", type: "typing", prompt: "変数 price に 2 を掛けて上書きする省略構文を入力してください", code: "", answer: "price *= 2", explanation: "price *= 2 で値を2倍にして代入できます。", hint: "price *= 2", skill: "乗算代入", xp: 25 },
+      { id: "q3_14", type: "choice", prompt: "3 == 3.0 の判定結果はどうなる？", code: "print(3 == 3.0)", choices: ["True", "False", "エラー", "None"], answer: "True", explanation: "== は数値としての値が等しいかを比べるため、intの3とfloatの3.0は等しい（True）と判定されます。", hint: "値そのものは等しい", skill: "数値の等価性", xp: 25 },
+      { id: "q3_15", type: "fill", prompt: "「等しくない（異なる）」を表す比較演算子を埋めてください", code: "is_diff = (a ___ b)", answer: "!=", explanation: "!= は左辺と右辺が等しくないときに True を返します。", hint: "ビックリマークとイコール", skill: "非等価比較", xp: 20 },
+      { id: "q3_16", type: "choice", prompt: "15 >= 10 の判定結果は何？", code: "print(15 >= 10)", choices: ["True", "False", "15", "エラー"], answer: "True", explanation: "15は10以上なので条件は成り立ち、Trueになります。", hint: "以上なので正しい", skill: "比較演算", xp: 20 },
+      { id: "q3_17", type: "typing", prompt: "total を total * 10 に更新する複合代入コードを入力してください", code: "", answer: "total *= 10", explanation: "total *= 10 と記述します。", hint: "total *= 10", skill: "乗算更新", xp: 25 },
+      { id: "q3_18", type: "choice", prompt: "(5 + 2) * 3 の計算結果は？", code: "print((5 + 2) * 3)", choices: ["21", "11", "17", "エラー"], answer: "21", explanation: "カッコ内が最優先で計算されるため、7 * 3 = 21 になります。", hint: "カッコが最優先", skill: "優先順位制御", xp: 20 },
+      { id: "q3_19", type: "fill", prompt: "17を5で割った余り（2）を計算するコードを埋めてください", code: "remainder = 17 ___ 5", answer: "%", explanation: "余りは % を使います。", hint: "パーセント記号", skill: "剰余算", xp: 20 },
+      { id: "q3_20", type: "choice", prompt: "10 ** 0 の計算結果は何？", code: "print(10 ** 0)", choices: ["1", "0", "10", "エラー"], answer: "1", explanation: "数学のルール通り、任意の数値の0乗は 1 になります。", hint: "0乗は1", skill: "数学ルール", xp: 25 }
     ]
   },
   {
-    id: 4, title: "条件分岐 if", subtitle: "状況に応じて処理を分ける", minutes: 5, isPro: false,
+    id: 4, title: "条件分岐 if", subtitle: "状況に応じて処理を分ける", minutes: 14, isPro: false,
     outcome: "合格/不合格、ログイン状態の判定プログラムを作れる",
-    skills: ["if", "else", "比較演算子"],
+    skills: ["if", "else", "elif", "論理演算子", "真偽判定"],
     bg: "#FEE2E2", color: "#991B1B",
     questions: [
       { id: "q4_1", type: "choice", prompt: "変数 score が 60以上かどうかを調べる記号はどれ？", code: "", choices: ["score >= 60", "score => 60", "score > 60", "score == 60"], answer: "score >= 60", explanation: "「以上」は >= と書きます。=> ではありません。", hint: "大なりイコール", skill: "比較演算子", xp: 20 },
       { id: "q4_2", type: "fill", prompt: "if文の末尾に必要な記号は何ですか？", code: "if score >= 60___", answer: ":", explanation: "Pythonのif文やfor文の末尾には必ず :（コロン）が必要です。", hint: "コロン記号", skill: "構文ルール", xp: 20 },
       { id: "q4_3", type: "choice", prompt: "次のコードを実行したときの出力は？", code: 'age = 15\nif age >= 18:\n    print("大人")\nelse:\n    print("子ども")', choices: ["子ども", "大人", "何も出ない", "エラー"], answer: "子ども", explanation: "15 >= 18 は成り立たない（False）ため、else側のブロックが実行されます。", hint: "条件が満たされない場合は else", skill: "if-else", xp: 25 },
       { id: "q4_4", type: "typing", prompt: "「等しい」を判定する比較のif文を入力してください", code: "if role == \"admin\":", answer: 'if role == "admin":', explanation: "代入は = 1つですが、比較は == 2つです。よく間違えるポイントです！", hint: 'if role == "admin":', skill: "等価比較", xp: 25 },
-      { id: "q4_5", type: "choice", prompt: "「そうでなくもし〜なら」を追加するキーワードは？", code: "", choices: ["elif", "else if", "elseif", "case"], answer: "elif", explanation: "Pythonでは else if を縮めて elif と書きます。", hint: "else と if を合体", skill: "elif", xp: 30 }
+      { id: "q4_5", type: "choice", prompt: "「そうでなくもし〜なら」を追加するキーワードは？", code: "", choices: ["elif", "else if", "elseif", "case"], answer: "elif", explanation: "Pythonでは else if を縮めて elif と書きます。", hint: "else と if を合体", skill: "elif", xp: 30 },
+      { id: "q4_6", type: "choice", prompt: "「AかつB（両方成立）」を表す論理演算子は？", code: "if a > 0 and b > 0:", choices: ["and", "&&", "&", "both"], answer: "and", explanation: "Pythonでは記号 && ではなく英語の and をそのまま使います。", hint: "英語の and", skill: "and演算子", xp: 25 },
+      { id: "q4_7", type: "fill", prompt: "「AまたはB（どちらか成立）」を表すキーワードを埋めてください", code: "if score >= 80 ___ attendance >= 90:", answer: "or", explanation: "「または」を表す論理演算子は or です。", hint: "英語の or", skill: "or演算子", xp: 20 },
+      { id: "q4_8", type: "choice", prompt: "「条件を反転（否定）」する演算子は？", code: "if not is_admin:", choices: ["not", "!", "~", "deny"], answer: "not", explanation: "Pythonでは否定演算に ! ではなく not を使います。", hint: "英語の not", skill: "not演算子", xp: 25 },
+      { id: "q4_9", type: "typing", prompt: "変数 count が 0 より大きいか調べるif文を入力してください", code: "", answer: "if count > 0:", explanation: "末尾のコロン : を忘れずに if count > 0: と入力します。", hint: "if count > 0:", skill: "大小比較if", xp: 25 },
+      { id: "q4_10", type: "choice", prompt: "if文の中身の処理に必須のルールはどれ？", code: "if True:\n    print('OK')", choices: ["字下げ（インデント）を入れる", "{ }で囲む", "末尾にセミコロンをつける", "大文字で書く"], answer: "字下げ（インデント）を入れる", explanation: "Pythonでは半角スペース4つの字下げ（インデント）でブロックの範囲を表します。", hint: "字下げがブロックを表す", skill: "インデント構文", xp: 20 },
+      { id: "q4_11", type: "fill", prompt: "どの条件にも当てはまらなかったときの最後の分岐キーワードは？", code: "___:\n    print('その他')", answer: "else", explanation: "すべての条件に当てはまらない処理は else: に書きます。", hint: "else", skill: "else句", xp: 20 },
+      { id: "q4_12", type: "choice", prompt: "数値の 0 は if文の条件式でどう判定される？", code: "if 0:\n    print('Yes')\nelse:\n    print('No')", choices: ["No (False扱い)", "Yes (True扱い)", "エラーになる", "0と表示される"], answer: "No (False扱い)", explanation: "数値の 0、空文字 \"\"、空リスト [] などはすべて False（不成立）とみなされます。", hint: "0は偽扱い", skill: "falsyな値", xp: 25 },
+      { id: "q4_13", type: "choice", prompt: "elif は何個まで連続して使える？", code: "", choices: ["制限なくいくつでも使える", "1個まで", "最大3個まで", "5個まで"], answer: "制限なくいくつでも使える", explanation: "elif は必要に応じて何個でも連ねることができます。", hint: "いくつでも書けます", skill: "多分岐", xp: 20 },
+      { id: "q4_14", type: "typing", prompt: "ブール変数 is_valid が真か判定する簡潔なif文を打ってください", code: "", answer: "if is_valid:", explanation: "is_valid == True と書く必要はなく、if is_valid: で十分です。", hint: "if is_valid:", skill: "bool判定", xp: 25 },
+      { id: "q4_15", type: "fill", prompt: "リスト内に特定の値が含まれるか判定する演算子を埋めてください", code: "if item ___ [1, 2, 3]:", answer: "in", explanation: "in 演算子を使うと要素がリストに含まれているかを判定できます。", hint: "〜の中に", skill: "in演算子", xp: 20 },
+      { id: "q4_16", type: "choice", prompt: 'ans = "合格" if score >= 60 else "不合格" のような記法を何と呼ぶ？', code: "", choices: ["三項演算子（条件演算子）", "ラムダ式", "リスト内包表記", "多重分岐"], answer: "三項演算子（条件演算子）", explanation: "1行で条件分岐した値を代入できる構文を三項演算子と呼びます。", hint: "三項演算子", skill: "1行if", xp: 30 },
+      { id: "q4_17", type: "choice", prompt: "if文の中にさらにif文を書く構造を何と呼ぶ？", code: "if a > 0:\n    if b > 0:\n        pass", choices: ["ネスト（入れ子）", "ループ", "スコープ", "継承"], answer: "ネスト（入れ子）", explanation: "構造の中に同じ構造を入れ込むことをネスト（入れ子）と呼びます。", hint: "入れ子構造", skill: "ネストif", xp: 25 },
+      { id: "q4_18", type: "typing", prompt: "score が 100 と等しいかを判定するif文を入力してください", code: "", answer: "if score == 100:", explanation: "等価判定は == です。コロンも忘れずに。", hint: "if score == 100:", skill: "等価条件", xp: 25 },
+      { id: "q4_19", type: "fill", prompt: "elif の条件式スコア70以上を完成させてください", code: "___ score >= 70:", answer: "elif", explanation: "else if ではなく elif と記述します。", hint: "elif", skill: "elif構文", xp: 20 },
+      { id: "q4_20", type: "choice", prompt: "if 10 < x < 20: という書き方はPythonで有効？", code: "if 10 < x < 20:\n    print('OK')", choices: ["有効（10より大きく20未満を判定できる）", "エラーになる", "必ずTrueになる", "C言語でないと使えない"], answer: "有効（10より大きく20未満を判定できる）", explanation: "Pythonでは比較演算子をチェーンして数学のように直感的に記述できます。", hint: "Pythonでは使えます", skill: "比較の連結", xp: 30 }
     ]
   },
   {
-    id: 5, title: "繰り返し for", subtitle: "同じ作業を何千回も自動化", minutes: 6, isPro: false,
+    id: 5, title: "繰り返し for", subtitle: "同じ作業を何千回も自動化", minutes: 14, isPro: false,
     outcome: "100回連続処理やリスト内データの全件処理ができる",
-    skills: ["for文", "range", "ループ変数"],
+    skills: ["for文", "range", "ループ変数", "break", "while"],
     bg: "#F3E8FF", color: "#6B21A8",
     questions: [
       { id: "q5_1", type: "choice", prompt: "0, 1, 2 と3回繰り返す range の書き方はどれ？", code: "", choices: ["range(3)", "range(1, 3)", "range(0, 2)", "range(4)"], answer: "range(3)", explanation: "range(3) は 0 から始まって 3 未満（0, 1, 2）の3つの数を生み出します。", hint: "0から始まります", skill: "range関数", xp: 20 },
       { id: "q5_2", type: "fill", prompt: "for文を作るキーワードを埋めてください", code: "___ i in range(5):\n    print(i)", answer: "for", explanation: "for 変数 in 繰り返すもの: の形で繰り返しを作ります。", hint: "〜のために", skill: "for構文", xp: 20 },
       { id: "q5_3", type: "choice", prompt: "次のループで最後に表示される数字は何？", code: "for i in range(1, 5):\n    print(i)", choices: ["4", "5", "1", "0"], answer: "4", explanation: "range(1, 5) は 1 から始まって 5 の直前（4）で終わります。終了値は含まれません。", hint: "終了値の手前まで", skill: "range範囲", xp: 25 },
       { id: "q5_4", type: "typing", prompt: "3回「OK」と表示するforループの1行目を打ってください", code: "for _ in range(3):", answer: "for _ in range(3):", explanation: "変数を使わない時は慣例で _（アンダースコア）を置くことも多いです。", hint: "for _ in range(3):", skill: "定数ループ", xp: 25 },
-      { id: "q5_5", type: "choice", prompt: "ループを途中で強制終了するキーワードはどれ？", code: "", choices: ["break", "stop", "exit", "continue"], answer: "break", explanation: "break はその時点でループから完全に脱出します。continue は次の周へスキップします。", hint: "壊して抜ける", skill: "break文", xp: 30 }
+      { id: "q5_5", type: "choice", prompt: "ループを途中で強制終了するキーワードはどれ？", code: "", choices: ["break", "stop", "exit", "continue"], answer: "break", explanation: "break はその時点でループから完全に脱出します。", hint: "壊して抜ける", skill: "break文", xp: 30 },
+      { id: "q5_6", type: "choice", prompt: "現在の周だけ処理をスキップし、次の周へ進むキーワードは？", code: "", choices: ["continue", "skip", "pass", "next"], answer: "continue", explanation: "continue はその周の残りの処理を飛ばして次の繰り返しに進みます。", hint: "継続する", skill: "continue文", xp: 25 },
+      { id: "q5_7", type: "fill", prompt: "0から10まで2飛び（0, 2, 4...）で繰り返すステップ引数を埋めてください", code: "range(0, 10, ___)", answer: "2", explanation: "range(開始, 終了, ステップ) で刻み幅を指定できます。", hint: "2飛び", skill: "range刻み幅", xp: 20 },
+      { id: "q5_8", type: "choice", prompt: "条件が満たされている間繰り返すもう1つのループ構文は？", code: "while count < 5:", choices: ["while", "loop", "repeat", "during"], answer: "while", explanation: "while 条件式: で条件が True の間ずっと繰り返します。", hint: "〜の間", skill: "while文", xp: 25 },
+      { id: "q5_9", type: "typing", prompt: "リスト items の中身を1つずつ取り出すforの1行目を入力してください", code: "", answer: "for item in items:", explanation: "for item in items: と記述します。", hint: "for item in items:", skill: "イテレーション", xp: 25 },
+      { id: "q5_10", type: "choice", prompt: "while文で条件がずっとTrueのままだと発生する問題は？", code: "while True:\n    pass", choices: ["無限ループで止まらなくなる", "自動で5回で停止する", "エラーで強制終了する", "何も起きない"], answer: "無限ループで止まらなくなる", explanation: "終了条件がないと無限ループになり、プログラムが止まらなくなります。", hint: "無限に回る", skill: "無限ループ", xp: 20 },
+      { id: "q5_11", type: "fill", prompt: "while文を開始するキーワードを埋めてください", code: "___ count < 5:\n    count += 1", answer: "while", explanation: "while文で条件繰り返しを作ります。", hint: "while", skill: "while構文", xp: 20 },
+      { id: "q5_12", type: "choice", prompt: 'for s in "abc": print(s) を実行したときの出力は？', code: 'for s in "abc":\n    print(s)', choices: ["a, b, c が1文字ずつ改行して出る", "abc と出る", "エラーになる", "3 と出る"], answer: "a, b, c が1文字ずつ改行して出る", explanation: "文字列をfor文で回すと、1文字ずつ順番に取り出されます。", hint: "1文字ずつ処理される", skill: "文字列ループ", xp: 25 },
+      { id: "q5_13", type: "typing", prompt: "0から4まで5回繰り返すforループの1行目を打ってください", code: "", answer: "for i in range(5):", explanation: "for i in range(5): で0〜4の5回ループになります。", hint: "for i in range(5):", skill: "標準forループ", xp: 25 },
+      { id: "q5_14", type: "choice", prompt: "インデックス番号と要素を同時に取得できる便利な関数は？", code: "for i, val in enumerate(items):", choices: ["enumerate()", "range()", "zip()", "index()"], answer: "enumerate()", explanation: "enumerate() を使うと「0番目、値」「1番目、値」のペアを取り出せます。", hint: "列挙する英単語", skill: "enumerate関数", xp: 30 },
+      { id: "q5_15", type: "fill", prompt: "ループを抜け出すキーワードを埋めてください", code: "if target == 5:\n    ___", answer: "break", explanation: "break でループを即座に終了します。", hint: "壊す", skill: "脱出", xp: 20 },
+      { id: "q5_16", type: "choice", prompt: "2つのリストを同時に回すための関数はどれ？", code: "for name, score in zip(names, scores):", choices: ["zip()", "pair()", "both()", "combine()"], answer: "zip()", explanation: "zip() 関数を使うと複数のリストを同時に1つずつペアにして取り出せます。", hint: "チャックのジッパー", skill: "zip関数", xp: 30 },
+      { id: "q5_17", type: "typing", prompt: "この周をスキップして次へ進むキーワードを入力してください", code: "", answer: "continue", explanation: "continue と入力します。", hint: "continue", skill: "スキップ構文", xp: 25 },
+      { id: "q5_18", type: "choice", prompt: "range(5, 0, -1) で最初に生成される数値はどれ？", code: "print(list(range(5, 0, -1)))", choices: ["5", "4", "0", "-1"], answer: "5", explanation: "5から始まって1ずつ減少し、0の手前（1）まで出力されます。", hint: "スタートは5", skill: "逆順range", xp: 25 },
+      { id: "q5_19", type: "fill", prompt: "何もしないことを明示するPythonキーワードは？", code: "if True:\n    ___", answer: "pass", explanation: "構文上なにか書かないとエラーになるとき、何もしない pass を置きます。", hint: "通り過ぎる", skill: "pass文", xp: 20 },
+      { id: "q5_20", type: "choice", prompt: "for文の直後に書く else: ブロックはいつ実行される？", code: "for x in data:\n    pass\nelse:\n    print('完走')", choices: ["breakされずにループが正常終了したとき", "毎回実行される", "ループがエラーになったとき", "一度も回らなかったときのみ"], answer: "breakされずにループが正常終了したとき", explanation: "Pythonのfor else構文は、breakで途中で抜けなかった時だけ実行されます。", hint: "途中で中断しなかったとき", skill: "for-else", xp: 30 }
     ]
   },
   {
-    id: 6, title: "リストと辞書", subtitle: "たくさんのデータをまとめて整理", minutes: 6, isPro: false,
+    id: 6, title: "リストと辞書", subtitle: "たくさんのデータをまとめて整理", minutes: 14, isPro: false,
     outcome: "買い物カゴやユーザープロフィールを構造化して扱える",
-    skills: ["list", "dict", "インデックス"],
+    skills: ["list", "dict", "インデックス", "スライス", "要素追加・削除"],
     bg: "#CCFBF1", color: "#0F766E",
     questions: [
       { id: "q6_1", type: "choice", prompt: "Pythonでリスト（配列）を作る正しい記号はどれ？", code: "", choices: ['["リンゴ", "バナナ"]', '{"リンゴ", "バナナ"}', '("リンゴ", "バナナ")', '<"リンゴ", "バナナ">'], answer: '["リンゴ", "バナナ"]', explanation: "角カッコ [ ] で囲むと順序を持つ「リスト」になります。", hint: "角カッコ [ ]", skill: "リスト作成", xp: 20 },
       { id: "q6_2", type: "fill", prompt: "リスト fruits の先頭（最初の要素）を取り出すインデックスは？", code: "first = fruits[___]", answer: "0", explanation: "プログラミングでは番号は 0 から始まります（0番目が先頭）。", hint: "ゼロから数えます", skill: "インデックス", xp: 20 },
       { id: "q6_3", type: "choice", prompt: "辞書 user から年齢を取り出す書き方はどれ？", code: 'user = {"name": "太郎", "age": 20}', choices: ['user["age"]', "user.age", 'user[1]', 'user("age")'], answer: 'user["age"]', explanation: '辞書は 角カッコの中にキー名 user["age"] を指定して値を取り出します。', hint: '角カッコに "age"', skill: "辞書の参照", xp: 25 },
       { id: "q6_4", type: "typing", prompt: "リスト nums の末尾に 10 を追加するコードを打ってください", code: "nums.append(10)", answer: "nums.append(10)", explanation: "append() を使うとリストの最後に新しいデータを追加できます。", hint: "nums.append(10)", skill: "要素追加", xp: 25 },
-      { id: "q6_5", type: "choice", prompt: "リストの要素の個数を数える便利な関数はどれ？", code: "len([10, 20, 30])", choices: ["3", "2", "30", "エラー"], answer: "3", explanation: "len() 関数はリストの長さ（要素数）や文字列の文字数を返します。", hint: "lengthの略", skill: "len関数", xp: 30 }
+      { id: "q6_5", type: "choice", prompt: "リストの要素の個数を数える便利な関数はどれ？", code: "len([10, 20, 30])", choices: ["3", "2", "30", "エラー"], answer: "3", explanation: "len() 関数はリストの長さ（要素数）や文字列の文字数を返します。", hint: "lengthの略", skill: "len関数", xp: 20 },
+      { id: "q6_6", type: "choice", prompt: "リストの一番最後の要素を取得するスマートな添字は？", code: "last = items[-1]", choices: ["-1", "last", "items.last", "end"], answer: "-1", explanation: "Pythonではマイナスの添字を使うと末尾から逆に数えることができます（-1は末尾）。", hint: "-1番目", skill: "負のインデックス", xp: 25 },
+      { id: "q6_7", type: "fill", prompt: "リスト nums から末尾の要素を取り出して削除するメソッド名は？", code: "last_val = nums.___()", answer: "pop", explanation: "pop() は末尾の要素を抜き取って返します。", hint: "飛び出すpop", skill: "popメソッド", xp: 25 },
+      { id: "q6_8", type: "choice", prompt: "items = [10, 20, 30, 40] から items[1:3] を切り取ると何になる？", code: "items = [10, 20, 30, 40]\nprint(items[1:3])", choices: ["[20, 30]", "[20, 30, 40]", "[10, 20]", "[30, 40]"], answer: "[20, 30]", explanation: "スライス [1:3] はインデックス1から3の手前（2）までを切り取ります。", hint: "3の手前まで", skill: "リストスライス", xp: 25 },
+      { id: "q6_9", type: "typing", prompt: "辞書 user のキー role に \"admin\" を代入するコードを入力してください", code: "", answer: 'user["role"] = "admin"', explanation: 'user["role"] = "admin" でキーと値のペアを追加・更新します。', hint: 'user["role"] = "admin"', skill: "辞書追加", xp: 25 },
+      { id: "q6_10", type: "choice", prompt: "リストの中に「apple」が存在するか確認する式は？", code: "", choices: ['"apple" in fruits', 'fruits.has("apple")', 'fruits.contains("apple")', 'in("apple", fruits)'], answer: '"apple" in fruits', explanation: '"apple" in fruits で存在判定し、TrueかFalseが返ります。', hint: "in を使う", skill: "存在判定", xp: 20 },
+      { id: "q6_11", type: "fill", prompt: "リストから値が「リンゴ」である要素を削除するメソッドは？", code: 'fruits.__("リンゴ")', answer: "remove", explanation: "remove(値) は最初に見つかった指定の値をリストから削除します。", hint: "取り除く英単語", skill: "値の削除", xp: 25 },
+      { id: "q6_12", type: "choice", prompt: "辞書に含まれるすべての「キー」一覧を取り出すメソッドは？", code: "for k in user.keys():", choices: ["user.keys()", "user.names()", "user.all()", "user.get_keys()"], answer: "user.keys()", explanation: "keys() でキー一覧、values() で値一覧、items() で両方のペアを取得できます。", hint: "keys()", skill: "辞書メソッド", xp: 25 },
+      { id: "q6_13", type: "typing", prompt: "空のリストを作る変数定義 empty_list = [] を入力してください", code: "", answer: "empty_list = []", explanation: "empty_list = [] と入力します。", hint: "empty_list = []", skill: "空リスト", xp: 20 },
+      { id: "q6_14", type: "choice", prompt: "辞書にキーが存在しない時でもエラーにならずに値を取得するメソッドは？", code: 'val = user.get("score", 0)', choices: ["get()", "fetch()", "find()", "safe()"], answer: "get()", explanation: "user.get('キー', 初期値) を使うとキーが無くてもKeyErrorにならずNoneや初期値を返せます。", hint: "getメソッド", skill: "安全な辞書参照", xp: 30 },
+      { id: "q6_15", type: "fill", prompt: "空の辞書を作るための波カッコを埋めてください", code: "data = ___", answer: "{}", explanation: "空の辞書は {} で作成します。", hint: "中括弧 {}", skill: "空の辞書", xp: 20 },
+      { id: "q6_16", type: "choice", prompt: "2つのリスト a と b を合体（結合）する演算子は？", code: "c = [1, 2] + [3, 4]", choices: ["+", "*", "&", "merge"], answer: "+", explanation: "文字列と同じく、リストも + 演算子で連結することができます。", hint: "プラス記号", skill: "リスト結合", xp: 20 },
+      { id: "q6_17", type: "typing", prompt: "リスト nums を小さい順（昇順）に並べ替えるメソッドを実行してください", code: "", answer: "nums.sort()", explanation: "nums.sort() でその場のリストをソートします。", hint: "nums.sort()", skill: "ソート", xp: 25 },
+      { id: "q6_18", type: "choice", prompt: "変更できない（イミュータブルな）丸カッコで囲むデータ構造は何？", code: "coords = (100, 200)", choices: ["タプル (tuple)", "リスト (list)", "セット (set)", "ディクト (dict)"], answer: "タプル (tuple)", explanation: "(1, 2) のように丸カッコで作り、後から値を変更できない構造をタプルと呼びます。", hint: "タプル", skill: "タプル", xp: 25 },
+      { id: "q6_19", type: "fill", prompt: "重複する値を持たない「集合（セット）」を作る型名を埋めてください", code: "unique_nums = __([1, 2, 2, 3])", answer: "set", explanation: "set() に渡すと重複が自動で排除されます。", hint: "set", skill: "集合型", xp: 25 },
+      { id: "q6_20", type: "choice", prompt: "リストを逆順（リバース）にするメソッドはどれ？", code: "nums.reverse()", choices: ["nums.reverse()", "nums.invert()", "nums.back()", "nums.flip()"], answer: "nums.reverse()", explanation: "reverse() でリストの並び順が反転します。", hint: "reverse", skill: "要素反転", xp: 25 }
     ]
   },
   {
-    id: 7, title: "関数を作る def", subtitle: "自分だけの命令を作って再利用", minutes: 7, isPro: true,
+    id: 7, title: "関数を作る def", subtitle: "自分だけの命令を作って再利用", minutes: 15, isPro: true,
     outcome: "複雑な処理を1語にまとめ、チームや別の場所で再利用できる",
-    skills: ["def", "引数", "return"],
+    skills: ["def", "引数", "return", "デフォルト引数", "スコープ"],
     bg: "#FEF3C7", color: "#B45309",
     questions: [
       { id: "q7_1", type: "choice", prompt: "関数を定義するためのキーワードはどれ？", code: "", choices: ["def", "function", "fn", "create"], answer: "def", explanation: "Pythonでは define（定義する）の略で def を使います。", hint: "def です", skill: "関数定義", xp: 20 },
       { id: "q7_2", type: "fill", prompt: "関数から結果を呼び出し元へ戻すキーワードは？", code: "def add(a, b):\n    ___ a + b", answer: "return", explanation: "return で計算結果を返します。画面に出す print とは役割が異なります。", hint: "返す", skill: "戻り値", xp: 25 },
       { id: "q7_3", type: "choice", prompt: "次のコードを実行すると何が表示されますか？", code: "def double(x):\n    return x * 2\n\nprint(double(5))", choices: ["10", "5", "double(5)", "エラー"], answer: "10", explanation: "double(5) が呼び出され、5 * 2 = 10 が計算されて返されます。", hint: "5の2倍", skill: "関数呼び出し", xp: 25 },
       { id: "q7_4", type: "typing", prompt: "挨拶する関数 say_hi() の定義1行目を入力してください", code: "def say_hi():", answer: "def say_hi():", explanation: "def 関数名(): の形で定義を始めます。", hint: "def say_hi():", skill: "関数シグネチャ", xp: 30 },
-      { id: "q7_5", type: "choice", prompt: "引数に初期値を設定する「デフォルト引数」の正しい書き方は？", code: "", choices: ['def greet(name="ゲスト"):', 'def greet(name := "ゲスト"):', 'def greet(name == "ゲスト"):', 'def greet(name: "ゲスト"):'], answer: 'def greet(name="ゲスト"):', explanation: "引数名=デフォルト値 と書いておくと、省略されたときにその値が使われます。", hint: "イコール1つで指定", skill: "デフォルト引数", xp: 30 }
+      { id: "q7_5", type: "choice", prompt: "引数に初期値を設定する「デフォルト引数」の正しい書き方は？", code: "", choices: ['def greet(name="ゲスト"):', 'def greet(name := "ゲスト"):', 'def greet(name == "ゲスト"):', 'def greet(name: "ゲスト"):'], answer: 'def greet(name="ゲスト"):', explanation: "引数名=デフォルト値 と書いておくと、省略されたときにその値が使われます。", hint: "イコール1つで指定", skill: "デフォルト引数", xp: 30 },
+      { id: "q7_6", type: "choice", prompt: "Pythonの関数は複数の値を同時に return で返せる？", code: "def get_user():\n    return '太郎', 20", choices: ["返せる（タプルとして返される）", "1個しか返せない", "エラーになる", "リストにしないと返せない"], answer: "返せる（タプルとして返される）", explanation: "カンマで区切ることで複数の値を一度に返せます（タプルパック）。", hint: "タプルで返せます", skill: "多重戻り値", xp: 25 },
+      { id: "q7_7", type: "fill", prompt: "引数 a と b を足す関数の1行目を埋めてください", code: "def add(a, ___):", answer: "b", explanation: "カンマで区切って引数を並べます。", hint: "変数b", skill: "複数引数", xp: 20 },
+      { id: "q7_8", type: "choice", prompt: "関数の中で作った変数は関数の外から使える？", code: "def test():\n    val = 100\nprint(val)", choices: ["使えない（NameErrorのエラーになる）", "問題なく使える", "0と表示される", "Noneになる"], answer: "使えない（NameErrorのエラーになる）", explanation: "関数内で定義した変数は「ローカル変数」となり、外からは見えません（スコープ）。", hint: "ローカルスコープの外では見えない", skill: "ローカル変数", xp: 25 },
+      { id: "q7_9", type: "typing", prompt: "計算結果 result を戻り値として返すコードを入力してください", code: "", answer: "return result", explanation: "return result と入力します。", hint: "return result", skill: "return文", xp: 25 },
+      { id: "q7_10", type: "choice", prompt: "return を書かない関数の戻り値は何になる？", code: "def no_return():\n    pass\nres = no_return()", choices: ["None", "0", "False", "エラー"], answer: "None", explanation: "明示的に return しない関数は自動的に None を返します。", hint: "何もないを表すNone", skill: "暗黙の戻り値", xp: 25 },
+      { id: "q7_11", type: "fill", prompt: "引数の数値を2乗する関数のreturn行を埋めてください", code: "def square(n):\n    return n ___ 2", answer: "**", explanation: "べき乗は ** 演算子を使います。", hint: "アスタリスク2つ", skill: "累乗関数", xp: 20 },
+      { id: "q7_12", type: "choice", prompt: "キーワード引数を使った関数呼び出しとして正しいものは？", code: "def greet(first, last): pass", choices: ["greet(last='佐藤', first='太郎')", "greet('佐藤' as last)", "greet(last: '佐藤')", "エラーになる"], answer: "greet(last='佐藤', first='太郎')", explanation: "引数名=値 で指定すれば、順番を入れ替えて渡すことができます。", hint: "引数名=値", skill: "キーワード引数", xp: 25 },
+      { id: "q7_13", type: "typing", prompt: "引数 name を受け取る関数 greet の定義1行目を書いてください", code: "", answer: "def greet(name):", explanation: "def greet(name): と入力します。", hint: "def greet(name):", skill: "単一引数定義", xp: 25 },
+      { id: "q7_14", type: "choice", prompt: "関数の説明文（ドキュメンテーション文字列）は何と呼ばれる？", code: 'def f():\n    """関数の説明"""', choices: ["docstring (ドックストリング)", "comment", "info", "helptext"], answer: "docstring (ドックストリング)", explanation: "関数直下のトリプルクォート文字列は docstring と呼ばれ、help()等で参照できます。", hint: "docstring", skill: "ドキュメント", xp: 25 },
+      { id: "q7_15", type: "fill", prompt: "偶数なら真を返す関数の戻り値を埋めてください", code: "def is_even(num):\n    return num % 2 == ___", answer: "0", explanation: "余りが 0 であれば True が返ります。", hint: "ゼロ", skill: "判定関数", xp: 20 },
+      { id: "q7_16", type: "choice", prompt: "任意の数の引数をタプルとして受け取る「可変長引数」の記号は？", code: "def total(*args):", choices: ["*args", "**kwargs", "&args", "...args"], answer: "*args", explanation: "* をつけると任意の個数の位置引数をまとめてタプルで受け取れます。", hint: "アスタリスク1つ", skill: "可変長引数", xp: 30 },
+      { id: "q7_17", type: "typing", prompt: "価格 price に消費税10%を足して返す関数 calc の1行目を打ってください", code: "def calc(price):", answer: "def calc(price):", explanation: "def calc(price): と入力します。", hint: "def calc(price):", skill: "関数ヘッダー", xp: 25 },
+      { id: "q7_18", type: "choice", prompt: "関数を1行でシンプルに書く「無名関数」を作るキーワードは？", code: "sq = lambda x: x * 2", choices: ["lambda", "arrow", "def", "func"], answer: "lambda", explanation: "lambda（ラムダ）を使うと名前のない簡易関数をその場で書けます。", hint: "lambda", skill: "ラムダ式", xp: 30 },
+      { id: "q7_19", type: "fill", prompt: "真偽値 True を返すキーワードを埋めてください", code: "def check():\n    return ___", answer: "True", explanation: "True を返します。", hint: "True", skill: "真偽値返却", xp: 20 },
+      { id: "q7_20", type: "choice", prompt: "関数の中から外のグローバル変数を書き換えるためのキーワードは？", code: "global count", choices: ["global", "outer", "public", "extern"], answer: "global", explanation: "global 変数名 と宣言すると関数内から外の変数を上書きできます。", hint: "グローバル", skill: "グローバル変数", xp: 25 }
     ]
   },
   {
-    id: 8, title: "実務・自動化ミニプロジェクト", subtitle: "学んだ知識をつなげて動かす", minutes: 8, isPro: true,
+    id: 8, title: "実務・自動化ミニプロジェクト", subtitle: "学んだ知識をつなげて動かす", minutes: 16, isPro: true,
     outcome: "「合格者一覧の抽出」「合計と消費税計算」が1人で作れる",
-    skills: ["実践", "データ処理", "総合演習"],
+    skills: ["実践", "データ処理", "内包表記", "ファイル操作", "例外処理"],
     bg: "#ECFDF5", color: "#047857",
     questions: [
       { id: "q8_1", type: "choice", prompt: "次のコードは何をしていますか？", code: 'scores = [80, 45, 90]\npassed = [s for s in scores if s >= 60]', choices: ["60点以上の合格者だけを集めたリストを作る", "全員に60点を足す", "合計点を計算する", "エラーになる"], answer: "60点以上の合格者だけを集めたリストを作る", explanation: "リスト内包表記を使って、条件に合うものだけを新しいリストに抽出しています。", hint: "if s >= 60 に注目", skill: "リスト内包表記", xp: 25 },
       { id: "q8_2", type: "fill", prompt: "合計金額を求める sum 関数の名前を埋めてください", code: "total = ___(prices)", answer: "sum", explanation: "sum(リスト) で数値リストの合計を一発で計算できます。", hint: "合計を表す英単語", skill: "sum関数", xp: 25 },
       { id: "q8_3", type: "choice", prompt: "ファイルを開いて安全に処理する定番構文はどれ？", code: "", choices: ['with open("data.txt") as f:', 'open("data.txt").run()', 'using file("data.txt"):', 'file.open("data.txt")'], answer: 'with open("data.txt") as f:', explanation: "with open() を使うと、処理が終わった後に自動でファイルを安全に閉じてくれます。", hint: "with open", skill: "ファイル処理", xp: 30 },
       { id: "q8_4", type: "typing", prompt: "消費税10%を掛けて整数にするコードを打ってください", code: "tax_price = int(price * 1.1)", answer: "tax_price = int(price * 1.1)", explanation: "int() で小数点以下を切り捨てて整数にします。", hint: "tax_price = int(price * 1.1)", skill: "型変換と計算", xp: 30 },
-      { id: "q8_5", type: "choice", prompt: "この8クエストを修了したあなたの今の実力は？", code: "", choices: ["基礎文法を理解し、AIに修正指示が出せるレベル", "何も身についていない", "すでに上級エンジニア", "本を読むだけで満足"], answer: "基礎文法を理解し、AIに修正指示が出せるレベル", explanation: "print, 変数, 計算, if, for, リスト, 関数。この7つがあれば、ChatGPTのコードを読んで直せます！", hint: "自信を持って！", skill: "修了判定", xp: 30 }
+      { id: "q8_5", type: "choice", prompt: "エラーが発生してもプログラムを止めずに処理する構文は？", code: "try:\n    x = 1 / 0\nexcept:\n    print('エラー')", choices: ["try ... except", "try ... catch", "begin ... rescue", "if error"], answer: "try ... except", explanation: "Pythonでは try と except を使って例外（エラー）を捕まえます。", hint: "except を使う", skill: "例外処理", xp: 25 },
+      { id: "q8_6", type: "fill", prompt: "エラーをキャッチするブロックのキーワードを埋めてください", code: "try:\n    ans = 10 / 0\n___ ZeroDivisionError:\n    ans = 0", answer: "except", explanation: "except で起きたエラーの種類を捕まえます。", hint: "except", skill: "try-except", xp: 25 },
+      { id: "q8_7", type: "choice", prompt: "文字列の前後から余分な改行や空白を取り除くメソッドは？", code: 'clean_text = line.strip()', choices: ["strip()", "trim()", "clean()", "delete()"], answer: "strip()", explanation: "strip() を使うとファイル読み込み等で付いてくる改行文字 \\n を一発で除去できます。", hint: "はぎ取るstrip", skill: "文字列クレンジング", xp: 25 },
+      { id: "q8_8", type: "typing", prompt: "line の前後の空白を除去するコードを入力してください", code: "", answer: "line = line.strip()", explanation: "line = line.strip() と入力します。", hint: "line = line.strip()", skill: "strip実行", xp: 25 },
+      { id: "q8_9", type: "choice", prompt: 'カンマ区切りの文字列 "apple,banana,orange" をリストに分けるメソッドは？', code: 'fruits = text.split(",")', choices: ["split()", "separate()", "divide()", "toList()"], answer: "split()", explanation: "split(',') でカンマごとに切り分けてリストにします。CSV処理の基本です。", hint: "分割するsplit", skill: "文字列分割", xp: 25 },
+      { id: "q8_10", type: "fill", prompt: "リストの各要素をハイフンで繋げて1つの文字列にするメソッド名は？", code: '"-".___(["A", "B", "C"])', answer: "join", explanation: "区切り文字.join(リスト) で文字列として合体させます。", hint: "結合するjoin", skill: "文字列結合メソッド", xp: 25 },
+      { id: "q8_11", type: "choice", prompt: "リストの中から最大値を見つける組み込み関数はどれ？", code: "max([10, 50, 30])", choices: ["max()", "highest()", "top()", "limit()"], answer: "max()", explanation: "max() は最大値、min() は最小値を返します。", hint: "maximumの略", skill: "最大値取得", xp: 20 },
+      { id: "q8_12", type: "typing", prompt: "標準の乱数モジュール random を読み込むコードを入力してください", code: "", answer: "import random", explanation: "import モジュール名 でライブラリを使えるようにします。", hint: "import random", skill: "モジュールインポート", xp: 25 },
+      { id: "q8_13", type: "choice", prompt: "round(3.1415, 2) を実行したときの丸め結果は？", code: "print(round(3.1415, 2))", choices: ["3.14", "3.1", "3.142", "3"], answer: "3.14", explanation: "round(数値, 桁数) で指定した小数点以下の桁数に四捨五入（偶数への丸め）します。", hint: "小数第2位まで", skill: "四捨五入", xp: 25 },
+      { id: "q8_14", type: "fill", prompt: "ファイル書き込みモードで開くときの第2引数の記号は？", code: 'with open("out.txt", "___") as f:', answer: "w", explanation: "読み込みは 'r'、書き込みは 'w'（write）、追記は 'a'（append）です。", hint: "writeの頭文字", skill: "ファイルモード", xp: 25 },
+      { id: "q8_15", type: "choice", prompt: "JSON形式の文字列をPythonの辞書やリストに変換する関数は？", code: "import json\ndata = json.loads(json_str)", choices: ["json.loads()", "json.dumps()", "json.parse()", "json.read()"], answer: "json.loads()", explanation: "loads()（Load String）でJSON文字から辞書へ、dumps() で辞書からJSON文字列へ変換します。", hint: "文字列からロード", skill: "JSON処理", xp: 30 },
+      { id: "q8_16", type: "typing", prompt: "リスト prices の中の最小値を求める min(prices) を入力してください", code: "", answer: "min(prices)", explanation: "min(prices) と入力します。", hint: "min(prices)", skill: "最小値取得", xp: 25 },
+      { id: "q8_17", type: "choice", prompt: "辞書リストの中から年齢が20以上の人だけを取り出す内包表記はどれ？", code: "", choices: ["[u for u in users if u['age'] >= 20]", "[for u in users if u['age'] >= 20]", "[u['age'] >= 20 in users]", "filter(users, age >= 20)"], answer: "[u for u in users if u['age'] >= 20]", explanation: "[式 for 変数 in リスト if 条件] の順序で書くのが内包表記です。", hint: "内包表記の基本構文", skill: "実務データ内包表記", xp: 30 },
+      { id: "q8_18", type: "fill", prompt: "スクリプトとして直接実行された時だけ動かすPythonの定番イディオムを埋めてください", code: 'if __name__ == "___":', answer: "__main__", explanation: "他のファイルから import されたときには動かさないための安全弁です。", hint: "__main__", skill: "メインガード", xp: 30 },
+      { id: "q8_19", type: "choice", prompt: "辞書データを1行ずつCSV風に出力する時のカンマ区切り文字列作成法は？", code: 'f"{name},{age}\\n"', choices: ["f文字列でカンマを挟む", "print(name + age)", "csv.write()", "いずれでも不可能"], answer: "f文字列でカンマを挟む", explanation: "f\"{name},{age}\\n\" と書けば簡単にCSVの1行が組み立てられます。", hint: "f文字列の活用", skill: "データ出力", xp: 25 },
+      { id: "q8_20", type: "choice", prompt: "この全160問をクリアしたあなたの実力は？", code: "", choices: ["文法の基礎をマスターし、ChatGPTに的確な修正指示が出せるレベル！", "まだ何も分からない", "本を買っただけで満足", "プログラミングは無理だった"], answer: "文法の基礎をマスターし、ChatGPTに的確な修正指示が出せるレベル！", explanation: "printから変数、計算、if、for、リスト、関数、実務処理まで160問の基礎を網羅しました！自信を持って次へ進みましょう。", hint: "自信を持って！", skill: "修了認定", xp: 30 }
     ]
   }
 ];
@@ -862,7 +977,7 @@ function checkTrial(btn, choice, isCorrect) {
     res.innerHTML = `<b>🎉 正解！その調子です。</b><br>
       本編はこの後に「穴埋め → タイピング」と進み、本当に書けるようになります。<br>
       <button onclick="startQuest(1)" class="btn-primary" style="margin-top:0.5rem;width:100%;justify-content:center">
-        続きの4問を解く（無料） →
+        クエスト1（全20問）に挑戦する →
       </button>`;
     if (!state.completed.includes(1) && state.xp === 0) {
       state.xp += 20;
@@ -936,7 +1051,7 @@ function renderQuests() {
         ${statusBadge}
       </div>
       <h3 class="quest-title">${q.title}</h3>
-      <p class="quest-meta">${q.subtitle} ・ 約${q.minutes}分 ・ 5問</p>
+      <p class="quest-meta">${q.subtitle} ・ 約${q.minutes}分 ・ 20問</p>
       <p class="quest-outcome"><b>できるようになること:</b> ${q.outcome}</p>
       <button class="quest-btn" ${(!isUnlocked && !lockedPro) ? 'disabled' : ''} onclick="startQuest(${q.id})">
         ${lockedPro ? 'Pro登録で解放' : isDone ? 'もう一度挑戦' : isUnlocked ? 'この章を始める' : 'ロック中'}
