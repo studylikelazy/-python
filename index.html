@@ -3,202 +3,1355 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#07131f">
-<meta name="description" content="Python初心者向け。1日5分、クイズ・穴埋め・タイピングでPythonをゲーム感覚で学ぶWeb教材。">
-<title>PyType-Learner Web v3.1.0</title>
+<meta name="theme-color" content="#0F172A">
+<title>PyType Quest | 1日5分でPythonを「読める→書ける」へ</title>
+<meta name="description" content="Python初心者のための1日5分ゲーム型学習アプリ。全8クエスト40問。4択→穴埋め→タイピングで「わかる」から「書ける」へ。登録不要・無料。">
+<meta property="og:title" content="PyType Quest | 1日5分でPythonを「読める→書ける」へ">
+<meta property="og:description" content="4択→穴埋め→タイピングの3段階でPythonをマスター。登録不要・無料で今すぐ1問体験できます。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://studylikelazy.github.io/-python/">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- GA4: 既存タグを継承（?dev=1 で除外可能） -->
+<script>
+(function(){
+  const p = new URLSearchParams(location.search);
+  if (p.get('dev') === '1') { localStorage.setItem('pytype_exclude_analytics', '1'); alert('開発者モード: GA4計測を除外しました'); }
+  const excluded = localStorage.getItem('pytype_exclude_analytics') === '1';
+  if (!excluded && location.protocol !== 'file:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+    const s = document.createElement('script'); s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=G-2TJ29KSJP4';
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    window.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', 'G-2TJ29KSJP4');
+  } else { window.gtag = function(){}; }
+})();
+</script>
+
 <style>
-:root{--bg:#07131f;--panel:#0d1c2a;--panel2:#102437;--card:#122a3d;--line:#244359;--text:#e9f3f8;--muted:#8ea9bb;--accent:#44d7b6;--accent2:#5db3ff;--ok:#44e08c;--bad:#ff6f8e;--warn:#ffcf67;--shadow:0 18px 60px rgba(0,0,0,.28)}
-*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans JP",Arial,sans-serif;background:radial-gradient(circle at top,#102a3d 0,#07131f 45%,#040b12 100%);color:var(--text);min-height:100vh;padding:18px}button,input,textarea{font:inherit}.app{max-width:1080px;margin:0 auto}.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 4px 18px;position:sticky;top:0;z-index:10;background:linear-gradient(rgba(7,19,31,.96),rgba(7,19,31,.82));backdrop-filter:blur(10px)}.brand{display:flex;gap:10px;align-items:center}.brand-mark{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#041018;display:grid;place-items:center;font-weight:900;box-shadow:0 0 28px rgba(68,215,182,.22)}.brand h1{font-size:18px}.brand small{display:block;color:var(--muted);font-size:11px;margin-top:2px}.top-actions{display:flex;gap:8px;align-items:center}.icon-btn,.ghost-btn,.primary-btn,.danger-btn{border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:12px;padding:10px 14px;cursor:pointer;transition:.2s}.icon-btn:hover,.ghost-btn:hover{border-color:var(--accent2);transform:translateY(-1px)}.primary-btn{background:linear-gradient(135deg,#1e9e88,#2e86c7);border:0;font-weight:800}.primary-btn:hover{filter:brightness(1.08);transform:translateY(-1px)}.danger-btn{background:rgba(255,111,142,.08);color:#ff9db1}.hidden{display:none!important}.screen{display:none}.screen.active{display:block}.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:18px}.hero-main,.hero-side,.card{background:linear-gradient(180deg,rgba(18,42,61,.96),rgba(13,28,42,.96));border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)}.hero-main{padding:30px}.hero-kicker{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border:1px solid rgba(68,215,182,.28);border-radius:999px;color:var(--accent);font-size:12px;font-weight:800}.hero h2{font-size:clamp(30px,5vw,48px);line-height:1.05;margin:14px 0}.hero p{color:var(--muted);line-height:1.8}.hero-side{padding:22px}.profile-row{display:flex;justify-content:space-between;align-items:center}.level{font-size:34px;font-weight:900;color:var(--accent)}.xpbar{height:12px;background:#0a1722;border:1px solid var(--line);border-radius:99px;overflow:hidden;margin:10px 0}.xpbar>div{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0;transition:.35s}.mini-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:15px}.mini-stat{padding:12px;border-radius:14px;background:#0b1925;border:1px solid var(--line)}.mini-stat strong{display:block;font-size:22px}.mini-stat span{color:var(--muted);font-size:11px}.section-title{display:flex;justify-content:space-between;align-items:end;margin:25px 0 12px}.section-title h3{font-size:18px}.section-title span{font-size:12px;color:var(--muted)}.mission{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;padding:18px;border:1px solid rgba(68,215,182,.28);border-radius:18px;background:linear-gradient(135deg,rgba(68,215,182,.10),rgba(93,179,255,.06));margin-bottom:18px}.mission-title{font-weight:900;font-size:18px}.mission-meta{color:var(--muted);font-size:12px;margin-top:4px}.tag-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.tag{font-size:11px;padding:6px 9px;border-radius:999px;background:#0b1a26;border:1px solid var(--line);color:#b8cfdd}.quest-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.quest{padding:16px;border:1px solid var(--line);background:var(--card);border-radius:16px;cursor:pointer;position:relative;transition:.22s}.quest:hover{transform:translateY(-3px);border-color:var(--accent2)}.quest.locked{opacity:.45;cursor:not-allowed}.quest.completed{border-color:rgba(68,224,140,.5)}.quest-head{display:flex;justify-content:space-between;color:var(--muted);font-size:11px}.quest h4{font-size:15px;margin:10px 0 8px}.quest p{font-size:12px;color:var(--muted);line-height:1.55;min-height:38px}.quest-progress{margin-top:12px;color:var(--accent);font-size:11px;font-weight:800}.mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}.mode{padding:16px;border-radius:16px;border:1px solid var(--line);background:#0b1a26;cursor:pointer}.mode.selected{border-color:var(--accent);box-shadow:0 0 0 1px rgba(68,215,182,.2) inset}.mode h4{margin-bottom:7px}.mode p{font-size:12px;color:var(--muted);line-height:1.5}.custom{margin-top:18px}.custom textarea{width:100%;min-height:140px;background:#07131f;border:1px solid var(--line);color:#dcecf5;border-radius:14px;padding:13px;resize:vertical;outline:0;font-family:Consolas,monospace}.custom-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:9px}.game-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px}.game-statbar{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.gs{background:#0a1824;border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}.gs b{display:block;font-size:15px}.gs span{display:block;color:var(--muted);font-size:10px;margin-top:3px}.progress-wrap{margin:12px 0}.progress-track{height:8px;background:#091521;border-radius:999px;overflow:hidden;border:1px solid var(--line)}.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:.25s}.lesson-layout{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}.problem,.lesson-card,.feedback{background:linear-gradient(180deg,rgba(18,42,61,.96),rgba(13,28,42,.96));border:1px solid var(--line);border-radius:18px}.problem{padding:20px}.problem-kicker{font-size:12px;color:var(--accent);font-weight:800}.problem h3{font-size:22px;margin:8px 0 10px}.problem-copy{color:var(--muted);line-height:1.65;font-size:13px}.code-box{background:#06101a;border:1px solid #1e394e;border-radius:14px;padding:16px;margin:15px 0;font-family:Consolas,monospace;white-space:pre-wrap;overflow:auto;line-height:1.65;min-height:90px}.hint{color:var(--warn);font-size:12px;margin-top:-3px}.choices{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}.choice{padding:13px;border:1px solid var(--line);background:#0a1925;color:var(--text);border-radius:13px;text-align:left;cursor:pointer;transition:.16s;font-family:Consolas,monospace;white-space:pre-wrap}.choice:hover{border-color:var(--accent2);transform:translateY(-1px)}.choice.ok{border-color:var(--ok);background:rgba(68,224,140,.09)}.choice.bad{border-color:var(--bad);background:rgba(255,111,142,.09)}.typing-target{font-size:20px;word-break:break-word}.char.pending{color:#49657a}.char.current{background:rgba(68,215,182,.18);color:#fff;border-bottom:2px solid var(--accent)}.char.correct{color:var(--ok)}.char.incorrect{color:var(--bad);background:rgba(255,111,142,.11)}.text-input{width:100%;background:#06101a;border:1px solid var(--line);color:#fff;padding:14px;border-radius:13px;font-family:Consolas,monospace;font-size:16px;outline:0}.text-input:focus{border-color:var(--accent)}.lesson-card{padding:18px}.lesson-card h4{font-size:14px;margin-bottom:10px}.rule{background:#07131f;border:1px solid var(--line);padding:11px;border-radius:11px;font-family:Consolas,monospace;color:#bfe9ff;font-size:12px}.lesson-desc{font-size:12px;color:var(--muted);line-height:1.65}.memory-note{margin-top:10px;padding:10px;border-radius:11px;background:rgba(255,207,103,.07);border:1px solid rgba(255,207,103,.22);font-size:11px;color:#e9d99f}.feedback{padding:13px;margin-top:12px;display:none}.feedback.show{display:block}.feedback.ok{border-color:rgba(68,224,140,.4)}.feedback.bad{border-color:rgba(255,111,142,.4)}.feedback strong{display:block;margin-bottom:5px}.feedback p{color:var(--muted);font-size:12px;line-height:1.6}.game-actions{display:flex;justify-content:space-between;gap:10px;margin-top:12px}.result-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.result-card{padding:15px;border:1px solid var(--line);border-radius:15px;background:#0a1925;text-align:center}.result-card strong{display:block;font-size:28px;color:var(--accent)}.result-card span{font-size:11px;color:var(--muted)}.skill-list{margin-top:16px;display:grid;gap:10px}.skill{display:grid;grid-template-columns:130px 1fr 42px;gap:10px;align-items:center}.skill-name{font-size:12px}.skill-bar{height:9px;background:#091521;border-radius:999px;border:1px solid var(--line);overflow:hidden}.skill-bar div{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0}.achievement-list{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}.achievement{padding:12px;border:1px solid var(--line);border-radius:13px;background:#0a1824}.achievement.unlocked{border-color:rgba(255,207,103,.35)}.achievement b{font-size:13px}.achievement span{display:block;color:var(--muted);font-size:11px;margin-top:3px}.bottom-card{margin-top:18px;padding:16px;background:rgba(7,19,31,.75);border:1px solid var(--line);border-radius:16px;color:var(--muted);font-size:11px;line-height:1.6}.shake{animation:shake .18s}.pop{animation:pop .28s}.flash{animation:flash .28s}@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}@keyframes pop{50%{transform:scale(1.02)}}@keyframes flash{50%{box-shadow:0 0 30px rgba(68,215,182,.22)}}@media(max-width:900px){.hero{grid-template-columns:1fr}.quest-grid{grid-template-columns:repeat(2,1fr)}.mode-grid{grid-template-columns:1fr}.lesson-layout{grid-template-columns:1fr}}@media(max-width:620px){body{padding:10px}.topbar{align-items:flex-start}.hero-main,.hero-side{padding:18px}.quest-grid,.result-grid,.achievement-list{grid-template-columns:1fr}.game-statbar{grid-template-columns:repeat(2,1fr)}.game-statbar .gs:last-child{grid-column:1/-1}.choices{grid-template-columns:1fr}.skill{grid-template-columns:95px 1fr 38px}.mission{grid-template-columns:1fr}.custom-actions,.game-actions{flex-wrap:wrap}.custom-actions button,.game-actions button{flex:1}}
+/* ============================================================
+   PyType Quest v4.0.0 - Style (Tailwind風モダンUI)
+   編集ガイド: 色やレイアウトはCSS変数とクラスで直感的に変更できます
+   ============================================================ */
+:root {
+  --bg: #F8FAFC;
+  --surface: #FFFFFF;
+  --card: #FFFFFF;
+  --dark: #0F172A;
+  --dark-surface: #1E293B;
+  --primary: #0D9488;
+  --primary-hover: #0F766E;
+  --primary-light: #CCFBF1;
+  --accent: #F59E0B;
+  --accent-light: #FEF3C7;
+  --text: #0F172A;
+  --text-muted: #64748B;
+  --border: #E2E8F0;
+  --ok: #10B981;
+  --bad: #EF4444;
+  --radius: 1.25rem;
+  --shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+button, input, textarea, select { font: inherit; }
+button { cursor: pointer; border: none; background: none; }
+a { color: inherit; text-decoration: none; }
+
+.container { max-width: 1100px; margin: 0 auto; padding: 0 1rem; }
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* Header */
+header {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0.75rem 0;
+}
+.header-inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.brand { display: flex; align-items: center; gap: 0.6rem; font-weight: 900; font-size: 1.25rem; }
+.brand-badge {
+  background: var(--dark); color: var(--accent);
+  padding: 0.2rem 0.55rem; border-radius: 0.5rem; font-size: 0.85rem;
+}
+.header-stats { display: flex; align-items: center; gap: 0.75rem; font-size: 0.85rem; font-weight: 700; }
+.stat-pill {
+  background: var(--bg); border: 1px solid var(--border);
+  padding: 0.35rem 0.75rem; border-radius: 9999px;
+  display: flex; align-items: center; gap: 0.35rem;
+}
+.btn-growth {
+  background: var(--accent-light); color: #B45309; border: 1px solid #FCD34D;
+  padding: 0.4rem 0.85rem; border-radius: 9999px; font-weight: 800; font-size: 0.8rem;
+}
+
+/* Hero */
+.hero-grid { display: grid; gap: 1.5rem; padding: 2rem 0; }
+@media (min-width: 900px) { .hero-grid { grid-template-columns: 1.15fr 0.85fr; } }
+
+.hero-main {
+  background: var(--dark); color: #fff;
+  border-radius: var(--radius); padding: 2rem;
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.1); color: var(--accent);
+  padding: 0.3rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 800;
+  width: fit-content;
+}
+.hero-title { font-size: clamp(2rem, 4vw, 3.25rem); font-weight: 900; line-height: 1.15; margin: 1rem 0; }
+.hero-title span { color: var(--accent); }
+.hero-desc { color: #CBD5E1; font-size: 0.95rem; line-height: 1.7; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
+.btn-primary {
+  background: var(--accent); color: var(--dark);
+  font-weight: 900; padding: 0.85rem 1.6rem; border-radius: 0.9rem;
+  font-size: 1rem; transition: transform 0.15s, filter 0.15s;
+  display: inline-flex; align-items: center; gap: 0.5rem;
+}
+.btn-primary:hover { filter: brightness(1.05); transform: translateY(-1px); }
+.btn-secondary {
+  border: 1px solid rgba(255, 255, 255, 0.25); color: #fff;
+  font-weight: 700; padding: 0.85rem 1.4rem; border-radius: 0.9rem; font-size: 0.95rem;
+}
+
+.hero-stats-row {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem;
+  margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+.hero-stat-num { font-size: 1.5rem; font-weight: 900; color: #fff; }
+.hero-stat-label { font-size: 0.75rem; color: #94A3B8; }
+
+/* 30-sec Trial Box */
+.trial-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1.75rem; box-shadow: var(--shadow);
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.trial-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+.trial-badge {
+  background: #FEE2E2; color: #DC2626; font-size: 0.75rem; font-weight: 800;
+  padding: 0.25rem 0.6rem; border-radius: 9999px;
+}
+.trial-box { background: #F1F5F9; border-radius: 1rem; padding: 1.25rem; margin: 1rem 0; }
+.trial-choices { display: grid; gap: 0.5rem; margin-top: 0.75rem; }
+.choice-btn {
+  background: #fff; border: 1px solid var(--border);
+  padding: 0.75rem 1rem; border-radius: 0.75rem; text-align: left;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.88rem; font-weight: 700;
+  transition: all 0.15s;
+}
+.choice-btn:hover { border-color: var(--primary); transform: translateY(-1px); }
+.choice-btn.ok { border-color: var(--ok); background: #ECFDF5; color: #065F46; }
+.choice-btn.bad { border-color: var(--bad); background: #FEF2F2; color: #991B1B; }
+
+/* Quick actions */
+.quick-grid { display: grid; gap: 1rem; margin-bottom: 2rem; }
+@media (min-width: 768px) { .quick-grid { grid-template-columns: repeat(3, 1fr); } }
+.quick-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 1rem; padding: 1.25rem; text-align: left; box-shadow: var(--shadow);
+  transition: transform 0.15s, border-color 0.15s; display: block;
+}
+.quick-card:hover { transform: translateY(-2px); border-color: var(--primary); }
+.quick-card.mission { background: var(--primary); color: #fff; border-color: var(--primary); }
+.quick-card.mission .quick-tag { background: #fff; color: var(--primary); }
+
+/* Quests */
+.section-head { display: flex; justify-content: space-between; align-items: flex-end; margin: 2rem 0 1rem; }
+.section-title { font-size: 1.5rem; font-weight: 900; }
+.section-sub { font-size: 0.85rem; color: var(--text-muted); }
+
+.quests-grid { display: grid; gap: 1rem; }
+@media (min-width: 600px) { .quests-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 960px) { .quests-grid { grid-template-columns: repeat(4, 1fr); } }
+
+.quest-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 1rem; padding: 1.25rem; display: flex; flex-direction: column;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.quest-card:hover:not(.locked) { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08); }
+.quest-card.locked { opacity: 0.65; }
+.quest-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+.quest-badge { font-size: 0.7rem; font-weight: 900; padding: 0.25rem 0.5rem; border-radius: 0.4rem; }
+.quest-title { font-size: 1.1rem; font-weight: 900; margin-top: 0.35rem; }
+.quest-meta { font-size: 0.78rem; color: var(--text-muted); font-weight: 700; }
+.quest-outcome { font-size: 0.82rem; color: #475569; margin: 0.6rem 0; flex: 1; }
+.quest-btn {
+  background: var(--dark); color: #fff; font-weight: 800;
+  padding: 0.65rem; border-radius: 0.65rem; font-size: 0.85rem; text-align: center;
+  margin-top: 0.5rem; width: 100%;
+}
+.quest-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* AI Lab */
+.ai-section {
+  background: var(--dark); color: #fff; border-radius: var(--radius);
+  padding: 2rem; margin: 3rem 0;
+}
+.ai-grid { display: grid; gap: 1.5rem; }
+@media (min-width: 800px) { .ai-grid { grid-template-columns: 1fr 1fr; } }
+.ai-textarea {
+  width: 100%; min-height: 140px; background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 0.8rem;
+  padding: 0.85rem; color: #fff; font-family: ui-monospace, Menlo, monospace; font-size: 0.88rem;
+  resize: vertical; outline: none; margin-top: 0.75rem;
+}
+.ai-line-btn {
+  display: block; width: 100%; text-align: left; padding: 0.65rem 0.85rem;
+  border-radius: 0.65rem; margin-bottom: 0.35rem; background: rgba(255, 255, 255, 0.06);
+  color: #fff; transition: background 0.15s;
+}
+.ai-line-btn.active { background: var(--accent); color: var(--dark); }
+
+/* Pro waitlist & Feedback */
+.pro-card {
+  background: var(--surface); border: 2px solid #FCD34D;
+  border-radius: var(--radius); padding: 2rem; margin: 2rem 0;
+}
+.form-row { display: grid; gap: 0.75rem; margin-top: 1rem; }
+@media (min-width: 640px) { .form-row { grid-template-columns: 1.5fr 1fr 1fr auto; } }
+.input-text, .select-input {
+  width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--border);
+  border-radius: 0.75rem; background: #fff;
+}
+.btn-submit {
+  background: var(--dark); color: #fff; font-weight: 800;
+  padding: 0.75rem 1.5rem; border-radius: 0.75rem; white-space: nowrap;
+}
+
+/* Game Screen */
+.game-container { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+.game-stats-bar {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem;
+  margin: 1rem 0; text-align: center;
+}
+.game-stat-box {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 0.75rem; padding: 0.6rem 0.25rem;
+}
+.game-stat-val { font-size: 1.15rem; font-weight: 900; }
+.game-stat-lbl { font-size: 0.7rem; color: var(--text-muted); }
+
+.progress-track {
+  height: 8px; background: #E2E8F0; border-radius: 9999px; overflow: hidden; margin-bottom: 1.5rem;
+}
+.progress-fill { height: 100%; background: var(--primary); transition: width 0.25s; }
+
+.problem-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow);
+}
+.code-block {
+  background: var(--dark); color: #E2E8F0; border-radius: 0.85rem;
+  padding: 1rem 1.25rem; font-family: ui-monospace, Menlo, monospace;
+  font-size: 0.95rem; line-height: 1.6; overflow-x: auto; margin: 1rem 0;
+}
+.typing-input {
+  width: 100%; padding: 1rem; border: 2px solid var(--border);
+  border-radius: 0.85rem; font-family: ui-monospace, Menlo, monospace;
+  font-size: 1.1rem; background: #F8FAFC; outline: none;
+}
+.typing-input:focus { border-color: var(--primary); background: #fff; }
+
+.feedback-box {
+  padding: 1.25rem; border-radius: 0.85rem; margin-top: 1.25rem;
+}
+.feedback-box.ok { background: #ECFDF5; border: 1px solid #A7F3D0; color: #065F46; }
+.feedback-box.bad { background: #FEF2F2; border: 1px solid #FECACA; color: #991B1B; }
+
+/* Result Screen */
+.result-hero {
+  background: var(--dark); color: #fff; border-radius: var(--radius);
+  padding: 2.5rem 2rem; text-align: center; margin: 2rem 0;
+}
+.share-box {
+  background: #F1F5F9; border-radius: 0.85rem; padding: 1rem;
+  font-size: 0.9rem; line-height: 1.6; margin: 1rem 0; white-space: pre-wrap;
+}
+
+/* Growth Screen */
+.growth-metric {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 1rem; padding: 1.25rem;
+}
 </style>
 </head>
 <body>
-<div class="app">
-  <div class="topbar">
-    <div class="brand"><div class="brand-mark">Py</div><div><h1>PyType-Learner Web</h1><small>Python初心者のための5分学習ゲーム v3.1.0</small></div></div>
-    <div class="top-actions"><button class="ghost-btn" onclick="showHome()">ホーム</button><button class="ghost-btn" onclick="resetProgress()">リセット</button></div>
+
+<!-- ==================== HEADER ==================== -->
+<header>
+  <div class="container header-inner">
+    <div class="brand" onclick="showScreen('home')" style="cursor:pointer">
+      <span class="brand-badge">Py</span>
+      <span>PyType Quest</span>
+      <span style="font-size:0.75rem;color:var(--text-muted);font-weight:700">v4.0</span>
+    </div>
+    <div class="header-stats">
+      <span class="stat-pill">🔥 <b id="head-streak">0</b>日</span>
+      <span class="stat-pill">⚡ Lv.<b id="head-level">1</b></span>
+      <span class="stat-pill">⭐ <b id="head-xp">0</b> XP</span>
+      <button onclick="showScreen('growth')" class="btn-growth">運営Growth</button>
+    </div>
   </div>
+</header>
 
-  <section id="home-screen" class="screen active">
-    <div class="hero">
+<!-- ==================== HOME SCREEN ==================== -->
+<main id="screen-home" class="screen active">
+  <div class="container">
+
+    <!-- HERO + 30-sec TRIAL -->
+    <section class="hero-grid">
       <div class="hero-main">
-        <div class="hero-kicker">⚡ 1日5分 / スマホ対応 / PC対応</div>
-        <h2>Pythonを<br>「覚える」から「使える」へ。</h2>
-        <p>4択 → 穴埋め → タイピングの3段階で、意味を理解してからコードを書きます。間違えた問題は復習に回り、毎日の5分ミッションで少しずつスキルを積み上げます。</p>
-        <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:18px"><button class="primary-btn" onclick="startDailyMission()">⚡ 今日の5分ミッション</button><button class="ghost-btn" onclick="scrollToQuests()">🗺️ クエスト一覧</button></div>
-        <div class="tag-row"><span class="tag">初心者向け</span><span class="tag">クイズ</span><span class="tag">穴埋め</span><span class="tag">タイピング</span><span class="tag">AIコード対応</span></div>
-      </div>
-      <div class="hero-side">
-        <div class="profile-row"><div><div style="font-size:12px;color:var(--muted)">あなたのランク</div><div class="level" id="level-text">Lv.1</div></div><div style="text-align:right"><div style="font-size:12px;color:var(--muted)">連続学習</div><div style="font-size:22px;font-weight:900" id="streak-text">0日</div></div></div>
-        <div class="xpbar"><div id="xp-fill"></div></div>
-        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted)"><span id="xp-text">0 / 100 XP</span><span id="next-level-text">次のLvまで</span></div>
-        <div class="mini-grid">
-          <div class="mini-stat"><strong id="stat-completed">0</strong><span>クリアクエスト</span></div>
-          <div class="mini-stat"><strong id="stat-questions">0</strong><span>解いた問題</span></div>
-          <div class="mini-stat"><strong id="stat-accuracy">100%</strong><span>平均正答率</span></div>
-          <div class="mini-stat"><strong id="stat-mistakes">0</strong><span>復習待ち</span></div>
+        <div>
+          <span class="hero-tag">⚡ 登録不要 ・ 1日5分 ・ スマホ / PC両対応</span>
+          <h1 class="hero-title">Pythonを<br>「読める」から<br><span>「書ける」へ。</span></h1>
+          <p class="hero-desc">
+            4択 → 穴埋め → タイピングの3段階で、意味を理解してから手を動かす。
+            全8クエスト40問、間違えた問題は自動で復習リストへ。
+            参考書で挫折した人のための、ゲーム型・再出発カリキュラムです。
+          </p>
+        </div>
+        <div>
+          <div class="hero-actions">
+            <button onclick="startQuest(1)" class="btn-primary">▶ クエスト1を始める（無料）</button>
+            <a href="#quests" class="btn-secondary">全8章マップを見る</a>
+          </div>
+          <div class="hero-stats-row">
+            <div><div class="hero-stat-num" id="stat-total-q">40</div><div class="hero-stat-label">収録問題数</div></div>
+            <div><div class="hero-stat-num" id="stat-cleared">0/8</div><div class="hero-stat-label">クリア章数</div></div>
+            <div><div class="hero-stat-num" id="stat-acc">100%</div><div class="hero-stat-label">平均正答率</div></div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="section-title"><div><h3>🔥 今日のミッション</h3><span>「何を勉強する？」を考えなくてOK</span></div></div>
-    <div class="mission"><div><div class="mission-title" id="daily-title">Python基礎を5分で攻略</div><div class="mission-meta" id="daily-meta">5問 / 約5分 / XP +100</div><div class="tag-row" id="daily-tags"></div></div><button class="primary-btn" onclick="startDailyMission()">開始</button></div>
+      <!-- 30-SEC TRIAL -->
+      <div class="trial-card">
+        <div>
+          <div class="trial-header">
+            <h3 style="font-weight:900;display:flex;align-items:center;gap:0.4rem">
+              ⏱️ 30秒体験 — 登録なしで1問
+            </h3>
+            <span class="trial-badge">noteから来た方へ</span>
+          </div>
+          <p style="font-size:0.85rem;color:var(--text-muted)">
+            記事を読む前に、まず1問。プログラミングの面白さは「解けた瞬間」で決まります。
+          </p>
 
-    <div class="mission" style="margin-top:12px;border-color:rgba(255,207,103,.28);background:linear-gradient(135deg,rgba(255,207,103,.09),rgba(93,179,255,.05))"><div><div class="mission-title">🔁 間違えた問題を復習</div><div class="mission-meta" id="review-meta">苦手問題をもう一度。正解するまでリストに残ります。</div><div class="tag-row"><span class="tag" id="review-count-tag">0問</span></div></div><button class="primary-btn" id="review-start-btn" onclick="startReview()">復習する</button></div>
+          <div class="trial-box">
+            <p style="font-weight:800;font-size:0.92rem">Q. 画面に「Hello」と表示する正しいコードは？</p>
+            <div class="trial-choices" id="trial-choices">
+              <button class="choice-btn" onclick="checkTrial(this, 'print(\"Hello\")', true)">print("Hello")</button>
+              <button class="choice-btn" onclick="checkTrial(this, 'echo \"Hello\"', false)">echo "Hello"</button>
+              <button class="choice-btn" onclick="checkTrial(this, 'console.log(\"Hello\")', false)">console.log("Hello")</button>
+              <button class="choice-btn" onclick="checkTrial(this, 'display(\"Hello\")', false)">display("Hello")</button>
+            </div>
+            <div id="trial-result" style="display:none;margin-top:0.75rem;padding:0.75rem;border-radius:0.5rem;font-size:0.85rem"></div>
+          </div>
+        </div>
 
-    <div id="quests-anchor" class="section-title"><div><h3>🗺️ クエストマップ</h3><span>前のクエストをクリアすると次が開放されます</span></div></div>
-    <div id="quest-grid" class="quest-grid"></div>
+        <div style="border-top:1px solid var(--border);padding-top:1rem">
+          <div style="display:flex;justify-content:space-between;font-size:0.75rem;font-weight:800;color:var(--text-muted)">
+            <span>次のレベルまで</span>
+            <span id="trial-xp-text">0 / 100 XP</span>
+          </div>
+          <div class="progress-track" style="margin-top:0.4rem;height:6px">
+            <div class="progress-fill" id="trial-xp-fill" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <div class="section-title"><div><h3>🎮 学習モード</h3><span>同じ知識を別の角度から定着</span></div></div>
-    <div class="mode-grid" id="mode-grid"></div>
+    <!-- QUICK ACTIONS -->
+    <section class="quick-grid">
+      <button onclick="startMission()" class="quick-card mission">
+        <span style="font-size:1.5rem">🎯</span>
+        <h3 style="font-size:1.1rem;font-weight:900;margin-top:0.35rem">今日の5分ミッション</h3>
+        <p style="font-size:0.85rem;opacity:0.9;margin-top:0.25rem">「何を勉強する？」を考えなくてOK。次の未クリア章へ直行。</p>
+        <span class="quick-tag" style="display:inline-block;padding:0.2rem 0.6rem;border-radius:9999px;font-size:0.75rem;font-weight:800;margin-top:0.75rem">5問 / 約5分 / +100XP</span>
+      </button>
 
-    <div class="card custom">
-      <div style="padding:16px 16px 0"><h3 style="font-size:16px">🤖 AIコード解体モード</h3><p style="color:var(--muted);font-size:12px;line-height:1.6;margin-top:4px">ChatGPTなどが作ったコードを貼り付けると、行ごとの意味を見ながらクイズ・穴埋め・タイピング用の教材に変換します。</p></div>
-      <div style="padding:14px 16px 16px"><textarea id="custom-code-input" placeholder="例：\nfor name in names:\n    print(name)"></textarea><div class="custom-actions"><button class="ghost-btn" onclick="loadExampleCode()">例を入れる</button><button class="primary-btn" onclick="startCustom()">AIコードを教材化 →</button></div></div>
-    </div>
-    <div class="bottom-card">データはこのブラウザの localStorage に保存されます。ログイン不要で、学習進捗・XP・復習リストを維持します。</div>
-  </section>
+      <button onclick="startReview()" class="quick-card">
+        <span style="font-size:1.5rem">🔁</span>
+        <h3 style="font-size:1.1rem;font-weight:900;margin-top:0.35rem">間違えた問題を復習</h3>
+        <p style="font-size:0.85rem;color:var(--text-muted);margin-top:0.25rem">苦手だけをもう一度。正解するまでリストに残る忘却対策サイクル。</p>
+        <span id="review-count-badge" style="display:inline-block;background:#FEF3C7;color:#B45309;padding:0.2rem 0.6rem;border-radius:9999px;font-size:0.75rem;font-weight:800;margin-top:0.75rem">0問 待ち</span>
+      </button>
 
-  <section id="game-screen" class="screen">
-    <div class="game-head"><div><div style="font-size:11px;color:var(--accent);font-weight:800" id="game-kicker">QUEST 1</div><h2 style="font-size:22px" id="game-title">Python基礎</h2></div><button class="ghost-btn" onclick="exitGame()">中断</button></div>
-    <div class="game-statbar"><div class="gs"><b id="g-progress">1 / 5</b><span>進捗</span></div><div class="gs"><b id="g-combo">0</b><span>COMBO</span></div><div class="gs"><b id="g-accuracy">100%</b><span>正答率</span></div><div class="gs"><b id="g-xp">+0</b><span>今回XP</span></div><div class="gs"><b id="g-time">0s</b><span>経過</span></div></div>
-    <div class="progress-wrap"><div class="progress-track"><div class="progress-fill" id="g-progress-fill"></div></div></div>
-    <div class="lesson-layout">
+      <div class="quick-card" style="cursor:default">
+        <span style="font-size:1.5rem">📅</span>
+        <h3 style="font-size:1.1rem;font-weight:900;margin-top:0.35rem">14日カレンダー</h3>
+        <p style="font-size:0.85rem;color:var(--text-muted);margin-top:0.25rem">学習した日に印がつきます。連続記録を伸ばそう。</p>
+        <div id="calendar-dots" style="display:flex;gap:0.3rem;margin-top:0.75rem;flex-wrap:wrap"></div>
+      </div>
+    </section>
+
+    <!-- QUEST MAP -->
+    <section id="quests">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">🗺️ クエストマップ — 全8章40問</h2>
+          <p class="section-sub">前の章をクリアすると次が解放されます。7・8章はPro先行登録で解放。</p>
+        </div>
+      </div>
+      <div class="quests-grid" id="quests-container"></div>
+    </section>
+
+    <!-- AI CODE LAB -->
+    <section class="ai-section">
+      <div class="ai-grid">
+        <div>
+          <div style="display:inline-flex;align-items:center;gap:0.4rem;background:rgba(255,255,255,0.1);padding:0.25rem 0.65rem;border-radius:9999px;font-size:0.75rem;font-weight:800;color:var(--accent)">
+            🤖 ChatGPT・Claudeのコードを分解
+          </div>
+          <h2 style="font-size:1.75rem;font-weight:900;margin:0.75rem 0 0.5rem">AIコード解体モード</h2>
+          <p style="color:#CBD5E1;font-size:0.9rem;line-height:1.7">
+            AIが書いたコードを貼るだけ。1行ごとの意味を表示し、穴埋め問題に変換します。
+            「AIにコードを書かせたけど読めない・直せない」を解消する独自学習機能です。
+          </p>
+          <textarea id="ai-code-input" class="ai-textarea" placeholder="Pythonコードを貼り付け"></textarea>
+          <div style="display:flex;gap:0.5rem;margin-top:0.5rem;flex-wrap:wrap">
+            <button onclick="loadAiSample(1)" class="btn-secondary" style="font-size:0.78rem;padding:0.4rem 0.8rem">サンプル: 合計計算</button>
+            <button onclick="loadAiSample(2)" class="btn-secondary" style="font-size:0.78rem;padding:0.4rem 0.8rem">サンプル: 合否判定</button>
+            <button onclick="parseAiCode()" class="btn-primary" style="font-size:0.78rem;padding:0.4rem 0.85rem">分解する</button>
+          </div>
+        </div>
+
+        <div>
+          <h3 style="font-size:1rem;font-weight:800;margin-bottom:0.75rem">行ごとの解説（タップで穴埋め化）</h3>
+          <div id="ai-lines-list" style="max-height:220px;overflow-y:auto;padding-right:0.25rem"></div>
+          <div id="ai-drill-box" style="display:none;background:#fff;color:var(--dark);padding:1rem;border-radius:0.75rem;margin-top:0.75rem"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRO WAITLIST -->
+    <section id="pro" class="pro-card">
+      <div style="max-width:700px">
+        <span style="background:#FEF3C7;color:#B45309;padding:0.25rem 0.6rem;border-radius:9999px;font-size:0.75rem;font-weight:900">先行登録中</span>
+        <h2 style="font-size:1.75rem;font-weight:900;margin-top:0.5rem">👑 Proプラン先行登録（クエスト7・8が即解放）</h2>
+        <p style="color:var(--text-muted);font-size:0.92rem;margin-top:0.5rem;line-height:1.7">
+          まずは無料の1〜6章（30問）で学んでいただき、もっと先（関数・実務データ処理）へ進みたい方向けのプランです。
+          登録いただくと7・8章が解放されます（課金はまだ発生しません）。
+        </p>
+
+        <form id="waitlist-form" onsubmit="handleWaitlist(event)" class="form-row">
+          <input type="email" id="wl-email" required placeholder="メールアドレスを入力" class="input-text">
+          <select id="wl-interest" class="select-input">
+            <option value="pro_monthly">Proプラン（月額480円）</option>
+            <option value="note_article">note有料記事（買い切り）</option>
+            <option value="free">まずは無料で様子見</option>
+          </select>
+          <select id="wl-source" class="select-input">
+            <option value="note">noteから</option>
+            <option value="x">X(Twitter)から</option>
+            <option value="search">Google検索から</option>
+            <option value="other">その他</option>
+          </select>
+          <button type="submit" class="btn-submit">登録して解放</button>
+        </form>
+        <p id="wl-msg" style="display:none;font-size:0.85rem;font-weight:800;margin-top:0.75rem;padding:0.6rem;border-radius:0.5rem"></p>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer style="margin:4rem 0 2rem;padding-top:2rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;font-size:0.85rem;color:var(--text-muted)">
+      <div><b>PyType Quest</b> — Python初心者のための5分学習ゲーム（MIT License）</div>
       <div>
-        <div id="problem" class="problem">
-          <div class="problem-kicker" id="problem-kicker">KNOWLEDGE</div>
-          <h3 id="problem-title">問題</h3>
-          <div class="problem-copy" id="problem-copy"></div>
-          <div class="code-box" id="code-box"></div>
-          <div class="hint" id="hint-box"></div>
-          <div id="choices" class="choices"></div>
-          <div id="typing-wrap" class="hidden"><div id="typing-target" class="code-box typing-target"></div><input id="typing-input" class="text-input" autocomplete="off" spellcheck="false" placeholder="コードを入力…"></div>
-          <div id="fill-wrap" class="hidden"><input id="fill-input" class="text-input" autocomplete="off" placeholder="空欄に入るコードを入力…"></div>
-          <div class="feedback" id="feedback"></div>
-          <div class="game-actions"><button class="ghost-btn" id="hint-btn" onclick="showHint()">💡 ヒント</button><button class="primary-btn hidden" id="next-btn" onclick="nextQuestion()">次へ →</button></div>
+        <button onclick="showScreen('growth')" style="font-weight:800;color:var(--primary);text-decoration:underline">運営者向け Growth分析</button>
+        <span style="margin:0 0.5rem">|</span>
+        <button onclick="resetData()" style="color:#DC2626">データ初期化</button>
+      </div>
+    </footer>
+
+  </div>
+</main>
+
+<!-- ==================== GAME SCREEN ==================== -->
+<main id="screen-game" class="screen">
+  <div class="game-container">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <p id="game-tag" style="font-size:0.75rem;font-weight:900;color:var(--primary);letter-spacing:1px">QUEST 1</p>
+        <h1 id="game-quest-title" style="font-size:1.75rem;font-weight:900">Python基礎</h1>
+      </div>
+      <button onclick="showScreen('home')" class="btn-secondary" style="color:var(--dark);border-color:var(--border)">中断して戻る</button>
+    </div>
+
+    <!-- STATS BAR -->
+    <div class="game-stats-bar">
+      <div class="game-stat-box"><div class="game-stat-val" id="g-prog">1/5</div><div class="game-stat-lbl">進捗</div></div>
+      <div class="game-stat-box"><div class="game-stat-val" id="g-combo">0</div><div class="game-stat-lbl">COMBO</div></div>
+      <div class="game-stat-box"><div class="game-stat-val" id="g-acc">100%</div><div class="game-stat-lbl">正答率</div></div>
+      <div class="game-stat-box"><div class="game-stat-val" id="g-xp">+0</div><div class="game-stat-lbl">今回XP</div></div>
+      <div class="game-stat-box"><div class="game-stat-val" id="g-time">0s</div><div class="game-stat-lbl">時間</div></div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="g-progress-fill" style="width:0%"></div></div>
+
+    <!-- PROBLEM CARD -->
+    <div class="problem-card">
+      <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap">
+        <span id="p-type" style="background:#CCFBF1;color:#0F766E;padding:0.2rem 0.6rem;border-radius:9999px;font-size:0.75rem;font-weight:900">4択クイズ</span>
+        <span id="p-skill" style="background:#F1F5F9;color:#475569;padding:0.2rem 0.6rem;border-radius:9999px;font-size:0.75rem;font-weight:700">文法基礎</span>
+        <span id="p-xp" style="background:#FEF3C7;color:#B45309;padding:0.2rem 0.6rem;border-radius:9999px;font-size:0.75rem;font-weight:900">+20 XP</span>
+      </div>
+
+      <h2 id="p-prompt" style="font-size:1.35rem;font-weight:900;margin-top:1rem;line-height:1.4">問題文</h2>
+
+      <div id="p-code-wrap" style="display:none">
+        <pre class="code-block"><code id="p-code"></code></pre>
+      </div>
+
+      <!-- CHOICES (4-choice) -->
+      <div id="p-choices-wrap" style="display:none;margin-top:1.25rem" class="trial-choices"></div>
+
+      <!-- TYPING / FILL INPUT -->
+      <div id="p-input-wrap" style="display:none;margin-top:1.25rem">
+        <input type="text" id="p-input" class="typing-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="ここに答えを入力（Enterで判定）">
+        <p style="font-size:0.8rem;color:var(--text-muted);margin-top:0.4rem">ヒント: <span id="p-hint"></span> ／ Enterキーで決定</p>
+      </div>
+
+      <!-- SUBMIT ACTION -->
+      <button id="p-submit-btn" onclick="submitAnswer()" class="btn-primary" style="width:100%;justify-content:center;margin-top:1.25rem;display:none">
+        答え合わせする
+      </button>
+
+      <!-- FEEDBACK -->
+      <div id="p-feedback" class="feedback-box" style="display:none">
+        <h4 id="fb-title" style="font-weight:900;font-size:1.05rem"></h4>
+        <p id="fb-desc" style="font-size:0.9rem;margin-top:0.35rem;line-height:1.6"></p>
+        <button onclick="nextQuestion()" class="btn-primary" style="margin-top:1rem;width:100%;justify-content:center">
+          次の問題へ →
+        </button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ==================== RESULT SCREEN ==================== -->
+<main id="screen-result" class="screen">
+  <div class="game-container">
+    <div class="result-hero">
+      <span style="color:var(--accent);font-size:0.75rem;font-weight:900;letter-spacing:1px">MISSION COMPLETE</span>
+      <h1 id="res-heading" style="font-size:2.5rem;font-weight:900;margin:0.5rem 0">🎉 クリア！</h1>
+      <p id="res-quest-name" style="color:#CBD5E1;font-size:0.95rem"></p>
+
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;margin-top:1.5rem">
+        <div style="background:rgba(255,255,255,0.08);padding:0.75rem;border-radius:0.75rem">
+          <div style="font-size:1.5rem;font-weight:900;color:var(--accent)" id="r-xp">+0</div>
+          <div style="font-size:0.72rem;color:#94A3B8">獲得XP</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.08);padding:0.75rem;border-radius:0.75rem">
+          <div style="font-size:1.5rem;font-weight:900" id="r-acc">100%</div>
+          <div style="font-size:0.72rem;color:#94A3B8">正答率</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.08);padding:0.75rem;border-radius:0.75rem">
+          <div style="font-size:1.5rem;font-weight:900" id="r-time">0s</div>
+          <div style="font-size:0.72rem;color:#94A3B8">クリア時間</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.08);padding:0.75rem;border-radius:0.75rem">
+          <div style="font-size:1.5rem;font-weight:900" id="r-combo">0</div>
+          <div style="font-size:0.72rem;color:#94A3B8">最大COMBO</div>
         </div>
       </div>
-      <aside class="lesson-card"><h4>📚 この問題で覚えること</h4><div class="rule" id="lesson-rule"></div><p class="lesson-desc" id="lesson-desc"></p><div class="memory-note" id="memory-note"></div><div style="height:12px"></div><h4>🧠 先生メモ</h4><p class="lesson-desc">正解することより、「なぜこのコードになるか」を一言で説明できることを重視します。</p></aside>
     </div>
-  </section>
 
-  <section id="result-screen" class="screen">
-    <div class="hero-main" style="margin-bottom:18px"><div class="hero-kicker">MISSION COMPLETE</div><h2 id="result-title">🎉 クリア！</h2><p id="result-copy"></p></div>
-    <div class="result-grid"><div class="result-card"><strong id="r-xp">+0</strong><span>獲得XP</span></div><div class="result-card"><strong id="r-acc">100%</strong><span>正答率</span></div><div class="result-card"><strong id="r-time">0s</strong><span>時間</span></div><div class="result-card"><strong id="r-combo">0</strong><span>最大COMBO</span></div></div>
-    <div class="card" style="padding:18px;margin-top:18px"><div class="section-title" style="margin-top:0"><div><h3>📈 スキル進捗</h3><span>今回の結果を反映</span></div></div><div class="skill-list" id="skill-list"></div></div>
-    <div class="card" style="padding:18px;margin-top:18px"><div class="section-title" style="margin-top:0"><div><h3>🏆 実績</h3><span>解除したものが光ります</span></div></div><div class="achievement-list" id="achievement-list"></div></div>
-    <div style="display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin-top:18px"><button class="primary-btn" onclick="showHome()">ホームへ戻る</button><button class="ghost-btn" onclick="repeatLast()">もう一度</button><button class="ghost-btn" onclick="shareResult()">𝕏 結果をシェア</button></div>
-  </section>
-</div>
+    <!-- SHARE CARD -->
+    <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:1.75rem">
+      <h3 style="font-size:1.15rem;font-weight:900">📣 結果をシェアして学習を宣言</h3>
+      <p style="font-size:0.85rem;color:var(--text-muted);margin-top:0.25rem">
+        学習記録をnoteやXに投稿すると継続率がアップします。以下の文面をそのまま使えます。
+      </p>
+      <div id="share-text" class="share-box"></div>
+      <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
+        <button onclick="copyShareText()" id="btn-copy-share" class="btn-primary" style="flex:1;justify-content:center">
+          X / note用にコピー
+        </button>
+        <button onclick="tweetResult()" class="btn-secondary" style="color:var(--dark);border-color:var(--border)">
+          𝕏 でポスト
+        </button>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:0.75rem;margin-top:1.5rem">
+      <button onclick="showScreen('home')" class="btn-primary" style="flex:1;justify-content:center">クエスト一覧へ戻る</button>
+      <button id="res-review-btn" onclick="startReview()" class="btn-secondary" style="color:var(--dark);border-color:var(--border);display:none">復習リストに挑戦</button>
+    </div>
+  </div>
+</main>
+
+<!-- ==================== GROWTH SCREEN ==================== -->
+<main id="screen-growth" class="screen">
+  <div class="container" style="padding:2rem 1rem">
+    <button onclick="showScreen('home')" class="btn-secondary" style="color:var(--dark);border-color:var(--border);margin-bottom:1rem">← アプリに戻る</button>
+
+    <h1 style="font-size:2rem;font-weight:900">📊 運営Growth — 90インプレッション / 7ビューをどう伸ばすか</h1>
+    <p style="color:var(--text-muted);margin-top:0.5rem;max-width:800px;line-height:1.7">
+      現状CTRは約7.8%。問題は「読まれなかったこと」ではなく、
+      <b>①タイトルが“自分ごと”になっていない ②開いても30秒で価値を感じられない ③読者の次アクションが無い</b>
+      の3点です。本アプリ側は②③を、note側は①を直します。
+    </p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:1.5rem 0">
+      <div class="growth-metric"><div style="font-size:2rem;font-weight:900">90</div><div style="font-weight:800;font-size:0.9rem">noteインプレッション</div><div style="font-size:0.75rem;color:var(--text-muted)">母数は十分。露出は取れている</div></div>
+      <div class="growth-metric"><div style="font-size:2rem;font-weight:900">7</div><div style="font-weight:800;font-size:0.9rem">ビュー（CTR 7.8%）</div><div style="font-size:0.75rem;color:var(--text-muted)">タイトル/サムネで損している</div></div>
+      <div class="growth-metric"><div style="font-size:2rem;font-weight:900" id="growth-plays">0</div><div style="font-weight:800;font-size:0.9rem">このブラウザでのプレイ数</div><div style="font-size:0.75rem;color:var(--text-muted)">結果保存が増えるほど証拠になる</div></div>
+      <div class="growth-metric"><div style="font-size:2rem;font-weight:900" id="growth-wl">0</div><div style="font-weight:800;font-size:0.9rem">Pro先行登録数</div><div style="font-size:0.75rem;color:var(--text-muted)">収益化の最初のKPI</div></div>
+    </div>
+
+    <!-- NOTE TITLES -->
+    <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin:1.5rem 0">
+      <h3 style="font-size:1.25rem;font-weight:900">💡 次に書くnoteタイトル案（クリックでコピー）</h3>
+      <p style="font-size:0.85rem;color:var(--text-muted);margin-top:0.25rem">
+        「Python学習法」のような抽象タイトルをやめ、数字＋感情＋変化を入れるとCTRが上がります。
+      </p>
+      <div id="note-titles-list" style="margin-top:1rem;display:grid;gap:0.75rem"></div>
+    </div>
+
+    <!-- FUNNEL -->
+    <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem">
+      <h3 style="font-size:1.25rem;font-weight:900">📈 note 7日連載テンプレート</h3>
+      <p style="font-size:0.85rem;color:var(--text-muted);margin-top:0.25rem">
+        ①最初の3行で挫折体験と「今日の結果スクショ」 ②アプリで解いた1問を記事内でも出題 ③つまずいたポイントの解説 ④末尾に固定CTA「登録不要で続きの4問はこちら」。
+        この型で7日連載すると、フォロワーが増え、アプリへの流入が安定します。
+      </p>
+    </div>
+  </div>
+</main>
+
+<!-- ==================== JAVASCRIPT ==================== -->
 <script>
-// ----------------------------
-// Analytics: 開発者モード / GA4
-// ----------------------------
-(function(){
-  const p=new URLSearchParams(location.search);
-  if(p.get('dev')==='1'){localStorage.setItem('pytype_exclude_analytics','1'); alert('開発者モード：GA4計測を除外しました。');}
-  const excluded=localStorage.getItem('pytype_exclude_analytics')==='1';
-  if(!excluded && location.protocol!=='file:' && location.hostname!=='localhost' && location.hostname!=='127.0.0.1'){
-    const s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=G-2TJ29KSJP4';document.head.appendChild(s);
-    window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config','G-2TJ29KSJP4');
-  } else {window.gtag=function(){};}
-})();
+// ============================================================
+// PyType Quest v4.0.0 - 全ロジック & 問題データ
+// 編集ガイド:
+//   - 問題を追加/変更したい場合: QUESTS 配列を編集
+//   - 新しい note タイトルを追加したい場合: NOTE_TITLES 配列を編集
+//   - ストレージ保存キー: 'pytype-quest-v4' (localStorage)
+// ============================================================
 
-const CORE=[
- {id:'py_print',skill:'基礎',title:'printで結果を表示',topic:'Pythonの最初の一歩',code:'print("Hello, Python!")',answer:'print("Hello, Python!")',rule:'print(表示したい値)',desc:'print() は文字や計算結果などを画面に表示する基本の命令です。',memory:'print = 「画面に見せる」'},
- {id:'py_var',skill:'基礎',title:'変数に値を保存',topic:'データを名前で持つ',code:'score = 80',answer:'score = 80',rule:'変数 = 値',desc:'右側の値を左側の変数名に保存します。あとから score のように名前で参照できます。',memory:'= は「代入」。数学のイコールとは少し役割が違う。'},
- {id:'py_if',skill:'条件分岐',title:'条件で処理を分ける',topic:'if文',code:'age = 16\nif age >= 18:\n    print("adult")',answer:'if age >= 18:',rule:'if 条件式:',desc:'条件がTrueのときだけ、インデントされた処理を実行します。',memory:'if = 「もし〜なら」'},
- {id:'py_for',skill:'繰り返し',title:'同じ処理を繰り返す',topic:'for文',code:'for i in range(3):\n    print(i)',answer:'for i in range(3):',rule:'for 変数 in 繰り返し対象:',desc:'for文はデータや回数に合わせて同じ処理を繰り返します。',memory:'for = 「順番に取り出して繰り返す」'},
- {id:'py_list',skill:'データ構造',title:'リストを作る',topic:'list',code:'names = ["A", "B", "C"]',answer:'names = ["A", "B", "C"]',rule:'[値1, 値2, ...]',desc:'複数の値を順番にまとめて持つのがリストです。',memory:'[] を見たら「順番つきの箱」を思い出す。'},
- {id:'py_dict',skill:'データ構造',title:'辞書から値を取り出す',topic:'dict',code:'user = {"name": "SR"}',answer:'user = {"name": "SR"}',rule:'{キー: 値}',desc:'辞書はキーと値の組み合わせでデータを管理します。',memory:'dict = 「名前つきの箱」'},
- {id:'py_func',skill:'関数',title:'関数を定義する',topic:'def',code:'def greet(name):\n    return f"Hello, {name}"',answer:'def greet(name):',rule:'def 関数名(引数):',desc:'よく使う処理を関数としてまとめると、何度も再利用できます。',memory:'def = 「自分専用の命令を作る」'},
- {id:'py_import',skill:'ライブラリ',title:'ライブラリを読み込む',topic:'import',code:'import requests',answer:'import requests',rule:'import モジュール名',desc:'Python本体以外の便利な機能を使えるようにモジュールを読み込みます。',memory:'import = 「便利な道具を持ってくる」'},
- {id:'py_csv',skill:'自動化',title:'CSVへ保存する',topic:'pandas',code:'df.to_csv("result.csv", index=False)',answer:'df.to_csv("result.csv", index=False)',rule:'DataFrame.to_csv("保存名", index=False)',desc:'表データをCSVへ書き出すと、Excelや他のツールへ渡しやすくなります。',memory:'to_csv = 「表をCSVに出す」'},
- {id:'py_try',skill:'例外処理',title:'エラーに備える',topic:'try / except',code:'try:\n    risky()\nexcept Exception as e:\n    print(e)',answer:'try:',rule:'try:\n    処理\nexcept Exception as e:',desc:'予期せぬエラーでプログラム全体が止まるのを防ぎ、エラーに応じた処理を行えます。',memory:'try = 試す / except = 失敗したとき'},
- {id:'py_os',skill:'自動化',title:'フォルダを作る',topic:'os',code:'import os\nos.makedirs("output", exist_ok=True)',answer:'os.makedirs("output", exist_ok=True)',rule:'os.makedirs("フォルダ名", exist_ok=True)',desc:'フォルダを自動作成できます。exist_ok=Trueなら既にあってもエラーにしません。',memory:'自動化は「面倒な作業を繰り返させない」が基本。'},
- {id:'py_json',skill:'API',title:'辞書をJSONとして送る',topic:'requests / API',code:'payload = {"content": "Hello"}\nrequests.post(url, json=payload)',answer:'requests.post(url, json=payload)',rule:'requests.post(URL, json=データ)',desc:'APIへデータを送信するときによく使う形です。',memory:'POST = 「データを送る」'},
- {id:'py_date',skill:'標準ライブラリ',title:'今日の日付を取る',topic:'datetime',code:'import datetime\ntoday = datetime.date.today()',answer:'today = datetime.date.today()',rule:'datetime.date.today()',desc:'今日の日付を取得して、ログやファイル名などに利用できます。',memory:'today = 今日の日付'},
- {id:'py_file',skill:'ファイル操作',title:'ファイルを安全に開く',topic:'open / with',code:'with open("log.txt", "a") as f:\n    f.write("done\\n")',answer:'with open("log.txt", "a") as f:',rule:'with open("パス", "モード") as 変数:',desc:'withを使うと、処理後のファイルクローズを安全に管理しやすくなります。',memory:'with = 「使い終わったら後片付け」'},
- {id:'py_regex',skill:'文字列処理',title:'数字を正規表現で探す',topic:'re',code:'pattern = re.compile(r"\\d+")',answer:'pattern = re.compile(r"\\d+")',rule:'re.compile(r"パターン")',desc:'正規表現を使うと、数字やメールアドレスなど特定パターンの文字列を検索できます。',memory:'\\d+ = 「数字が1個以上」'}
+const QUESTS = [
+  {
+    id: 1, title: "Pythonの第一歩", subtitle: "文字を表示する", minutes: 3, isPro: false,
+    outcome: "自分の好きな文字や計算結果を画面に出力できる",
+    skills: ["print", "文字列", "数値"],
+    bg: "#ECFDF5", color: "#065F46",
+    questions: [
+      { id: "q1_1", type: "choice", prompt: "画面に「Hello」と表示する正しいPythonコードは？", code: "", choices: ['print("Hello")', 'echo "Hello"', 'console.log("Hello")', 'display("Hello")'], answer: 'print("Hello")', explanation: "Pythonで画面に文字を表示するには print() を使います。ダブルクォーテーションで文字を囲みます。", hint: "Pythonは print()", skill: "print文", xp: 20 },
+      { id: "q1_2", type: "fill", prompt: "printを使って数値の 100 を表示するコードを完成させてください", code: "___(100)", answer: "print", explanation: "数値はクォーテーションで囲まずにそのまま print(100) と書きます。", hint: "表示の命令", skill: "数値表示", xp: 20 },
+      { id: "q1_3", type: "choice", prompt: "次のコードを実行すると何が表示されますか？", code: 'print("3 + 5")\nprint(3 + 5)', choices: ["3 + 5 と 8", "8 と 8", "3 + 5 と 3 + 5", "エラーになる"], answer: "3 + 5 と 8", explanation: '" "で囲むと文字としてそのまま表示され、囲まないと計算結果の8が表示されます。', hint: "クォーテーションの有無に注目", skill: "文字と数値", xp: 25 },
+      { id: "q1_4", type: "typing", prompt: "「Python」と表示するコードを正確に入力してください", code: "", answer: 'print("Python")', explanation: 'print("Python") と半角英数・カッコ・クォーテーションを正しく打ちます。', hint: 'print("Python")', skill: "正確なタイピング", xp: 25 },
+      { id: "q1_5", type: "choice", prompt: "改行せずに2つの単語を並べて表示する print の書き方は？", code: 'print("Hello", "World")', choices: ["Hello World", "HelloWorld", "Hello, World", "エラー"], answer: "Hello World", explanation: "カンマで区切ると、半角スペースで区切られて順番に表示されます。", hint: "カンマ区切りはスペースが入る", skill: "複数出力", xp: 30 }
+    ]
+  },
+  {
+    id: 2, title: "変数とデータ", subtitle: "値に名前をつけて覚える", minutes: 5, isPro: false,
+    outcome: "点数やユーザー名を保存し、後から呼び出して使える",
+    skills: ["変数定義", "代入", "文字列結合"],
+    bg: "#EFF6FF", color: "#1E40AF",
+    questions: [
+      { id: "q2_1", type: "choice", prompt: "変数 name に「太郎」という文字を入れる正しい書き方は？", code: "", choices: ['name = "太郎"', 'name == "太郎"', '"太郎" = name', 'var name = "太郎"'], answer: 'name = "太郎"', explanation: "= は数学の「等しい」ではなく「右の値を左の変数に入れる（代入）」という意味です。", hint: "左に変数の名前、右に値", skill: "変数代入", xp: 20 },
+      { id: "q2_2", type: "fill", prompt: "変数 score に 80 を代入するコードを完成させてください", code: "score ___ 80", answer: "=", explanation: "代入には = 記号を1つ使います。", hint: "イコール記号", skill: "代入演算子", xp: 20 },
+      { id: "q2_3", type: "choice", prompt: "次のコードを実行したときの表示結果は？", code: 'x = 10\nx = 20\nprint(x)', choices: ["20", "10", "30", "エラー"], answer: "20", explanation: "変数は後から新しい値を入れると、上書きされて最後の値だけが残ります。", hint: "変数は上書きされる", skill: "再代入", xp: 25 },
+      { id: "q2_4", type: "typing", prompt: "変数 user に「ゲスト」を代入する1行を入力してください", code: "", answer: 'user = "ゲスト"', explanation: 'user = "ゲスト" で文字列を記憶させます。', hint: 'user = "ゲスト"', skill: "変数入力", xp: 25 },
+      { id: "q2_5", type: "choice", prompt: "f文字列を使って変数を埋め込む正しい書き方は？", code: 'name = "花子"', choices: ['print(f"こんにちは、{name}さん")', 'print("こんにちは、{name}さん")', 'print(f"こんにちは、nameさん")', 'print("こんにちは" + {name})'], answer: 'print(f"こんにちは、{name}さん")', explanation: "文字列の前に f をつけ、{変数名} と書くとその場所に変数の値が埋め込まれます（f文字列）。", hint: "先頭に f を置く", skill: "f文字列", xp: 30 }
+    ]
+  },
+  {
+    id: 3, title: "計算と演算子", subtitle: "コンピュータに計算させる", minutes: 5, isPro: false,
+    outcome: "合計金額・割引額・平均値の計算ロジックが書ける",
+    skills: ["四則演算", "割り算の余り", "累積代入"],
+    bg: "#FEF3C7", color: "#92400E",
+    questions: [
+      { id: "q3_1", type: "choice", prompt: "Pythonで掛け算を表す記号はどれ？", code: "", choices: ["*", "×", "x", "**"], answer: "*", explanation: "プログラミングでの掛け算は *（アスタリスク）を使います。** はべき乗（○乗）です。", hint: "アスタリスク", skill: "掛け算", xp: 20 },
+      { id: "q3_2", type: "fill", prompt: "7 を 3 で割った「余り（1）」を求める演算子は何？", code: "amari = 7 ___ 3", answer: "%", explanation: "% は割り算の余りを求めます。偶数・奇数の判定によく使われます。", hint: "パーセント記号", skill: "剰余算", xp: 20 },
+      { id: "q3_3", type: "choice", prompt: "次のコードの出力結果は何ですか？", code: "total = 100\ntotal += 50\nprint(total)", choices: ["150", "100", "50", "total50"], answer: "150", explanation: "total += 50 は total = total + 50 の省略形で、元の値に50を加算します。", hint: "+= は足し算して上書き", skill: "累積代入", xp: 25 },
+      { id: "q3_4", type: "typing", prompt: "10 を 2 で割った商（5.0）を print するコードを書いてください", code: "", answer: "print(10 / 2)", explanation: "スラッシュ1つの割り算は小数の結果（float）を返します。", hint: "print(10 / 2)", skill: "除算", xp: 25 },
+      { id: "q3_5", type: "choice", prompt: "整数部分だけを求める（切り捨て割り算）記号はどれ？", code: "print(7 // 2)", choices: ["3", "3.5", "4", "1"], answer: "3", explanation: "// は小数点以下を切り捨てて整数の商を返します。7 // 2 は 3 になります。", hint: "スラッシュ2つは切り捨て", skill: "整除", xp: 30 }
+    ]
+  },
+  {
+    id: 4, title: "条件分岐 if", subtitle: "状況に応じて処理を分ける", minutes: 5, isPro: false,
+    outcome: "合格/不合格、ログイン状態の判定プログラムを作れる",
+    skills: ["if", "else", "比較演算子"],
+    bg: "#FEE2E2", color: "#991B1B",
+    questions: [
+      { id: "q4_1", type: "choice", prompt: "変数 score が 60以上かどうかを調べる記号はどれ？", code: "", choices: ["score >= 60", "score => 60", "score > 60", "score == 60"], answer: "score >= 60", explanation: "「以上」は >= と書きます。=> ではありません。", hint: "大なりイコール", skill: "比較演算子", xp: 20 },
+      { id: "q4_2", type: "fill", prompt: "if文の末尾に必要な記号は何ですか？", code: "if score >= 60___", answer: ":", explanation: "Pythonのif文やfor文の末尾には必ず :（コロン）が必要です。", hint: "コロン記号", skill: "構文ルール", xp: 20 },
+      { id: "q4_3", type: "choice", prompt: "次のコードを実行したときの出力は？", code: 'age = 15\nif age >= 18:\n    print("大人")\nelse:\n    print("子ども")', choices: ["子ども", "大人", "何も出ない", "エラー"], answer: "子ども", explanation: "15 >= 18 は成り立たない（False）ため、else側のブロックが実行されます。", hint: "条件が満たされない場合は else", skill: "if-else", xp: 25 },
+      { id: "q4_4", type: "typing", prompt: "「等しい」を判定する比較のif文を入力してください", code: "if role == \"admin\":", answer: 'if role == "admin":', explanation: "代入は = 1つですが、比較は == 2つです。よく間違えるポイントです！", hint: 'if role == "admin":', skill: "等価比較", xp: 25 },
+      { id: "q4_5", type: "choice", prompt: "「そうでなくもし〜なら」を追加するキーワードは？", code: "", choices: ["elif", "else if", "elseif", "case"], answer: "elif", explanation: "Pythonでは else if を縮めて elif と書きます。", hint: "else と if を合体", skill: "elif", xp: 30 }
+    ]
+  },
+  {
+    id: 5, title: "繰り返し for", subtitle: "同じ作業を何千回も自動化", minutes: 6, isPro: false,
+    outcome: "100回連続処理やリスト内データの全件処理ができる",
+    skills: ["for文", "range", "ループ変数"],
+    bg: "#F3E8FF", color: "#6B21A8",
+    questions: [
+      { id: "q5_1", type: "choice", prompt: "0, 1, 2 と3回繰り返す range の書き方はどれ？", code: "", choices: ["range(3)", "range(1, 3)", "range(0, 2)", "range(4)"], answer: "range(3)", explanation: "range(3) は 0 から始まって 3 未満（0, 1, 2）の3つの数を生み出します。", hint: "0から始まります", skill: "range関数", xp: 20 },
+      { id: "q5_2", type: "fill", prompt: "for文を作るキーワードを埋めてください", code: "___ i in range(5):\n    print(i)", answer: "for", explanation: "for 変数 in 繰り返すもの: の形で繰り返しを作ります。", hint: "〜のために", skill: "for構文", xp: 20 },
+      { id: "q5_3", type: "choice", prompt: "次のループで最後に表示される数字は何？", code: "for i in range(1, 5):\n    print(i)", choices: ["4", "5", "1", "0"], answer: "4", explanation: "range(1, 5) は 1 から始まって 5 の直前（4）で終わります。終了値は含まれません。", hint: "終了値の手前まで", skill: "range範囲", xp: 25 },
+      { id: "q5_4", type: "typing", prompt: "3回「OK」と表示するforループの1行目を打ってください", code: "for _ in range(3):", answer: "for _ in range(3):", explanation: "変数を使わない時は慣例で _（アンダースコア）を置くことも多いです。", hint: "for _ in range(3):", skill: "定数ループ", xp: 25 },
+      { id: "q5_5", type: "choice", prompt: "ループを途中で強制終了するキーワードはどれ？", code: "", choices: ["break", "stop", "exit", "continue"], answer: "break", explanation: "break はその時点でループから完全に脱出します。continue は次の周へスキップします。", hint: "壊して抜ける", skill: "break文", xp: 30 }
+    ]
+  },
+  {
+    id: 6, title: "リストと辞書", subtitle: "たくさんのデータをまとめて整理", minutes: 6, isPro: false,
+    outcome: "買い物カゴやユーザープロフィールを構造化して扱える",
+    skills: ["list", "dict", "インデックス"],
+    bg: "#CCFBF1", color: "#0F766E",
+    questions: [
+      { id: "q6_1", type: "choice", prompt: "Pythonでリスト（配列）を作る正しい記号はどれ？", code: "", choices: ['["リンゴ", "バナナ"]', '{"リンゴ", "バナナ"}', '("リンゴ", "バナナ")', '<"リンゴ", "バナナ">'], answer: '["リンゴ", "バナナ"]', explanation: "角カッコ [ ] で囲むと順序を持つ「リスト」になります。", hint: "角カッコ [ ]", skill: "リスト作成", xp: 20 },
+      { id: "q6_2", type: "fill", prompt: "リスト fruits の先頭（最初の要素）を取り出すインデックスは？", code: "first = fruits[___]", answer: "0", explanation: "プログラミングでは番号は 0 から始まります（0番目が先頭）。", hint: "ゼロから数えます", skill: "インデックス", xp: 20 },
+      { id: "q6_3", type: "choice", prompt: "辞書 user から年齢を取り出す書き方はどれ？", code: 'user = {"name": "太郎", "age": 20}', choices: ['user["age"]', "user.age", 'user[1]', 'user("age")'], answer: 'user["age"]', explanation: '辞書は 角カッコの中にキー名 user["age"] を指定して値を取り出します。', hint: '角カッコに "age"', skill: "辞書の参照", xp: 25 },
+      { id: "q6_4", type: "typing", prompt: "リスト nums の末尾に 10 を追加するコードを打ってください", code: "nums.append(10)", answer: "nums.append(10)", explanation: "append() を使うとリストの最後に新しいデータを追加できます。", hint: "nums.append(10)", skill: "要素追加", xp: 25 },
+      { id: "q6_5", type: "choice", prompt: "リストの要素の個数を数える便利な関数はどれ？", code: "len([10, 20, 30])", choices: ["3", "2", "30", "エラー"], answer: "3", explanation: "len() 関数はリストの長さ（要素数）や文字列の文字数を返します。", hint: "lengthの略", skill: "len関数", xp: 30 }
+    ]
+  },
+  {
+    id: 7, title: "関数を作る def", subtitle: "自分だけの命令を作って再利用", minutes: 7, isPro: true,
+    outcome: "複雑な処理を1語にまとめ、チームや別の場所で再利用できる",
+    skills: ["def", "引数", "return"],
+    bg: "#FEF3C7", color: "#B45309",
+    questions: [
+      { id: "q7_1", type: "choice", prompt: "関数を定義するためのキーワードはどれ？", code: "", choices: ["def", "function", "fn", "create"], answer: "def", explanation: "Pythonでは define（定義する）の略で def を使います。", hint: "def です", skill: "関数定義", xp: 20 },
+      { id: "q7_2", type: "fill", prompt: "関数から結果を呼び出し元へ戻すキーワードは？", code: "def add(a, b):\n    ___ a + b", answer: "return", explanation: "return で計算結果を返します。画面に出す print とは役割が異なります。", hint: "返す", skill: "戻り値", xp: 25 },
+      { id: "q7_3", type: "choice", prompt: "次のコードを実行すると何が表示されますか？", code: "def double(x):\n    return x * 2\n\nprint(double(5))", choices: ["10", "5", "double(5)", "エラー"], answer: "10", explanation: "double(5) が呼び出され、5 * 2 = 10 が計算されて返されます。", hint: "5の2倍", skill: "関数呼び出し", xp: 25 },
+      { id: "q7_4", type: "typing", prompt: "挨拶する関数 say_hi() の定義1行目を入力してください", code: "def say_hi():", answer: "def say_hi():", explanation: "def 関数名(): の形で定義を始めます。", hint: "def say_hi():", skill: "関数シグネチャ", xp: 30 },
+      { id: "q7_5", type: "choice", prompt: "引数に初期値を設定する「デフォルト引数」の正しい書き方は？", code: "", choices: ['def greet(name="ゲスト"):', 'def greet(name := "ゲスト"):', 'def greet(name == "ゲスト"):', 'def greet(name: "ゲスト"):'], answer: 'def greet(name="ゲスト"):', explanation: "引数名=デフォルト値 と書いておくと、省略されたときにその値が使われます。", hint: "イコール1つで指定", skill: "デフォルト引数", xp: 30 }
+    ]
+  },
+  {
+    id: 8, title: "実務・自動化ミニプロジェクト", subtitle: "学んだ知識をつなげて動かす", minutes: 8, isPro: true,
+    outcome: "「合格者一覧の抽出」「合計と消費税計算」が1人で作れる",
+    skills: ["実践", "データ処理", "総合演習"],
+    bg: "#ECFDF5", color: "#047857",
+    questions: [
+      { id: "q8_1", type: "choice", prompt: "次のコードは何をしていますか？", code: 'scores = [80, 45, 90]\npassed = [s for s in scores if s >= 60]', choices: ["60点以上の合格者だけを集めたリストを作る", "全員に60点を足す", "合計点を計算する", "エラーになる"], answer: "60点以上の合格者だけを集めたリストを作る", explanation: "リスト内包表記を使って、条件に合うものだけを新しいリストに抽出しています。", hint: "if s >= 60 に注目", skill: "リスト内包表記", xp: 25 },
+      { id: "q8_2", type: "fill", prompt: "合計金額を求める sum 関数の名前を埋めてください", code: "total = ___(prices)", answer: "sum", explanation: "sum(リスト) で数値リストの合計を一発で計算できます。", hint: "合計を表す英単語", skill: "sum関数", xp: 25 },
+      { id: "q8_3", type: "choice", prompt: "ファイルを開いて安全に処理する定番構文はどれ？", code: "", choices: ['with open("data.txt") as f:', 'open("data.txt").run()', 'using file("data.txt"):', 'file.open("data.txt")'], answer: 'with open("data.txt") as f:', explanation: "with open() を使うと、処理が終わった後に自動でファイルを安全に閉じてくれます。", hint: "with open", skill: "ファイル処理", xp: 30 },
+      { id: "q8_4", type: "typing", prompt: "消費税10%を掛けて整数にするコードを打ってください", code: "tax_price = int(price * 1.1)", answer: "tax_price = int(price * 1.1)", explanation: "int() で小数点以下を切り捨てて整数にします。", hint: "tax_price = int(price * 1.1)", skill: "型変換と計算", xp: 30 },
+      { id: "q8_5", type: "choice", prompt: "この8クエストを修了したあなたの今の実力は？", code: "", choices: ["基礎文法を理解し、AIに修正指示が出せるレベル", "何も身についていない", "すでに上級エンジニア", "本を読むだけで満足"], answer: "基礎文法を理解し、AIに修正指示が出せるレベル", explanation: "print, 変数, 計算, if, for, リスト, 関数。この7つがあれば、ChatGPTのコードを読んで直せます！", hint: "自信を持って！", skill: "修了判定", xp: 30 }
+    ]
+  }
 ];
 
-const QUESTS=[
- {id:1,name:'Python基礎',desc:'print・変数・最初の考え方',ids:['py_print','py_var','py_if','py_for','py_list']},
- {id:2,name:'データを操る',desc:'list・dict・関数を攻略',ids:['py_dict','py_func','py_import','py_csv','py_os']},
- {id:3,name:'実務自動化',desc:'API・日時・ファイル・例外',ids:['py_try','py_json','py_date','py_file','py_regex']}
+const NOTE_TITLES = [
+  { title: "【7日間検証】プログラミングで挫折した私が「1日5分だけ」続けたら何日目に何が変わったか", why: "数字＋挫折体験＋変化の組み合わせでクリック率が最も高くなる型" },
+  { title: "ChatGPTにコードを書かせても動かない人が、最初に覚えるべき「たった7つの文法」", why: "AI時代の初心者が一番困っている「AIコードが読めない」に刺さる" },
+  { title: "参考書を1ページも開かずに、Pythonで簡単な自動化までたどり着いた私の全記録", why: "「参考書は挫折した」という大きな共感層を捉える" },
+  { title: "【無料】登録なしで30秒。Pythonの適性があるか今すぐ試せる5問クイズを作った話", why: "ハードルを極限まで下げて体験へ誘導する強い導線" }
 ];
 
-const MODES=[
- {id:'knowledge',icon:'🧠',name:'4択クイズ',desc:'意味を理解して正しいコードを選ぶ。スマホ最優先。'},
- {id:'fill',icon:'🧩',name:'穴埋め',desc:'コードの一部を自分で思い出す。記憶を一段深くする。'},
- {id:'typing',icon:'⚡',name:'タイピング',desc:'最後に自分で正確に打つ。PCでの定着に強い。'}
-];
+// ------------------------------------------------------------
+// LocalStorage 管理
+// ------------------------------------------------------------
+const STORAGE_KEY = "pytype-quest-v4";
+let state = {
+  xp: 0,
+  completed: [],
+  mistakes: [],
+  dates: [],
+  nickname: "ゲスト学習者",
+  proUnlocked: false,
+  totalAnswered: 0,
+  totalCorrect: 0,
+  plays: 0
+};
 
-const state={mode:'knowledge',set:[],index:0,start:0,elapsedTimer:null,errors:0,answers:0,correctAnswers:0,firstTryCorrect:0,wrongQuestions:0,currentWrong:false,combo:0,maxCombo:0,xp:0,lastSet:null,lastResult:null,hintUsed:false,answered:false,custom:false,reviewResolved:[]};
-const KEY='pytype_learner_v3';
-const defaultProgress={xp:0,level:1,totalAnswered:0,totalCorrect:0,totalFirstTryCorrect:0,totalMistakes:0,completedQuestIds:[],reviewIds:[],streak:0,lastDay:'',skills:{},achievements:[]};
-let progress=loadProgress();
-
-function loadProgress(){try{const raw=localStorage.getItem(KEY);const saved=raw?JSON.parse(raw):{};return {...defaultProgress,...saved,skills:{...defaultProgress.skills,...(saved.skills||{})},completedQuestIds:Array.isArray(saved.completedQuestIds)?saved.completedQuestIds:[],reviewIds:Array.isArray(saved.reviewIds)?saved.reviewIds:[],achievements:Array.isArray(saved.achievements)?saved.achievements:[]};}catch(e){return {...defaultProgress,skills:{},completedQuestIds:[],reviewIds:[],achievements:[]};}}
-function saveProgress(){try{localStorage.setItem(KEY,JSON.stringify(progress));}catch(e){console.warn('学習記録を保存できませんでした',e);}}
-function todayKey(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
-function updateStreak(){const t=todayKey();if(progress.lastDay===t)return;if(progress.lastDay){const old=new Date(progress.lastDay);const now=new Date(t);const diff=Math.round((now-old)/86400000);progress.streak=diff===1?progress.streak+1:1}else progress.streak=1;progress.lastDay=t;saveProgress();}
-function levelInfo(){const lvl=Math.floor(progress.xp/100)+1;const cur=progress.xp%100;return {lvl,cur,next:100-cur};}
-function refreshHome(){
- const li=levelInfo();document.getElementById('level-text').textContent=`Lv.${li.lvl}`;document.getElementById('streak-text').textContent=`${progress.streak}日`;document.getElementById('xp-fill').style.width=`${li.cur}%`;document.getElementById('xp-text').textContent=`${li.cur} / 100 XP`;document.getElementById('stat-completed').textContent=progress.completedQuestIds.length;document.getElementById('stat-questions').textContent=progress.totalAnswered;document.getElementById('stat-accuracy').textContent=progress.totalAnswered?`${Math.floor(progress.totalFirstTryCorrect/progress.totalAnswered*100)}%`:'100%';document.getElementById('stat-mistakes').textContent=progress.reviewIds.length;document.getElementById('review-meta').textContent=progress.reviewIds.length?`${Math.min(5,progress.reviewIds.length)}問を復習。正解すると、その問題はリストから外れます。`:'今は復習する問題がありません。まずクエストに挑戦しましょう。';document.getElementById('review-count-tag').textContent=`${progress.reviewIds.length}問`;document.getElementById('review-start-btn').disabled=progress.reviewIds.length===0;document.getElementById('review-start-btn').style.opacity=progress.reviewIds.length===0?'.5':'1';
- renderQuests();renderModes();renderDaily();
+function loadState() {
+  try {
+    const s = localStorage.getItem(STORAGE_KEY);
+    if (s) state = Object.assign(state, JSON.parse(s));
+  } catch(e){}
+  updateHeader();
 }
-function renderQuests(){const box=document.getElementById('quest-grid');box.innerHTML='';QUESTS.forEach((q,i)=>{const unlocked=i===0||progress.completedQuestIds.includes(QUESTS[i-1].id);const done=progress.completedQuestIds.includes(q.id);const el=document.createElement('div');el.className=`quest ${done?'completed':''} ${!unlocked?'locked':''}`;el.onclick=()=>unlocked&&startQuest(q.id);el.innerHTML=`<div class="quest-head"><span>QUEST ${q.id}</span><span>${done?'✓ CLEAR':unlocked?'OPEN':'🔒 LOCKED'}</span></div><h4>${q.name}</h4><p>${q.desc}</p><div class="quest-progress">${done?'クリア済み':`5問 / ${q.ids.length}スキル`}</div>`;box.appendChild(el)});}
-function renderModes(){const box=document.getElementById('mode-grid');box.innerHTML='';MODES.forEach(m=>{const el=document.createElement('div');el.className=`mode ${state.mode===m.id?'selected':''}`;el.onclick=()=>{state.mode=m.id;renderModes()};el.innerHTML=`<h4>${m.icon} ${m.name}</h4><p>${m.desc}</p>`;box.appendChild(el)});}
-function renderDaily(){const idx=new Date().getDate()%QUESTS.length;const q=QUESTS[idx];document.getElementById('daily-title').textContent=`${q.name}を5問で攻略`;document.getElementById('daily-meta').textContent=`5問 / 目安5分 / XP +100`;const tags=q.ids.slice(0,3).map(id=>{const c=CORE.find(x=>x.id===id);return `<span class="tag">${c.skill}</span>`}).join('');document.getElementById('daily-tags').innerHTML=tags;}
-function scrollToQuests(){document.getElementById('quests-anchor').scrollIntoView({behavior:'smooth'})}
-function showHome(){clearInterval(state.elapsedTimer);document.getElementById('home-screen').classList.add('active');document.getElementById('game-screen').classList.remove('active');document.getElementById('result-screen').classList.remove('active');refreshHome();}
-function startDailyMission(){const idx=new Date().getDate()%QUESTS.length;const q=QUESTS[idx];startSet(q.ids,'daily',`今日の5分ミッション: ${q.name}`)}
-function startQuest(id){const q=QUESTS.find(x=>x.id===id);startSet(q.ids,'quest',`Quest ${q.id}: ${q.name}`,id)}
-function startSet(ids,type,title,qid=null){updateStreak();state.set=ids.map(id=>CORE.find(x=>x.id===id)).filter(Boolean);state.index=0;state.start=Date.now();state.errors=0;state.answers=0;state.correctAnswers=0;state.firstTryCorrect=0;state.wrongQuestions=0;state.currentWrong=false;state.combo=0;state.maxCombo=0;state.xp=0;state.hintUsed=false;state.answered=false;state.custom=false;state.reviewResolved=[];state.lastSet={ids,type,title,qid,custom:false};document.getElementById('home-screen').classList.remove('active');document.getElementById('result-screen').classList.remove('active');document.getElementById('game-screen').classList.add('active');document.getElementById('game-title').textContent=title;document.getElementById('game-kicker').textContent=type==='quest'?`QUEST ${qid}`:type==='review'?'REVIEW':'DAILY MISSION';clearInterval(state.elapsedTimer);state.elapsedTimer=setInterval(()=>document.getElementById('g-time').textContent=`${Math.floor((Date.now()-state.start)/1000)}s`,250);if(typeof gtag==='function')gtag('event','lesson_start',{mode:state.mode,type,title});loadProblem();}
-function startReview(){if(!progress.reviewIds.length){alert('復習する問題はありません。');return}const ids=progress.reviewIds.slice(0,5);startSet(ids,'review',`復習ミッション: ${ids.length}問`);}
-function loadProblem(){if(state.index>=state.set.length){finishGame();return;}const q=state.set[state.index];state.answered=false;state.hintUsed=false;state.currentWrong=false;document.getElementById('g-progress').textContent=`${state.index+1} / ${state.set.length}`;document.getElementById('g-combo').textContent=state.combo;document.getElementById('g-xp').textContent=`+${state.xp}`;document.getElementById('g-accuracy').textContent=state.answers?`${Math.max(0,Math.floor(state.firstTryCorrect/state.answers*100))}%`:'100%';document.getElementById('g-progress-fill').style.width=`${state.index/state.set.length*100}%`;document.getElementById('problem').classList.remove('shake','pop','flash');document.getElementById('problem-kicker').textContent=`${q.skill.toUpperCase()} / ${state.mode.toUpperCase()}`;document.getElementById('problem-title').textContent=q.title;document.getElementById('problem-copy').textContent=`${q.topic}。${q.desc}`;document.getElementById('lesson-rule').textContent=q.rule;document.getElementById('lesson-desc').textContent=q.desc;document.getElementById('memory-note').textContent=`💡 ${q.memory}`;document.getElementById('hint-box').textContent='';document.getElementById('feedback').className='feedback';document.getElementById('next-btn').classList.add('hidden');document.getElementById('hint-btn').classList.remove('hidden');
- hideEl('choices');hideEl('typing-wrap');hideEl('fill-wrap');
- if(state.mode==='knowledge') renderKnowledge(q); else if(state.mode==='fill') renderFill(q); else renderTyping(q);
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch(e){}
+  updateHeader();
 }
-function hideEl(id){document.getElementById(id).classList.add('hidden')}
-function showEl(id){document.getElementById(id).classList.remove('hidden')}
-function renderKnowledge(q){showEl('choices');document.getElementById('code-box').textContent=`やりたいこと:\n${q.topic}\n\nどのPython構文が正しい？`;document.getElementById('code-box').classList.remove('hidden');const options=shuffle([q.answer,...makeDistractors(q.answer)]);const box=document.getElementById('choices');box.innerHTML='';options.forEach(o=>{const b=document.createElement('button');b.className='choice';b.disabled=false;b.textContent=o;b.onclick=()=>answerKnowledge(b,o,q);box.appendChild(b)})}
-function renderFill(q){showEl('fill-wrap');document.getElementById('code-box').textContent=makeFillPreview(q);document.getElementById('fill-input').value='';document.getElementById('fill-input').focus();document.getElementById('fill-input').onkeydown=e=>{if(e.key==='Enter')submitFill(q)};document.getElementById('fill-input').oninput=()=>{if(normalize(document.getElementById('fill-input').value)===normalize(q.answer)) submitFill(q)}}
-function makeFillPreview(q){const lines=q.code.split('\n');if(lines.length===1){const cut=Math.min(q.answer.length,Math.max(3,Math.floor(q.answer.length*.55)));return q.answer.slice(0,cut)+'____'+q.answer.slice(cut)}return lines.map(l=>{const trimmed=l.trim();if(trimmed===q.answer.trim()){const lead=l.match(/^\s*/)?.[0]||'';return lead+'____'+l.slice(lead.length+Math.min(8,Math.max(1,l.trim().length-1)));}return l;}).join('\n')}
-function renderTyping(q){showEl('typing-wrap');document.getElementById('code-box').textContent='';document.getElementById('typing-input').value='';renderTypingTarget(q.code,'');document.getElementById('typing-input').focus();document.getElementById('typing-input').oninput=()=>typingCheck(q)}
-function renderTypingTarget(target,user){const el=document.getElementById('typing-target');el.innerHTML='';[...target].forEach((ch,i)=>{const s=document.createElement('span');s.textContent=ch;if(i<user.length)s.className=user[i]===ch?'char correct':'char incorrect';else if(i===user.length)s.className='char current';else s.className='char pending';el.appendChild(s)})}
-function typingCheck(q){if(state.answered)return;const input=document.getElementById('typing-input');const v=input.value;const pos=v.length-1;if(pos>=0&&v[pos]!==q.code[pos]){state.currentWrong=true;state.errors++;state.combo=0;feedback(false,'タイプミス','その文字は違います。間違えた文字だけ取り消して続けます。');input.value=v.slice(0,-1);renderTypingTarget(q.code,input.value);input.focus();return}renderTypingTarget(q.code,v);if(v===q.code){completeQuestion(q,true);}}
-function answerKnowledge(btn,o,q){if(state.answered)return;state.answered=true;document.querySelectorAll('.choice').forEach(x=>x.disabled=true);if(o===q.answer){btn.classList.add('ok');completeQuestion(q,true)}else{state.currentWrong=true;btn.classList.add('bad');document.querySelectorAll('.choice').forEach(x=>{if(x.textContent===q.answer)x.classList.add('ok')});completeQuestion(q,false);}}
-function submitFill(q){if(state.answered)return;const v=document.getElementById('fill-input').value;if(normalize(v)===normalize(q.answer)){completeQuestion(q,true)}else{state.currentWrong=true;state.errors++;state.combo=0;feedback(false,'もう一歩','空欄が一致していません。ヒントを見て、もう一度入力できます。');document.getElementById('hint-btn').classList.remove('hidden');document.getElementById('fill-input').focus();}}
-function completeQuestion(q,ok){if(state.answered&&state.mode!=='knowledge')return;state.answers++;if(state.currentWrong)state.wrongQuestions++;if(ok){state.correctAnswers++;if(!state.currentWrong)state.firstTryCorrect++;state.combo++;state.maxCombo=Math.max(state.maxCombo,state.combo);const base=state.mode==='typing'?40:state.mode==='fill'?30:20;const earned=state.currentWrong?Math.floor(base*.65):base;state.xp+=earned;progress.totalCorrect++;if(!state.currentWrong)progress.totalFirstTryCorrect++;progress.skills[q.skill]=(progress.skills[q.skill]||0)+1;feedback(true,'✔ 正解',`+${earned} XP。${q.memory}`);document.getElementById('problem').classList.add('flash','pop');document.getElementById('next-btn').classList.remove('hidden');document.getElementById('hint-btn').classList.add('hidden');if(state.lastSet.type==='review'&&!state.currentWrong){state.reviewResolved.push(q.id);}}else{progress.totalMistakes++;progress.reviewIds=[...new Set([...progress.reviewIds,q.id])];state.combo=0;feedback(false,'✖ 不正解',`正解: ${q.answer}
-${q.desc}`);document.getElementById('next-btn').classList.remove('hidden');document.getElementById('hint-btn').classList.remove('hidden')}if(state.lastSet.type==='review'&&ok&&!state.currentWrong){progress.reviewIds=progress.reviewIds.filter(id=>id!==q.id)}progress.totalAnswered++;state.answered=true;saveProgress();updateGameStats();}
-function nextQuestion(){state.index++;loadProblem()}
-function feedback(ok,title,copy){const el=document.getElementById('feedback');el.className=`feedback show ${ok?'ok':'bad'}`;el.innerHTML=`<strong>${title}</strong><p>${String(copy).replace(/\n/g,'<br>')}</p>`}
-function showHint(){const q=state.set[state.index];document.getElementById('hint-box').textContent=`💡 ヒント: ${q.memory}`;state.hintUsed=true}
-function updateGameStats(){document.getElementById('g-combo').textContent=state.combo;document.getElementById('g-xp').textContent=`+${state.xp}`;document.getElementById('g-accuracy').textContent=state.answers?`${Math.max(0,Math.floor(state.firstTryCorrect/state.answers*100))}%`:'100%'}
-function finishGame(){clearInterval(state.elapsedTimer);const sec=Math.floor((Date.now()-state.start)/1000);const firstTryAcc=state.answers?Math.max(0,Math.floor(state.firstTryCorrect/state.answers*100)):100;const completionAcc=state.answers?Math.max(0,Math.floor(state.correctAnswers/state.answers*100)):100;const bonus=firstTryAcc===100?25:firstTryAcc>=80?10:0;state.xp+=bonus;progress.xp+=state.xp;if(state.lastSet.type==='quest'&&state.lastSet.qid&&!progress.completedQuestIds.includes(state.lastSet.qid)){progress.completedQuestIds.push(state.lastSet.qid)}checkAchievements();saveProgress();document.getElementById('game-screen').classList.remove('active');document.getElementById('result-screen').classList.add('active');document.getElementById('r-xp').textContent=`+${state.xp}`;document.getElementById('r-acc').textContent=`${firstTryAcc}%`;document.getElementById('r-time').textContent=`${sec}s`;document.getElementById('r-combo').textContent=state.maxCombo;document.getElementById('result-title').textContent=state.custom?'🤖 AIコード教材化 完了！':'🎉 ミッション完了！';document.getElementById('result-copy').textContent=`${state.lastSet.title} をクリア。初見正答率 ${firstTryAcc}%、最終到達率 ${completionAcc}%。${bonus?`精度ボーナス +${bonus}XP。`:''}${state.lastSet.type==='review'?' 復習で正解した問題はリストから外れました。':''}`;renderSkills();renderAchievements();if(typeof gtag==='function')gtag('event','lesson_complete',{mode:state.mode,type:state.lastSet.type,accuracy:firstTryAcc,completion_accuracy:completionAcc,time:sec,xp:state.xp})}
-function renderSkills(){const box=document.getElementById('skill-list');const all=['基礎','条件分岐','繰り返し','データ構造','関数','ライブラリ','自動化','API','標準ライブラリ','ファイル操作','例外処理','文字列処理'];box.innerHTML=all.map(s=>{const v=Math.min(100,(progress.skills[s]||0)*20);return `<div class="skill"><div class="skill-name">${s}</div><div class="skill-bar"><div style="width:${v}%"></div></div><div style="font-size:11px;color:var(--muted);text-align:right">${v}%</div></div>`}).join('')}
-function achievementDefs(){return[
- {id:'first',icon:'🌱',name:'最初の一歩',desc:'1問クリア',ok:progress.totalAnswered>=1},
- {id:'ten',icon:'⚡',name:'10問突破',desc:'10問解く',ok:progress.totalAnswered>=10},
- {id:'combo5',icon:'🔥',name:'5 COMBO',desc:'5連続正解',ok:state.maxCombo>=5||progress.achievements.includes('combo5')},
- {id:'quest1',icon:'🗺️',name:'QUEST 1 CLEAR',desc:'最初のクエストをクリア',ok:progress.completedQuestIds.includes(1)},
- {id:'ai',icon:'🤖',name:'AIコード解体',desc:'自作コードを教材化',ok:progress.achievements.includes('ai')}
-]}
-function checkAchievements(){achievementDefs().forEach(a=>{if(a.ok&&!progress.achievements.includes(a.id))progress.achievements.push(a.id)});if(state.custom&&!progress.achievements.includes('ai'))progress.achievements.push('ai');if(state.maxCombo>=5&&!progress.achievements.includes('combo5'))progress.achievements.push('combo5')}
-function renderAchievements(){document.getElementById('achievement-list').innerHTML=achievementDefs().map(a=>`<div class="achievement ${a.ok||progress.achievements.includes(a.id)?'unlocked':''}"><b>${a.icon} ${a.name}</b><span>${a.desc}</span></div>`).join('')}
-function shareResult(){const text=`PyType-Learner Webでミッション完了！\nXP +${state.xp} / 正答率 ${document.getElementById('r-acc').textContent} / ${document.getElementById('r-time').textContent}\n#Python #プログラミング初心者 #PyTypeLearner`;window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(location.href)}`,'_blank')}
-function repeatLast(){if(!state.lastSet)return;if(state.lastSet.type==='custom'){const raw=document.getElementById('custom-code-input').value.trim();if(raw)startCustom();else alert('前回のカスタムコードは再読み込みできません。コードをもう一度貼り付けてください。');return}startSet(state.lastSet.ids,state.lastSet.type,state.lastSet.title,state.lastSet.qid)}
-function exitGame(){if(confirm('今回の学習を中断してホームへ戻りますか？'))showHome()}
-function startCustom(){const raw=document.getElementById('custom-code-input').value.trim();if(!raw){alert('コードを貼り付けてください。');return}const lines=raw.split(/\n+/).map(x=>x.trimEnd()).filter(x=>x.trim());const items=lines.slice(0,10).map((line,i)=>customQuestion(line,i));if(!items.length){alert('教材化できるコードがありません。');return}state.set=items;state.index=0;state.start=Date.now();state.errors=0;state.answers=0;state.combo=0;state.maxCombo=0;state.xp=0;state.hintUsed=false;state.answered=false;state.lastSet={ids:items.map(x=>x.id),type:'custom',title:'AIコード解体ミッション',qid:null,custom:true};state.custom=true;updateStreak();document.getElementById('home-screen').classList.remove('active');document.getElementById('game-screen').classList.add('active');document.getElementById('result-screen').classList.remove('active');document.getElementById('game-title').textContent='AIコード解体ミッション';document.getElementById('game-kicker').textContent='CUSTOM CODE';state.mode=state.mode||'knowledge';clearInterval(state.elapsedTimer);state.elapsedTimer=setInterval(()=>document.getElementById('g-time').textContent=`${Math.floor((Date.now()-state.start)/1000)}s`,250);loadProblem()}
-function customQuestion(line,i){const t=line.trim();let skill='カスタム';let rule='コードの構造を読み取る';let desc='持ち込まれたコードです。まず役割を読み、次に書き方を定着させます。';let memory='1行を「何をする行？」と日本語で言えるようにする。';if(/^import\s|^from\s/.test(t)){skill='ライブラリ';rule='import モジュール名';desc='外部ライブラリや機能を読み込みます。';memory='import = 道具を持ってくる'}else if(/^if\b|^elif\b/.test(t)){skill='条件分岐';rule='if 条件式:';desc='条件に応じて処理を分けます。';memory='if = もし〜なら'}else if(/^for\b|^while\b/.test(t)){skill='繰り返し';rule='for 変数 in 対象:';desc='処理を繰り返します。';memory='for = 取り出して繰り返す'}else if(/^def\b/.test(t)){skill='関数';rule='def 関数名(引数):';desc='処理を関数として定義します。';memory='def = 自分の命令を作る'}else if(/^try:|^except\b/.test(t)){skill='例外処理';rule='try: / except ...:';desc='エラーに備えます。';memory='try = 試す / except = 失敗時'}else if(/print\(/.test(t)){skill='基礎';rule='print(値)';desc='値や結果を表示します。';memory='print = 見せる'}else if(/=/.test(t)){skill='基礎';rule='変数 = 値';desc='値を変数へ代入します。';memory='= は代入'}return{id:`custom_${i}_${Date.now()}`,skill,title:`カスタムコード ${i+1}`,topic:t,code:line,answer:line,rule,desc,memory}}
-function loadExampleCode(){document.getElementById('custom-code-input').value=`names = ["Alice", "Bob"]\nfor name in names:\n    print(name)`;}
-function makeDistractors(answer){const out=[];if(answer.startsWith('if '))out.push(answer.replace(/^if /,'for '),answer.replace(/:/,';'),answer.replace('>=','=='));else if(answer.startsWith('for '))out.push(answer.replace(/^for /,'if '),answer.replace(/:/,';'),answer.replace('range','list'));else if(answer.startsWith('import '))out.push(answer.replace('import','include'),answer.replace('import','from'),answer+';');else if(answer.includes('print('))out.push(answer.replace('print','echo'),answer.replace('(', '['),answer+';');else if(answer.includes('to_csv'))out.push(answer.replace('to_csv','save_csv'),answer.replace('to_csv','to_excel'),answer.replace('index=False','index=True'));else out.push(answer.replace(/=/g,'=='),answer+';',answer.replace(/\(/g,'['));return [...new Set(out)].slice(0,3)}
-function normalize(s){return s.replace(/\s+/g,' ').trim()}
-function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
-function resetProgress(){if(confirm('学習記録をすべてリセットしますか？')){localStorage.removeItem(KEY);progress=loadProgress();showHome()}}
-window.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('game-screen').classList.contains('active'))exitGame();if(e.code==='Space'&&e.target===document.body)e.preventDefault()});
-refreshHome();
+
+function updateHeader() {
+  const level = Math.floor(state.xp / 100) + 1;
+  const streak = calcStreak(state.dates);
+  document.getElementById("head-level").textContent = level;
+  document.getElementById("head-xp").textContent = state.xp;
+  document.getElementById("head-streak").textContent = streak;
+
+  // Home stats
+  document.getElementById("stat-cleared").textContent = `${state.completed.length}/8`;
+  const acc = state.totalAnswered ? Math.round(state.totalCorrect / state.totalAnswered * 100) : 100;
+  document.getElementById("stat-acc").textContent = `${acc}%`;
+
+  // Review badge
+  const revBadge = document.getElementById("review-count-badge");
+  if (revBadge) revBadge.textContent = `${state.mistakes.length}問 待ち`;
+
+  // Growth screen
+  const gPlays = document.getElementById("growth-plays");
+  if (gPlays) gPlays.textContent = state.plays;
+}
+
+function calcStreak(dates) {
+  if (!dates || !dates.length) return 0;
+  const set = new Set(dates);
+  let streak = 0;
+  const cur = new Date();
+  const todayKey = cur.toISOString().slice(0, 10);
+  if (!set.has(todayKey)) {
+    cur.setDate(cur.getDate() - 1);
+    if (!set.has(cur.toISOString().slice(0, 10))) return 0;
+  }
+  while (set.has(cur.toISOString().slice(0, 10))) {
+    streak++;
+    cur.setDate(cur.getDate() - 1);
+  }
+  return streak;
+}
+
+function markDateToday() {
+  const todayKey = new Date().toISOString().slice(0, 10);
+  if (!state.dates.includes(todayKey)) {
+    state.dates.push(todayKey);
+  }
+}
+
+// ------------------------------------------------------------
+// 画面切り替え
+// ------------------------------------------------------------
+function showScreen(name) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  const target = document.getElementById(`screen-${name}`);
+  if (target) target.classList.add("active");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  if (name === "home") renderQuests();
+}
+
+// ------------------------------------------------------------
+// 30秒体験
+// ------------------------------------------------------------
+function checkTrial(btn, choice, isCorrect) {
+  const res = document.getElementById("trial-result");
+  const choices = document.getElementById("trial-choices").querySelectorAll("button");
+  choices.forEach(b => {
+    b.disabled = true;
+    b.classList.remove("ok", "bad");
+  });
+
+  if (isCorrect) {
+    btn.classList.add("ok");
+    res.style.display = "block";
+    res.style.background = "#ECFDF5";
+    res.style.color = "#065F46";
+    res.innerHTML = `<b>🎉 正解！その調子です。</b><br>
+      本編はこの後に「穴埋め → タイピング」と進み、本当に書けるようになります。<br>
+      <button onclick="startQuest(1)" class="btn-primary" style="margin-top:0.5rem;width:100%;justify-content:center">
+        続きの4問を解く（無料） →
+      </button>`;
+    if (!state.completed.includes(1) && state.xp === 0) {
+      state.xp += 20;
+      saveState();
+    }
+  } else {
+    btn.classList.add("bad");
+    res.style.display = "block";
+    res.style.background = "#FEF2F2";
+    res.style.color = "#991B1B";
+    res.innerHTML = `惜しい！ Pythonでは <code>print(...)</code> を使います。<br>
+      <button onclick="resetTrial()" class="btn-secondary" style="color:var(--dark);border-color:var(--border);margin-top:0.5rem;font-size:0.8rem">もう一度試す</button>`;
+  }
+}
+function resetTrial() {
+  const choices = document.getElementById("trial-choices").querySelectorAll("button");
+  choices.forEach(b => { b.disabled = false; b.classList.remove("ok", "bad"); });
+  document.getElementById("trial-result").style.display = "none";
+}
+
+// ------------------------------------------------------------
+// カレンダー描画
+// ------------------------------------------------------------
+function renderCalendar() {
+  const wrap = document.getElementById("calendar-dots");
+  if (!wrap) return;
+  wrap.innerHTML = "";
+  const set = new Set(state.dates);
+  for (let i = 13; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    const k = d.toISOString().slice(0, 10);
+    const on = set.has(k);
+    const el = document.createElement("span");
+    el.title = k;
+    el.textContent = d.getDate();
+    el.style.cssText = `
+      display:grid;place-items:center;width:28px;height:28px;border-radius:6px;
+      font-size:10px;font-weight:900;
+      background:${on ? "var(--primary)" : "#E2E8F0"};
+      color:${on ? "#fff" : "#64748B"};
+    `;
+    wrap.appendChild(el);
+  }
+}
+
+// ------------------------------------------------------------
+// クエスト一覧描画
+// ------------------------------------------------------------
+function renderQuests() {
+  const container = document.getElementById("quests-container");
+  if (!container) return;
+  container.innerHTML = "";
+
+  QUESTS.forEach(q => {
+    const isUnlocked = q.id === 1 || state.completed.includes(q.id - 1);
+    const isDone = state.completed.includes(q.id);
+    const lockedPro = q.isPro && !state.proUnlocked;
+
+    const card = document.createElement("article");
+    card.className = `quest-card ${(!isUnlocked && !lockedPro) ? 'locked' : ''}`;
+
+    let statusBadge = "";
+    if (isDone) statusBadge = `<span style="background:#10B981;color:#fff;padding:0.2rem 0.5rem;border-radius:9999px;font-size:0.7rem;font-weight:800">クリア済</span>`;
+    else if (lockedPro) statusBadge = `<span style="background:#FCD34D;color:#78350F;padding:0.2rem 0.5rem;border-radius:9999px;font-size:0.7rem;font-weight:800">PRO先行</span>`;
+    else if (!isUnlocked) statusBadge = `<span style="color:#94A3B8;font-size:0.75rem">🔒 前の章で解放</span>`;
+
+    card.innerHTML = `
+      <div class="quest-top">
+        <span class="quest-badge" style="background:${q.bg};color:${q.color}">QUEST ${q.id}</span>
+        ${statusBadge}
+      </div>
+      <h3 class="quest-title">${q.title}</h3>
+      <p class="quest-meta">${q.subtitle} ・ 約${q.minutes}分 ・ 5問</p>
+      <p class="quest-outcome"><b>できるようになること:</b> ${q.outcome}</p>
+      <button class="quest-btn" ${(!isUnlocked && !lockedPro) ? 'disabled' : ''} onclick="startQuest(${q.id})">
+        ${lockedPro ? 'Pro登録で解放' : isDone ? 'もう一度挑戦' : isUnlocked ? 'この章を始める' : 'ロック中'}
+      </button>
+    `;
+    container.appendChild(card);
+  });
+}
+
+// ------------------------------------------------------------
+// ゲームプレイ進行
+// ------------------------------------------------------------
+let activeQuest = null;
+let currentQueue = [];
+let queueIndex = 0;
+let gameCombo = 0;
+let gameMaxCombo = 0;
+let gameXp = 0;
+let gameCorrects = 0;
+let gameStartTime = 0;
+let gameTimer = null;
+let isReviewMode = false;
+
+function startQuest(id, review = false) {
+  const q = QUESTS.find(x => x.id === id) || QUESTS[0];
+  if (q.isPro && !state.proUnlocked && !review) {
+    document.getElementById("pro").scrollIntoView({ behavior: "smooth" });
+    return;
+  }
+  activeQuest = q;
+  isReviewMode = review;
+
+  if (review) {
+    const allQ = QUESTS.flatMap(x => x.questions);
+    currentQueue = state.mistakes.map(mid => allQ.find(x => x.id === mid)).filter(Boolean);
+    if (!currentQueue.length) {
+      alert("復習待ちの問題はありません！素晴らしい！");
+      return;
+    }
+  } else {
+    currentQueue = [...q.questions];
+  }
+
+  queueIndex = 0;
+  gameCombo = 0;
+  gameMaxCombo = 0;
+  gameXp = 0;
+  gameCorrects = 0;
+  gameStartTime = Date.now();
+
+  document.getElementById("game-tag").textContent = review ? "REVIEW MISSION" : `QUEST ${q.id}`;
+  document.getElementById("game-quest-title").textContent = review ? "間違えた問題を復習" : q.title;
+
+  if (gameTimer) clearInterval(gameTimer);
+  gameTimer = setInterval(() => {
+    const el = Math.floor((Date.now() - gameStartTime) / 1000);
+    document.getElementById("g-time").textContent = `${el}s`;
+  }, 1000);
+
+  showScreen("game");
+  renderQuestion();
+}
+
+function startMission() {
+  const nextQ = QUESTS.find(q => !state.completed.includes(q.id)) || QUESTS[0];
+  startQuest(nextQ.id);
+}
+
+function startReview() {
+  startQuest(1, true);
+}
+
+function renderQuestion() {
+  const q = currentQueue[queueIndex];
+  if (!q) { finishQuest(); return; }
+
+  // Stats
+  document.getElementById("g-prog").textContent = `${queueIndex + 1} / ${currentQueue.length}`;
+  document.getElementById("g-combo").textContent = gameCombo;
+  const pct = Math.round((queueIndex / currentQueue.length) * 100);
+  document.getElementById("g-progress-fill").style.width = `${pct}%`;
+  document.getElementById("g-xp").textContent = `+${gameXp}`;
+
+  const currentAcc = queueIndex > 0 ? Math.round((gameCorrects / queueIndex) * 100) : 100;
+  document.getElementById("g-acc").textContent = `${currentAcc}%`;
+
+  // Problem meta
+  const typeMap = { choice: "4択クイズ", fill: "穴埋め", typing: "タイピング" };
+  document.getElementById("p-type").textContent = typeMap[q.type] || "クイズ";
+  document.getElementById("p-skill").textContent = q.skill || "Python基礎";
+  document.getElementById("p-xp").textContent = `+${q.xp} XP`;
+  document.getElementById("p-prompt").textContent = q.prompt;
+
+  // Code
+  const codeWrap = document.getElementById("p-code-wrap");
+  const codeEl = document.getElementById("p-code");
+  if (q.code) {
+    codeWrap.style.display = "block";
+    codeEl.textContent = q.code;
+  } else {
+    codeWrap.style.display = "none";
+  }
+
+  // Choices or input
+  const choicesWrap = document.getElementById("p-choices-wrap");
+  const inputWrap = document.getElementById("p-input-wrap");
+  const submitBtn = document.getElementById("p-submit-btn");
+  const fb = document.getElementById("p-feedback");
+  fb.style.display = "none";
+
+  if (q.type === "choice" && q.choices) {
+    choicesWrap.style.display = "grid";
+    inputWrap.style.display = "none";
+    submitBtn.style.display = "none";
+    choicesWrap.innerHTML = "";
+    q.choices.forEach(c => {
+      const b = document.createElement("button");
+      b.className = "choice-btn";
+      b.textContent = c;
+      b.onclick = () => judgeChoice(b, c);
+      choicesWrap.appendChild(b);
+    });
+  } else {
+    choicesWrap.style.display = "none";
+    inputWrap.style.display = "block";
+    submitBtn.style.display = "block";
+    const inp = document.getElementById("p-input");
+    inp.value = "";
+    inp.disabled = false;
+    document.getElementById("p-hint").textContent = q.hint || "よくコードを確認しよう";
+    setTimeout(() => inp.focus(), 50);
+  }
+}
+
+// Enterキーでの送信
+document.addEventListener("DOMContentLoaded", () => {
+  const inp = document.getElementById("p-input");
+  if (inp) {
+    inp.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        const fb = document.getElementById("p-feedback");
+        if (fb.style.display === "block") {
+          nextQuestion();
+        } else {
+          submitAnswer();
+        }
+      }
+    });
+  }
+});
+
+function judgeChoice(btn, selected) {
+  const q = currentQueue[queueIndex];
+  const allBtns = document.getElementById("p-choices-wrap").querySelectorAll("button");
+  allBtns.forEach(b => b.disabled = true);
+  const isOk = selected === q.answer;
+  if (isOk) btn.classList.add("ok");
+  else btn.classList.add("bad");
+  showFeedback(isOk, q);
+}
+
+function submitAnswer() {
+  const q = currentQueue[queueIndex];
+  const inp = document.getElementById("p-input");
+  const val = inp.value.trim();
+  if (!val) return;
+  inp.disabled = true;
+
+  const isOk = (val === q.answer) ||
+               (q.type === "fill" && val.replace(/\s/g, "") === q.answer.replace(/\s/g, ""));
+  showFeedback(isOk, q);
+}
+
+function showFeedback(isOk, q) {
+  const fb = document.getElementById("p-feedback");
+  fb.className = `feedback-box ${isOk ? 'ok' : 'bad'}`;
+  fb.style.display = "block";
+
+  state.totalAnswered++;
+  if (isOk) {
+    state.totalCorrect++;
+    gameCorrects++;
+    gameCombo++;
+    if (gameCombo > gameMaxCombo) gameMaxCombo = gameCombo;
+    const gained = q.xp + (gameCombo >= 3 ? 5 : 0);
+    gameXp += gained;
+    state.xp += gained;
+
+    // 復習リストから削除
+    state.mistakes = state.mistakes.filter(id => id !== q.id);
+
+    document.getElementById("fb-title").textContent = `🎉 正解！ +${gained} XP ${gameCombo >= 3 ? '（COMBOボーナス+5）' : ''}`;
+  } else {
+    gameCombo = 0;
+    if (!state.mistakes.includes(q.id)) {
+      state.mistakes.push(q.id);
+    }
+    document.getElementById("fb-title").textContent = `惜しい！ 正解は「 ${q.answer} 」`;
+  }
+
+  document.getElementById("fb-desc").textContent = q.explanation;
+  saveState();
+}
+
+function nextQuestion() {
+  queueIndex++;
+  if (queueIndex < currentQueue.length) {
+    renderQuestion();
+  } else {
+    finishQuest();
+  }
+}
+
+function finishQuest() {
+  if (gameTimer) clearInterval(gameTimer);
+  markDateToday();
+  state.plays = (state.plays || 0) + 1;
+
+  if (!isReviewMode && activeQuest) {
+    if (!state.completed.includes(activeQuest.id)) {
+      state.completed.push(activeQuest.id);
+    }
+  }
+  saveState();
+
+  const elapsed = Math.floor((Date.now() - gameStartTime) / 1000);
+  const acc = Math.round((gameCorrects / currentQueue.length) * 100);
+
+  document.getElementById("r-xp").textContent = `+${gameXp}`;
+  document.getElementById("r-acc").textContent = `${acc}%`;
+  document.getElementById("r-time").textContent = `${elapsed}s`;
+  document.getElementById("r-combo").textContent = gameMaxCombo;
+  document.getElementById("res-quest-name").textContent = isReviewMode ? "復習ミッション完了" : `${activeQuest.title} (${activeQuest.outcome})`;
+
+  const heading = acc >= 80 ? "素晴らしいクリア！" : acc >= 60 ? "クリア！その調子です" : "おつかれさま！復習で伸びます";
+  document.getElementById("res-heading").textContent = heading;
+
+  // シェア文
+  const streak = calcStreak(state.dates);
+  const share = `【Python学習 ${streak}日目】\n` +
+    `「${isReviewMode ? '復習ミッション' : activeQuest.title}」をクリアしました！\n` +
+    `・正答率: ${acc}%\n` +
+    `・獲得XP: +${gameXp}\n` +
+    `・連続学習: ${streak}日\n\n` +
+    `4択→穴埋め→タイピングで学べる無料ゲーム。登録不要で1問から試せます。\n` +
+    `#Python学習 #駆け出しエンジニア #PyType\n` +
+    `https://studylikelazy.github.io/-python/`;
+  document.getElementById("share-text").textContent = share;
+
+  const revBtn = document.getElementById("res-review-btn");
+  if (state.mistakes.length > 0) {
+    revBtn.style.display = "block";
+    revBtn.textContent = `復習リスト (${state.mistakes.length}問) に挑戦`;
+  } else {
+    revBtn.style.display = "none";
+  }
+
+  showScreen("result");
+}
+
+function copyShareText() {
+  const txt = document.getElementById("share-text").textContent;
+  navigator.clipboard.writeText(txt).then(() => {
+    const btn = document.getElementById("btn-copy-share");
+    btn.textContent = "コピーしました！";
+    setTimeout(() => { btn.textContent = "X / note用にコピー"; }, 2000);
+  });
+}
+function tweetResult() {
+  const txt = document.getElementById("share-text").textContent;
+  const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(txt)}`;
+  window.open(url, "_blank");
+}
+
+// ------------------------------------------------------------
+// AIコード解体モード
+// ------------------------------------------------------------
+function loadAiSample(idx) {
+  const sample1 = `total = 0\nfor price in [100, 250, 80]:\n    total += price\nprint(total)`;
+  const sample2 = `score = 75\nif score >= 60:\n    print("合格")\nelse:\n    print("不合格")`;
+  document.getElementById("ai-code-input").value = idx === 1 ? sample1 : sample2;
+  parseAiCode();
+}
+
+function parseAiCode() {
+  const code = document.getElementById("ai-code-input").value;
+  const lines = code.split("\n").filter(l => l.trim().length > 0);
+  const list = document.getElementById("ai-lines-list");
+  list.innerHTML = "";
+
+  lines.forEach((line, i) => {
+    const btn = document.createElement("button");
+    btn.className = `ai-line-btn ${i === 0 ? 'active' : ''}`;
+    const exp = explainPythonLine(line);
+    btn.innerHTML = `<code style="font-size:0.85rem;font-weight:700">${escapeHtml(line)}</code><div style="font-size:0.75rem;opacity:0.8;margin-top:0.2rem">${exp}</div>`;
+    btn.onclick = () => {
+      document.querySelectorAll(".ai-line-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      showAiDrill(line);
+    };
+    list.appendChild(btn);
+  });
+
+  if (lines.length > 0) showAiDrill(lines[0]);
+}
+
+function explainPythonLine(l) {
+  const t = l.trim();
+  if (t.startsWith("print")) return "画面に値を出力する命令";
+  if (t.startsWith("def ")) return "新しい関数を定義する（まだ実行しない）";
+  if (t.startsWith("for ")) return "リストや回数に合わせて繰り返すループの開始";
+  if (t.startsWith("if ")) return "条件が成り立つかどうかを判定する";
+  if (t.startsWith("else")) return "条件が成り立たなかった場合の処理";
+  if (t.startsWith("return")) return "計算結果を関数の呼び出し元へ戻す";
+  if (t.includes("+=")) return "左の変数に右の値を足して更新する";
+  if (t.includes("=")) return "右側の値を左の変数に代入する";
+  if (t.startsWith("#")) return "コメント（実行されない人間のためのメモ）";
+  return "Pythonの処理を実行する";
+}
+
+function showAiDrill(line) {
+  const box = document.getElementById("ai-drill-box");
+  box.style.display = "block";
+  const masked = line.replace(/(print|def|for|while|if|return|input|range|int|sum)/, "___");
+  const keyword = (line.match(/(print|def|for|while|if|return|input|range|int|sum)/) || ["変数名"])[0];
+
+  box.innerHTML = `
+    <div style="font-size:0.75rem;font-weight:900;color:var(--primary)">この行の穴埋め練習</div>
+    <pre class="code-block" style="margin:0.5rem 0;font-size:0.85rem"><code>${escapeHtml(masked)}</code></pre>
+    <div style="font-size:0.85rem">答えのキーワード: <b>${keyword}</b></div>
+    <div style="font-size:0.78rem;color:var(--text-muted);margin-top:0.25rem">
+      AIのコードも1行ずつ穴埋め練習すると「自分の書けるコード」に変わります。
+    </div>
+  `;
+}
+function escapeHtml(str) {
+  return str.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+// ------------------------------------------------------------
+// Pro先行登録
+// ------------------------------------------------------------
+function handleWaitlist(e) {
+  e.preventDefault();
+  const email = document.getElementById("wl-email").value;
+  const interest = document.getElementById("wl-interest").value;
+  const source = document.getElementById("wl-source").value;
+
+  // localStorageに記録＋7・8章を即解放
+  state.proUnlocked = true;
+  saveState();
+
+  // 外部API / バックエンドがあればPOST（失敗してもローカルで成功扱い）
+  fetch("/api/waitlist", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, interest, source })
+  }).catch(() => {});
+
+  const msg = document.getElementById("wl-msg");
+  msg.style.display = "block";
+  msg.style.background = "#ECFDF5";
+  msg.style.color = "#065F46";
+  msg.textContent = "🎉 登録完了！ クエスト7・8が解放されました。マップからお進みください。";
+
+  renderQuests();
+}
+
+// ------------------------------------------------------------
+// Growth画面
+// ------------------------------------------------------------
+function renderGrowth() {
+  const list = document.getElementById("note-titles-list");
+  if (!list) return;
+  list.innerHTML = "";
+
+  NOTE_TITLES.forEach((item, i) => {
+    const d = document.createElement("div");
+    d.style.cssText = "background:#F8FAFC;border:1px solid var(--border);border-radius:0.75rem;padding:0.85rem;display:flex;justify-content:space-between;align-items:center;gap:0.75rem";
+    d.innerHTML = `
+      <div>
+        <div style="font-weight:800;font-size:0.95rem">${item.title}</div>
+        <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.2rem">${item.why}</div>
+      </div>
+      <button class="btn-secondary" style="font-size:0.78rem;white-space:nowrap;color:var(--dark);border-color:var(--border)" onclick="copyText('${item.title.replace(/'/g, "\\'")}', this)">タイトルをコピー</button>
+    `;
+    list.appendChild(d);
+  });
+}
+function copyText(txt, btn) {
+  navigator.clipboard.writeText(txt).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = "コピー完了！";
+    setTimeout(() => { btn.textContent = orig; }, 2000);
+  });
+}
+
+function resetData() {
+  if (confirm("学習記録（XP・クリア履歴・復習リスト）を初期化しますか？")) {
+    localStorage.removeItem(STORAGE_KEY);
+    location.reload();
+  }
+}
+
+// ------------------------------------------------------------
+// 初期化
+// ------------------------------------------------------------
+window.addEventListener("DOMContentLoaded", () => {
+  loadState();
+  renderCalendar();
+  renderQuests();
+  renderGrowth();
+  loadAiSample(1);
+});
 </script>
+
 </body>
 </html>
