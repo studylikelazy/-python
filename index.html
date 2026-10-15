@@ -774,6 +774,12 @@ kbd {
               ・ご案内が不要になった場合は、メール内の配信停止リンク等からいつでも解除・削除が可能です。また、ブラウザ内の学習履歴はページ下部「データ初期化」からいつでも消去できます。<br>
               ・本アプリの学習コンテンツ・コード例の無断転載・再配布を禁じます。本サービスの利用により生じた損害について、運営者は故意または重過失がある場合を除き責任を負いません。
             </div>
+            <div style="margin-top:0.75rem;padding:0.75rem;border:1px solid var(--border);border-radius:0.5rem;background:#F8FAFC">
+              <b style="color:var(--text)">配信停止・登録解除の申請</b><br>
+              <input type="email" id="wl-unsub-email" placeholder="登録時のメールアドレス" style="width:100%;margin-top:0.5rem;padding:0.5rem;border:1px solid var(--border);border-radius:0.5rem" />
+              <button type="button" id="wl-unsub-btn" onclick="handleUnsubscribe()" class="btn-primary" style="margin-top:0.5rem">配信停止・登録解除を申請</button>
+              <p id="wl-unsub-msg" style="display:none;font-size:0.85rem;font-weight:800;margin-top:0.75rem;padding:0.6rem;border-radius:0.5rem" role="status" aria-live="polite"></p>
+            </div>
           </div>
         </details>
       </div>
@@ -1245,6 +1251,14 @@ function loadState() {
     if (s) state = Object.assign(state, JSON.parse(s));
   } catch(e){}
   updateHeader();
+  syncUnsubEmail();
+}
+
+function syncUnsubEmail() {
+  const input = document.getElementById("wl-unsub-email");
+  if (input && state.registeredEmail) {
+    input.value = state.registeredEmail;
+  }
 }
 function saveState() {
   try {
@@ -1957,6 +1971,7 @@ function openTermsDetails() {
   const details = document.getElementById("pro-terms-details");
   if (!details) return;
   details.open = true;
+  syncUnsubEmail();
   if (typeof details.scrollIntoView === "function") {
     details.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }
@@ -2013,6 +2028,7 @@ function handleWaitlist(e) {
   saveState();
   updateWaitlistBadge();
   renderQuests();
+  syncUnsubEmail();
 
   const showSuccess = (text) => {
     if (!msg) return;
@@ -2108,6 +2124,90 @@ function handleWaitlist(e) {
     if (submitBtn) {
       submitBtn.disabled = false;
       submitBtn.textContent = "登録済み ✓";
+    }
+  }
+}
+
+function handleUnsubscribe() {
+  const emailInput = document.getElementById("wl-unsub-email");
+  const btn = document.getElementById("wl-unsub-btn");
+  const msg = document.getElementById("wl-unsub-msg");
+
+  const showMsg = (text, ok) => {
+    if (!msg) return;
+    msg.style.display = "block";
+    msg.style.background = ok ? "#ECFDF5" : "#FEF2F2";
+    msg.style.color = ok ? "#065F46" : "#991B1B";
+    msg.textContent = text;
+  };
+
+  let email = emailInput ? String(emailInput.value || "").trim() : "";
+  if (!email && state && state.registeredEmail) {
+    email = String(state.registeredEmail).trim();
+    if (emailInput) emailInput.value = email;
+  }
+
+  if (!email || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) {
+    showMsg("⚠️ 有効なメールアドレスを入力してください。", false);
+    return;
+  }
+
+  state.proUnlocked = false;
+  if (state.registeredEmail !== undefined) delete state.registeredEmail;
+  if (state.registeredInterest !== undefined) delete state.registeredInterest;
+  saveState();
+  updateWaitlistBadge();
+  renderQuests();
+
+  showMsg("🔕 配信停止・登録削除のリクエストを送信し、この端末の登録状態を解除しました。", true);
+
+  const payload = {
+    email: email,
+    action_type: "unsubscribe",
+    _subject: "【PyType Quest】配信停止・登録削除リクエスト",
+    source: "pytype_quest_web",
+    submitted_at: new Date().toISOString()
+  };
+
+  const endpoint = "https://formspree.io/f/xrpeoqqb";
+
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = "送信中...";
+  }
+
+  try {
+    if (typeof fetch === "function") {
+      fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(payload)
+      })
+        .then(() => {
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = "配信停止・登録解除を申請";
+          }
+        })
+        .catch(() => {
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = "配信停止・登録解除を申請";
+          }
+        });
+    } else {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = "配信停止・登録解除を申請";
+      }
+    }
+  } catch (_) {
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = "配信停止・登録解除を申請";
     }
   }
 }
