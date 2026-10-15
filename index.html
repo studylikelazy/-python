@@ -227,6 +227,47 @@ header {
   background: var(--dark); color: #fff; font-weight: 800;
   padding: 0.75rem 1.5rem; border-radius: 0.75rem; white-space: nowrap;
 }
+.pro-consent-box {
+  background: rgba(255, 255, 255, 0.85); border: 1px solid #FDE68A;
+  border-radius: 0.85rem; padding: 0.9rem 1rem; margin-top: 0.85rem;
+  display: grid; gap: 0.55rem; font-size: 0.84rem; color: var(--text);
+}
+.consent-item {
+  display: flex; align-items: flex-start; gap: 0.55rem; cursor: pointer;
+  line-height: 1.5; user-select: none;
+}
+.consent-item input[type="checkbox"] {
+  width: 1.05rem; height: 1.05rem; margin-top: 0.18rem;
+  accent-color: var(--primary); cursor: pointer; flex-shrink: 0;
+}
+.link-btn {
+  color: var(--primary-dark); font-weight: 800; text-decoration: underline;
+  padding: 0; background: none; border: none; cursor: pointer;
+}
+.link-btn:hover { color: var(--primary); }
+.pro-safety-badges {
+  display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.2rem;
+  padding-top: 0.5rem; border-top: 1px dashed #FDE68A;
+}
+.safety-pill {
+  background: #FEF3C7; color: #92400E; font-size: 0.72rem; font-weight: 800;
+  padding: 0.18rem 0.55rem; border-radius: 9999px;
+}
+.pro-terms-details {
+  margin-top: 0.75rem; background: #fff; border: 1px solid var(--border);
+  border-radius: 0.85rem; padding: 0.75rem 1rem; font-size: 0.8rem; color: #475569;
+}
+.pro-terms-details summary {
+  font-weight: 800; color: var(--text); cursor: pointer; list-style: none;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.pro-terms-details summary::-webkit-details-marker { display: none; }
+.pro-terms-details summary::after { content: "▼ 開く"; font-size: 0.72rem; color: var(--text-muted); }
+.pro-terms-details[open] summary::after { content: "▲ 閉じる"; }
+.pro-terms-body {
+  margin-top: 0.65rem; padding-top: 0.65rem; border-top: 1px solid var(--border);
+  line-height: 1.65; display: grid; gap: 0.5rem;
+}
 
 /* Game Screen */
 .game-container { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
@@ -665,7 +706,7 @@ kbd {
     <!-- PRO WAITLIST -->
     <section id="pro" class="pro-card">
       <div style="max-width:700px">
-        <span style="background:#FEF3C7;color:#B45309;padding:0.25rem 0.6rem;border-radius:9999px;font-size:0.75rem;font-weight:900">先行登録中</span>
+        <span id="pro-status-badge" style="background:#FEF3C7;color:#B45309;padding:0.25rem 0.6rem;border-radius:9999px;font-size:0.75rem;font-weight:900">先行登録中</span>
         <h2 style="font-size:1.75rem;font-weight:900;margin-top:0.5rem">👑 Proプラン先行登録（第9〜18章が即解放）</h2>
         <p style="color:var(--text-muted);font-size:0.92rem;margin-top:0.5rem;line-height:1.7">
           文字列操作・例外処理・ファイル自動化に加え、whileと入力、リスト応用、タプル・集合、モジュール、クラス入門、総合卒業プロジェクトまで
@@ -677,23 +718,72 @@ kbd {
           <li>第16〜18章：モジュール活用、クラス入門、総合卒業プロジェクト</li>
         </ul>
 
-        <form id="waitlist-form" onsubmit="handleWaitlist(event)" class="form-row">
-          <input type="email" id="wl-email" required placeholder="メールアドレスを入力" class="input-text">
-          <select id="wl-interest" class="select-input">
-            <option value="pro">Proプラン（全クエスト解放）</option>
-            <option value="note">note連動教材</option>
-            <option value="free">まずは無料で様子見</option>
-          </select>
-          <button type="submit" class="btn-submit">登録して全章解放</button>
+        <!-- Formspree対応フォーム: https://formspree.io/f/xrpeoqqb -->
+        <form id="waitlist-form" action="https://formspree.io/f/xrpeoqqb" method="POST" data-formspree-id="xrpeoqqb" onsubmit="handleWaitlist(event)">
+          <div class="form-row">
+            <input type="email" id="wl-email" name="email" required placeholder="メールアドレスを入力" class="input-text" autocomplete="email" aria-label="メールアドレス">
+            <select id="wl-interest" name="interest" class="select-input" aria-label="興味のあるプラン">
+              <option value="pro">Proプラン（全クエスト解放）</option>
+              <option value="note">note連動教材</option>
+              <option value="free">まずは無料で様子見</option>
+            </select>
+            <!-- Formspree スパム防止用ハニーポット -->
+            <input type="text" name="_gotcha" id="wl-gotcha" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true">
+            <button type="submit" id="wl-submit-btn" class="btn-submit">登録して全章解放</button>
+          </div>
+
+          <!-- 安全確認＆利用規約・プライバシーポリシー同意 -->
+          <div class="pro-consent-box" role="group" aria-label="登録時の安全確認と規約同意">
+            <label class="consent-item" for="wl-safety">
+              <input type="checkbox" id="wl-safety" name="safety_verified" value="verified" required>
+              <span><b>🛡️ 安全確認：</b>自動プログラム（ボット）ではなく本人が入力しています（無料・自動課金なし）</span>
+            </label>
+            <label class="consent-item" for="wl-terms">
+              <input type="checkbox" id="wl-terms" name="terms_agreed" value="agreed" required>
+              <span><b>📜 規約への同意：</b><button type="button" class="link-btn" onclick="openTermsDetails()">利用規約・プライバシーポリシー</button>（メールアドレスの利用目的・管理方法）を確認し同意します</span>
+            </label>
+            <div class="pro-safety-badges" aria-label="安全性の保証">
+              <span class="safety-pill">🔒 SSL暗号化送信（Formspree保護）</span>
+              <span class="safety-pill">💳 クレジットカード不要・課金0円</span>
+              <span class="safety-pill">🚫 スパム配信・第三者提供なし</span>
+            </div>
+          </div>
         </form>
-        <p id="wl-msg" style="display:none;font-size:0.85rem;font-weight:800;margin-top:0.75rem;padding:0.6rem;border-radius:0.5rem"></p>
+
+        <p id="wl-msg" style="display:none;font-size:0.85rem;font-weight:800;margin-top:0.75rem;padding:0.6rem;border-radius:0.5rem" role="status" aria-live="polite"></p>
+
+        <!-- 利用規約・プライバシーポリシー・安全確認の詳細 -->
+        <details id="pro-terms-details" class="pro-terms-details">
+          <summary>📖 利用規約・プライバシーポリシー・安全確認の詳細を確認する</summary>
+          <div class="pro-terms-body">
+            <div>
+              <b style="color:var(--text)">1. 安全確認（セキュリティ・料金に関するお約束）</b><br>
+              ・本先行登録は<b>完全無料</b>です。登録によって料金が発生したり、後から自動的に有料課金へ切り替わることは一切ありません。<br>
+              ・不正なボットや自動プログラムによる大量送信を防ぐため、送信時の本人確認チェックおよびスパム防止フィルタ（ハニーポット検証）を実施しています。
+            </div>
+            <div>
+              <b style="color:var(--text)">2. 取得する情報と利用目的（プライバシーポリシー）</b><br>
+              ・ご入力いただいたメールアドレスおよび希望プラン情報は、①「PyType Quest」Proクエスト（第9〜18章）の解放、②新章・アップデート情報やnote連動教材のご案内送付の目的でのみ利用します。
+            </div>
+            <div>
+              <b style="color:var(--text)">3. 外部送信・第三者提供について</b><br>
+              ・フォームの安全な受付処理には Formspree（Formspree, Inc. / HTTPS暗号化通信）を利用しています。法令に基づく場合を除き、ご本人の同意なく第三者へ個人情報を提供・販売・貸与することはありません。
+            </div>
+            <div>
+              <b style="color:var(--text)">4. 配信停止・登録削除・免責事項</b><br>
+              ・ご案内が不要になった場合は、メール内の配信停止リンク等からいつでも解除・削除が可能です。また、ブラウザ内の学習履歴はページ下部「データ初期化」からいつでも消去できます。<br>
+              ・本アプリの学習コンテンツ・コード例の無断転載・再配布を禁じます。本サービスの利用により生じた損害について、運営者は故意または重過失がある場合を除き責任を負いません。
+            </div>
+          </div>
+        </details>
       </div>
     </section>
 
     <!-- FOOTER -->
     <footer style="margin:4rem 0 2rem;padding-top:2rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;font-size:0.85rem;color:var(--text-muted)">
       <div><b>PyType Quest</b> — Python初心者のための5分学習ゲーム（MIT License）</div>
-      <div>
+      <div style="display:flex;gap:1rem;align-items:center">
+        <button onclick="openTermsDetails()" style="color:var(--text-muted);text-decoration:underline">利用規約・プライバシー</button>
         <button onclick="resetData()" style="color:#DC2626">データ初期化</button>
       </div>
     </footer>
@@ -833,8 +923,15 @@ kbd {
 // PyType Quest v5.0.0 - 全18章144問 問題データ＆ロジック
 //
 // 編集ガイド:
-//   新しい問題やクエストを追加したい場合は、QUESTS 配列にオブジェクトを追加するだけで動作します。
+//   1. メール収集（Formspree）:
+//      https://formspree.io/ でフォームを作成し、発行されたフォームID
+//      （例: "xabcdefg"）またはURL（"https://formspree.io/f/xabcdefg"）を
+//      下の FORMSPREE_FORM_ID に設定してください。
+//   2. 問題・クエストの追加:
+//      QUESTS 配列にオブジェクトを追加するだけで動作します。
 // ============================================================
+
+const FORMSPREE_FORM_ID = "xrpeoqqb"; // Formspree エンドポイント: https://formspree.io/f/xrpeoqqb
 
 const QUESTS = [
   {
@@ -1191,6 +1288,7 @@ function updateHeader() {
   const revBadge = document.getElementById("review-count-badge");
   if (revBadge) revBadge.textContent = `${state.mistakes.length}問 待ち`;
 
+  if (typeof updateWaitlistBadge === "function") updateWaitlistBadge();
   renderDashboard();
 }
 
@@ -1824,34 +1922,194 @@ function escapeHtml(str) {
 }
 
 // ------------------------------------------------------------
-// Pro先行登録
+// Pro先行登録（Formspree メール収集対応）
 // ------------------------------------------------------------
+function getFormspreeEndpoint(form) {
+  const candidates = [
+    typeof FORMSPREE_FORM_ID === "string" ? FORMSPREE_FORM_ID.trim() : "",
+    form && form.dataset ? (form.dataset.formspreeId || "").trim() : "",
+    form ? (form.getAttribute("action") || "").trim() : ""
+  ];
+  for (const raw of candidates) {
+    if (!raw || raw.includes("YOUR_FORMSPREE_ID")) continue;
+    if (/^https?:\/\//i.test(raw)) return raw;
+    const cleanId = raw.replace(/^\/+|\/+$/g, "");
+    if (cleanId) return `https://formspree.io/f/${cleanId}`;
+  }
+  return null;
+}
+
+function updateWaitlistBadge() {
+  const badge = document.getElementById("pro-status-badge");
+  if (!badge) return;
+  if (state.proUnlocked) {
+    badge.style.background = "#DCFCE7";
+    badge.style.color = "#166534";
+    badge.textContent = "✓ 全章解放済み";
+  } else {
+    badge.style.background = "#FEF3C7";
+    badge.style.color = "#B45309";
+    badge.textContent = "先行登録中";
+  }
+}
+
+function openTermsDetails() {
+  const details = document.getElementById("pro-terms-details");
+  if (!details) return;
+  details.open = true;
+  if (typeof details.scrollIntoView === "function") {
+    details.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+}
+
 function handleWaitlist(e) {
   e.preventDefault();
-  const email = document.getElementById("wl-email").value;
-  const interest = document.getElementById("wl-interest").value;
+  const form = document.getElementById("waitlist-form");
+  const emailInput = document.getElementById("wl-email");
+  const interestSelect = document.getElementById("wl-interest");
+  const safetyInput = document.getElementById("wl-safety");
+  const termsInput = document.getElementById("wl-terms");
+  const gotchaInput = document.getElementById("wl-gotcha");
+  const submitBtn = document.getElementById("wl-submit-btn");
+  const msg = document.getElementById("wl-msg");
+
+  const showWarning = (text) => {
+    if (!msg) return;
+    msg.style.display = "block";
+    msg.style.background = "#FEF2F2";
+    msg.style.color = "#991B1B";
+    msg.textContent = text;
+  };
+
+  const email = emailInput ? emailInput.value.trim() : "";
+  const interest = interestSelect ? interestSelect.value : "pro";
+
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showWarning("⚠️ 有効なメールアドレスを入力してください。");
+    return;
+  }
+
+  const safetyChecked = safetyInput ? Boolean(safetyInput.checked) : true;
+  const termsChecked = termsInput ? Boolean(termsInput.checked) : true;
+  if (!safetyChecked || !termsChecked) {
+    if (!safetyChecked && !termsChecked) {
+      showWarning("⚠️ 登録前に「🛡️ 安全確認」と「📜 利用規約・プライバシーポリシーへの同意」にチェックを入れてください。");
+    } else if (!safetyChecked) {
+      showWarning("⚠️ 「🛡️ 安全確認（本人による入力）」にチェックを入れてください。");
+    } else {
+      showWarning("⚠️ 「📜 利用規約・プライバシーポリシーへの同意」にチェックを入れてください。");
+    }
+    return;
+  }
+
+  // ハニーポットに入力がある場合はボットとみなして通信しない
+  if (gotchaInput && gotchaInput.value) {
+    return;
+  }
 
   state.proUnlocked = true;
+  state.registeredEmail = email;
+  state.registeredInterest = interest;
   saveState();
+  updateWaitlistBadge();
+  renderQuests();
 
-  // 送信失敗や未対応ブラウザでも、解放と完了表示は必ず行う
+  const showSuccess = (text) => {
+    if (!msg) return;
+    msg.style.display = "block";
+    msg.style.background = "#ECFDF5";
+    msg.style.color = "#065F46";
+    msg.textContent = text;
+  };
+
+  showSuccess(`🎉 登録完了！ 全${QUESTS.length}クエストが解放されました。マップからお進みください。`);
+
+  // GA4 イベント計測
+  try {
+    if (typeof window.gtag === "function") {
+      window.gtag("event", "generate_lead", {
+        event_category: "waitlist",
+        event_label: interest
+      });
+    }
+  } catch (_) {}
+
+  // Formspree への送信（送信失敗・オフライン・未設定時でも解放状態は維持）
+  const endpoint = getFormspreeEndpoint(form);
+  if (!endpoint) {
+    if (typeof console !== "undefined" && console.info) {
+      console.info("[PyType Quest] FormspreeのフォームID（FORMSPREE_FORM_ID）を設定するとメールアドレスがFormspreeへ送信されます。");
+    }
+    if (submitBtn) submitBtn.textContent = "登録済み ✓";
+    return;
+  }
+
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.textContent = "送信中...";
+  }
+
+  const payload = {
+    email,
+    interest,
+    safety_verified: true,
+    terms_agreed: true,
+    _subject: `【PyType Quest】Proプラン先行登録 (${interest})`,
+    source: "pytype_quest_web",
+    level: Math.floor(state.xp / 100) + 1,
+    xp: state.xp,
+    completed_quests: state.completed.length,
+    submitted_at: new Date().toISOString()
+  };
+
   try {
     if (typeof fetch === "function") {
-      fetch("/api/waitlist", {
+      fetch(endpoint, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, interest, source: "web_app" })
-      }).catch(() => {});
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(payload)
+      })
+        .then(async (res) => {
+          if (res && res.ok) {
+            showSuccess(`🎉 登録完了！ メールアドレスを受け付け、全${QUESTS.length}クエストが解放されました。マップからお進みください。`);
+            if (emailInput) emailInput.value = "";
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.textContent = "登録済み ✓";
+            }
+          } else {
+            let errDetail = "";
+            try {
+              const data = await res.json();
+              if (data && Array.isArray(data.errors)) {
+                errDetail = data.errors.map(err => err.message).join(", ");
+              }
+            } catch (_) {}
+            if (errDetail) {
+              showSuccess(`🎉 全${QUESTS.length}クエストが解放されました！（メール送信確認: ${errDetail}）`);
+            }
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.textContent = "登録して全章解放";
+            }
+          }
+        })
+        .catch(() => {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "登録済み ✓";
+          }
+        });
     }
-  } catch (e) { /* 計測送信はベストエフォート */ }
-
-  const msg = document.getElementById("wl-msg");
-  msg.style.display = "block";
-  msg.style.background = "#ECFDF5";
-  msg.style.color = "#065F46";
-  msg.textContent = "🎉 登録完了！ 全18クエストが解放されました。マップからお進みください。";
-
-  renderQuests();
+  } catch (_) {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "登録済み ✓";
+    }
+  }
 }
 
 function resetData() {
