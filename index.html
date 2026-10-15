@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0F172A">
 <title>PyType Quest | 1日5分でPythonを「読める→書ける」へ</title>
-<meta name="description" content="Python初心者のための1日5分ゲーム型学習アプリ。全12章60問。4択→穴埋め→タイピングで「わかる」から「書ける」へ。登録不要・無料。">
+<meta name="description" content="Python初心者のための1日5分ゲーム型学習アプリ。全18章144問。4択→穴埋め→タイピングで「わかる」から「書ける」へ。登録不要・無料。">
 <meta property="og:title" content="PyType Quest | 1日5分でPythonを「読める→書ける」へ">
 <meta property="og:description" content="4択→穴埋め→タイピングの3段階でPythonをマスター。登録不要・無料で今すぐ1問体験できます。">
 <meta property="og:type" content="website">
@@ -32,7 +32,7 @@
 
 <style>
 /* ============================================================
-   PyType Quest v4.1.0 - Clean & Modern Style
+   PyType Quest v5.0.0 - Clean & Modern Style
    編集ガイド: CSS変数でカラーや角丸を一括変更できます
    ============================================================ */
 :root {
@@ -277,6 +277,199 @@ header {
   background: #F1F5F9; border-radius: 0.85rem; padding: 1rem;
   font-size: 0.88rem; line-height: 1.6; margin: 1rem 0; white-space: pre-wrap; font-family: ui-monospace, monospace;
 }
+
+/* ============================================================
+   v5.0 UI Upgrade — 視認性・操作感・モバイル最適化
+   既存クラスへの上書き + 新規コンポーネント
+   ============================================================ */
+:root {
+  --primary-dark: #0F766E;
+  --gradient-hero: linear-gradient(135deg, #0F172A 0%, #134E4A 55%, #0D9488 130%);
+  --gradient-primary: linear-gradient(135deg, #0D9488, #0F766E);
+  --shadow-lg: 0 16px 40px -12px rgba(15, 23, 42, 0.18);
+  --shadow-btn: 0 6px 16px -6px rgba(13, 148, 136, 0.55);
+}
+:focus-visible { outline: 3px solid rgba(13, 148, 136, 0.55); outline-offset: 2px; border-radius: 6px; }
+::selection { background: #CCFBF1; }
+
+/* Header: レベル進捗バー */
+.xp-track-wrap { padding: 0 0 0.55rem; }
+.xp-track {
+  height: 6px; background: #E2E8F0; border-radius: 9999px; overflow: hidden;
+}
+.xp-track-fill {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, #F59E0B, #FFD43B);
+  border-radius: 9999px; transition: width 0.5s ease;
+}
+.xp-track-label { font-size: 0.68rem; font-weight: 700; color: var(--text-muted); margin-top: 0.25rem; display: flex; justify-content: space-between; }
+.stat-pill { transition: transform 0.15s, border-color 0.15s; }
+.stat-pill:hover { transform: translateY(-1px); border-color: var(--primary); }
+
+/* Hero 強化 */
+.hero-main {
+  background: var(--gradient-hero);
+  position: relative; overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+.hero-main::before {
+  content: ""; position: absolute; width: 340px; height: 340px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 212, 59, 0.28), transparent 65%);
+  top: -120px; right: -80px; pointer-events: none;
+}
+.hero-main::after {
+  content: "Py"; position: absolute; right: 1.2rem; bottom: -2.2rem;
+  font-size: 9rem; font-weight: 900; color: rgba(255, 255, 255, 0.05);
+  line-height: 1; pointer-events: none; font-family: ui-monospace, monospace;
+}
+.hero-main > * { position: relative; z-index: 1; }
+.btn-primary { box-shadow: 0 4px 14px -4px rgba(245, 158, 11, 0.6); }
+.btn-primary:active { transform: translateY(1px) scale(0.99); }
+.btn-secondary { transition: background 0.15s, transform 0.15s; }
+.btn-secondary:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-1px); }
+.trial-card { box-shadow: var(--shadow-lg); }
+.code-inline { font-family: ui-monospace, Menlo, monospace; background: #0F172A; color: #A5F3FC; padding: 0.1rem 0.4rem; border-radius: 0.35rem; font-size: 0.85em; }
+
+/* 進捗ダッシュボード */
+.dashboard-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1.5rem 1.75rem; box-shadow: var(--shadow);
+  margin-bottom: 1rem;
+}
+.dashboard-head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 0.5rem; }
+.dashboard-pct { font-size: 2rem; font-weight: 900; color: var(--primary); line-height: 1; }
+.dashboard-bar { height: 12px; background: #E2E8F0; border-radius: 9999px; overflow: hidden; margin: 0.75rem 0 0.5rem; }
+.dashboard-fill { height: 100%; background: var(--gradient-primary); border-radius: 9999px; transition: width 0.6s ease; }
+.dashboard-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-top: 1rem; }
+@media (min-width: 700px) { .dashboard-grid { grid-template-columns: repeat(4, 1fr); } }
+.dashboard-stat { background: var(--bg); border: 1px solid var(--border); border-radius: 0.85rem; padding: 0.85rem; text-align: center; }
+.dashboard-stat-val { font-size: 1.35rem; font-weight: 900; }
+.dashboard-stat-lbl { font-size: 0.72rem; color: var(--text-muted); font-weight: 700; }
+
+/* クエスト検索・フィルター */
+.quest-toolbar { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; margin-bottom: 1rem; }
+.quest-search {
+  flex: 1 1 220px; display: flex; align-items: center; gap: 0.5rem;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 9999px;
+  padding: 0.55rem 1rem;
+}
+.quest-search input { border: none; outline: none; flex: 1; background: transparent; font-size: 0.9rem; min-width: 0; }
+.filter-chips { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.filter-chip {
+  padding: 0.45rem 0.9rem; border-radius: 9999px; border: 1px solid var(--border);
+  background: var(--surface); font-size: 0.8rem; font-weight: 800; color: var(--text-muted);
+  transition: all 0.15s;
+}
+.filter-chip:hover { border-color: var(--primary); color: var(--primary); }
+.filter-chip.active { background: var(--dark); color: #fff; border-color: var(--dark); }
+.quest-result-count { font-size: 0.8rem; color: var(--text-muted); font-weight: 700; margin-bottom: 0.75rem; }
+.quest-empty {
+  grid-column: 1 / -1; text-align: center; padding: 2.5rem 1rem; color: var(--text-muted);
+  background: var(--surface); border: 1px dashed var(--border); border-radius: 1rem; font-weight: 700;
+}
+
+/* クエストカード強化 */
+.quest-card { position: relative; overflow: hidden; border-top: 4px solid var(--border); }
+.quest-card.is-done { border-color: #A7F3D0; background: linear-gradient(180deg, #F0FDF9, #fff 45%); }
+.quest-card.is-done .quest-btn { background: var(--primary); }
+.quest-card.is-next { box-shadow: 0 0 0 2px var(--primary), var(--shadow-lg); }
+.next-ribbon {
+  position: absolute; top: 0.9rem; right: -2.2rem; transform: rotate(35deg);
+  background: var(--accent); color: #78350F; font-size: 0.65rem; font-weight: 900;
+  padding: 0.2rem 2.4rem; letter-spacing: 0.08em;
+}
+.difficulty { font-size: 0.78rem; letter-spacing: 0.12em; color: #F59E0B; white-space: nowrap; }
+.difficulty .off { color: #E2E8F0; }
+.skill-chips { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.6rem; }
+.skill-chip { background: var(--bg); border: 1px solid var(--border); color: #475569; font-size: 0.68rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 9999px; }
+.quest-footer { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; font-weight: 800; color: var(--text-muted); margin-top: 0.75rem; }
+.quest-btn { transition: filter 0.15s, transform 0.15s; }
+.quest-btn:hover:not(:disabled) { filter: brightness(1.2); transform: translateY(-1px); }
+.quick-card { transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s; }
+.quick-card:hover { box-shadow: var(--shadow-lg); }
+
+/* ゲーム画面強化 */
+.game-stat-box { transition: transform 0.2s; }
+.combo-hot { color: #EA580C !important; transform: scale(1.12); }
+.combo-hot::after { content: " 🔥"; }
+.progress-meta { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 800; color: var(--text-muted); margin-bottom: 0.35rem; }
+.code-head {
+  display: flex; align-items: center; gap: 0.4rem;
+  background: #1E293B; color: #94A3B8; border-radius: 0.85rem 0.85rem 0 0;
+  padding: 0.45rem 0.9rem; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.06em;
+  margin: 1rem 0 0;
+}
+.code-head .dot { width: 10px; height: 10px; border-radius: 50%; }
+.code-head + .code-block { margin-top: 0; border-radius: 0 0 0.85rem 0.85rem; }
+.code-copy {
+  margin-left: auto; color: #CBD5E1; font-size: 0.7rem; font-weight: 800;
+  border: 1px solid rgba(255,255,255,0.2); padding: 0.15rem 0.55rem; border-radius: 9999px;
+}
+.code-copy:hover { background: rgba(255,255,255,0.12); color: #fff; }
+.tok-kw { color: #F472B6; font-weight: 700; }
+.tok-builtin { color: #7DD3FC; }
+.tok-str { color: #FDE68A; }
+.tok-num { color: #FDA4AF; }
+.tok-comment { color: #64748B; font-style: italic; }
+.choice-btn { display: flex; align-items: center; gap: 0.7rem; }
+.choice-letter {
+  flex: 0 0 auto; width: 26px; height: 26px; border-radius: 8px;
+  background: var(--bg); border: 1px solid var(--border);
+  display: grid; place-items: center; font-size: 0.75rem; font-weight: 900; color: var(--text-muted);
+}
+.choice-btn:hover .choice-letter { background: var(--primary-light); color: var(--primary-dark); border-color: var(--primary); }
+.choice-btn.ok .choice-letter { background: var(--ok); color: #fff; border-color: var(--ok); }
+.choice-btn.bad .choice-letter { background: var(--bad); color: #fff; border-color: var(--bad); }
+.choice-btn.reveal-ok { border-color: var(--ok); background: #ECFDF5; animation: pulseOk 0.6s ease 2; }
+@keyframes pulseOk { 0%,100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.0);} 50% { box-shadow: 0 0 0 5px rgba(16,185,129,0.25);} }
+.hint-box {
+  display: flex; gap: 0.5rem; align-items: flex-start;
+  background: #FFFBEB; border: 1px solid #FDE68A; color: #92400E;
+  border-radius: 0.75rem; padding: 0.7rem 0.9rem; margin-top: 0.6rem; font-size: 0.83rem; line-height: 1.55;
+}
+.kbd-hint { font-size: 0.72rem; color: var(--text-muted); font-weight: 700; margin-top: 0.5rem; }
+kbd {
+  background: var(--dark); color: #fff; border-radius: 5px; padding: 0.05rem 0.4rem;
+  font-family: ui-monospace, monospace; font-size: 0.7rem; font-weight: 700;
+}
+.typing-input { transition: border-color 0.15s, box-shadow 0.15s; }
+.typing-input:focus { box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.15); }
+.feedback-box { animation: feedbackIn 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2); }
+@keyframes feedbackIn { from { opacity: 0; transform: translateY(10px) scale(0.98);} to { opacity: 1; transform: none;} }
+.feedback-code {
+  display: inline-block; margin-top: 0.5rem; background: rgba(15,23,42,0.92); color: #A5F3FC;
+  font-family: ui-monospace, Menlo, monospace; font-size: 0.85rem; padding: 0.35rem 0.7rem; border-radius: 0.5rem;
+  word-break: break-all;
+}
+
+/* 結果画面強化 */
+.result-hero { position: relative; overflow: hidden; box-shadow: var(--shadow-lg); }
+.result-stars { font-size: 2.2rem; letter-spacing: 0.3em; margin-top: 0.5rem; text-shadow: 0 4px 14px rgba(245,158,11,0.45); }
+.result-stars .off { opacity: 0.22; filter: grayscale(1); }
+.confetti-wrap { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.confetti-piece { position: absolute; top: -12px; border-radius: 2px; animation: confettiFall linear forwards; }
+@keyframes confettiFall { to { transform: translateY(420px) rotate(720deg); opacity: 0; } }
+
+/* スクロールでふわっと表示 */
+.reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+
+/* モバイル最適化 */
+@media (max-width: 640px) {
+  .header-inner { flex-wrap: wrap; }
+  .header-stats { flex-wrap: wrap; }
+  .hero-main, .trial-card, .problem-card, .ai-section, .pro-card { padding: 1.25rem; }
+  .hero-title { font-size: 1.9rem; }
+  .game-stats-bar { grid-template-columns: repeat(3, 1fr); }
+  .game-stats-bar .game-stat-box:nth-child(4),
+  .game-stats-bar .game-stat-box:nth-child(5) { grid-column: span 1; }
+  .dashboard-card { padding: 1.1rem; }
+  .result-hero { padding: 1.75rem 1rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  .reveal { opacity: 1; transform: none; }
+}
 </style>
 </head>
 <body>
@@ -287,7 +480,7 @@ header {
     <div class="brand" onclick="showScreen('home')" style="cursor:pointer">
       <span class="brand-badge">Py</span>
       <span>PyType Quest</span>
-      <span style="font-size:0.75rem;color:var(--text-muted);font-weight:700">v4.1</span>
+      <span style="font-size:0.75rem;color:var(--text-muted);font-weight:700">v5.0</span>
     </div>
     <div class="header-stats">
       <span class="stat-pill">🔥 <b id="head-streak">0</b>日</span>
@@ -297,6 +490,10 @@ header {
         学習開始
       </button>
     </div>
+  </div>
+  <div class="container xp-track-wrap" aria-hidden="true">
+    <div class="xp-track"><div class="xp-track-fill" id="head-xp-fill"></div></div>
+    <div class="xp-track-label"><span id="head-xp-label">次のレベルまで</span><span id="head-xp-next"></span></div>
   </div>
 </header>
 
@@ -312,18 +509,18 @@ header {
           <h1 class="hero-title">Pythonを<br>「読める」から<br><span>「書ける」へ。</span></h1>
           <p class="hero-desc">
             4択 → 穴埋め → タイピングの3段階で、意味を理解してから手を動かす。
-            全12章・60問。間違えた問題は自動で復習リストへ。
-            参考書で挫折した人のための、ゲーム型・再出発カリキュラムです。
+            全18章・144問。基礎から while・クラス・モジュールまで一気に進めます。
+            間違えた問題は自動で復習リストへ。参考書で挫折した人のための、ゲーム型・再出発カリキュラムです。
           </p>
         </div>
         <div>
           <div class="hero-actions">
             <button onclick="startQuest(1)" class="btn-primary">▶ 第1章を始める（無料）</button>
-            <a href="#quests" class="btn-secondary">全12章マップを見る</a>
+            <a href="#quests" class="btn-secondary">全18章マップを見る</a>
           </div>
           <div class="hero-stats-row">
-            <div><div class="hero-stat-num" id="stat-total-q">60</div><div class="hero-stat-label">全収録問題数</div></div>
-            <div><div class="hero-stat-num" id="stat-cleared">0/12</div><div class="hero-stat-label">クリア章数</div></div>
+            <div><div class="hero-stat-num" id="stat-total-q">144</div><div class="hero-stat-label">全収録問題数</div></div>
+            <div><div class="hero-stat-num" id="stat-cleared">0/18</div><div class="hero-stat-label">クリア章数</div></div>
             <div><div class="hero-stat-num" id="stat-acc">100%</div><div class="hero-stat-label">平均正答率</div></div>
           </div>
         </div>
@@ -372,7 +569,7 @@ header {
         <span style="font-size:1.5rem">🎯</span>
         <h3 style="font-size:1.1rem;font-weight:900;margin-top:0.35rem">今日の5分ミッション</h3>
         <p style="font-size:0.85rem;opacity:0.9;margin-top:0.25rem">「何を勉強する？」を考えなくてOK。次の未クリア章へ直行。</p>
-        <span class="quick-tag" style="display:inline-block;padding:0.2rem 0.6rem;border-radius:9999px;font-size:0.75rem;font-weight:800;margin-top:0.75rem">5問 / 約5分 / +100XP〜</span>
+        <span class="quick-tag" style="display:inline-block;padding:0.2rem 0.6rem;border-radius:9999px;font-size:0.75rem;font-weight:800;margin-top:0.75rem">8問 / 約5〜8分 / +150XP〜</span>
       </button>
 
       <button onclick="startReview()" class="quick-card">
@@ -390,14 +587,50 @@ header {
       </div>
     </section>
 
-    <!-- QUEST MAP (全12章・60問) -->
+    <!-- PROGRESS DASHBOARD -->
+    <section class="dashboard-card reveal" aria-label="学習の進捗">
+      <div class="dashboard-head">
+        <div>
+          <h2 style="font-size:1.15rem;font-weight:900">📊 あなたの進捗</h2>
+          <p style="font-size:0.82rem;color:var(--text-muted)">全クエストのクリア状況と、正答率・復習の残りが一目で分かります。</p>
+        </div>
+        <div style="text-align:right">
+          <div class="dashboard-pct" id="dash-pct">0%</div>
+          <div style="font-size:0.72rem;color:var(--text-muted);font-weight:700">完了率</div>
+        </div>
+      </div>
+      <div class="dashboard-bar"><div class="dashboard-fill" id="dash-fill" style="width:0%"></div></div>
+      <p style="font-size:0.8rem;color:var(--text-muted);font-weight:700" id="dash-message">まずは第1章から始めましょう。1問30秒から体験できます。</p>
+      <div class="dashboard-grid">
+        <div class="dashboard-stat"><div class="dashboard-stat-val" id="dash-cleared">0 / 18章</div><div class="dashboard-stat-lbl">クリアした章</div></div>
+        <div class="dashboard-stat"><div class="dashboard-stat-val" id="dash-answered">0問</div><div class="dashboard-stat-lbl">これまで解いた問題</div></div>
+        <div class="dashboard-stat"><div class="dashboard-stat-val" id="dash-acc">—</div><div class="dashboard-stat-lbl">累計正答率</div></div>
+        <div class="dashboard-stat"><div class="dashboard-stat-val" id="dash-review">0問</div><div class="dashboard-stat-lbl">復習待ち</div></div>
+      </div>
+    </section>
+
+    <!-- QUEST MAP (全18章・144問) -->
     <section id="quests">
       <div class="section-head">
         <div>
-          <h2 class="section-title">🗺️ クエストマップ — 全12章 60問</h2>
-          <p class="section-sub">前の章をクリアすると次が解放されます。第9〜12章はPro先行登録で解放。</p>
+          <h2 class="section-title" id="quests-title">🗺️ クエストマップ — 全18章 144問</h2>
+          <p class="section-sub" id="quests-sub">前の章をクリアすると次が解放されます。第9〜18章はPro先行登録で解放。難易度 ★ が上がるほど応用度アップ。</p>
         </div>
       </div>
+      <div class="quest-toolbar">
+        <label class="quest-search">
+          <span aria-hidden="true">🔍</span>
+          <input type="search" id="quest-search" placeholder="章のタイトル・スキルで検索（例：リスト、関数、while）" oninput="onQuestSearch(this.value)" aria-label="クエストを検索">
+        </label>
+        <div class="filter-chips" role="group" aria-label="クエストの絞り込み">
+          <button class="filter-chip active" data-filter="all" onclick="setQuestFilter('all', this)">すべて</button>
+          <button class="filter-chip" data-filter="todo" onclick="setQuestFilter('todo', this)">未クリア</button>
+          <button class="filter-chip" data-filter="done" onclick="setQuestFilter('done', this)">クリア済</button>
+          <button class="filter-chip" data-filter="free" onclick="setQuestFilter('free', this)">無料</button>
+          <button class="filter-chip" data-filter="pro" onclick="setQuestFilter('pro', this)">PRO</button>
+        </div>
+      </div>
+      <p class="quest-result-count" id="quest-result-count"></p>
       <div class="quests-grid" id="quests-container"></div>
     </section>
 
@@ -433,11 +666,16 @@ header {
     <section id="pro" class="pro-card">
       <div style="max-width:700px">
         <span style="background:#FEF3C7;color:#B45309;padding:0.25rem 0.6rem;border-radius:9999px;font-size:0.75rem;font-weight:900">先行登録中</span>
-        <h2 style="font-size:1.75rem;font-weight:900;margin-top:0.5rem">👑 Proプラン先行登録（第9〜12章が即解放）</h2>
+        <h2 style="font-size:1.75rem;font-weight:900;margin-top:0.5rem">👑 Proプラン先行登録（第9〜18章が即解放）</h2>
         <p style="color:var(--text-muted);font-size:0.92rem;margin-top:0.5rem;line-height:1.7">
-          文字列操作・組み込み関数・例外処理・ファイル自動化の第9〜12章を先行解放します。
-          （※現在メール登録のみで無料解放されます。課金は発生しません）
+          文字列操作・例外処理・ファイル自動化に加え、whileと入力、リスト応用、タプル・集合、モジュール、クラス入門、総合卒業プロジェクトまで
+          全10章・80問を先行解放します。（※現在メール登録のみで無料解放されます。課金は発生しません）
         </p>
+        <ul style="color:var(--text-muted);font-size:0.88rem;margin:0.75rem 0 0 1.1rem;line-height:1.8">
+          <li>第9〜12章：実務で使う文字列・関数・例外・ファイル処理</li>
+          <li>第13〜15章：while / input、リスト応用、タプル・集合・辞書応用</li>
+          <li>第16〜18章：モジュール活用、クラス入門、総合卒業プロジェクト</li>
+        </ul>
 
         <form id="waitlist-form" onsubmit="handleWaitlist(event)" class="form-row">
           <input type="email" id="wl-email" required placeholder="メールアドレスを入力" class="input-text">
@@ -482,6 +720,7 @@ header {
       <div class="game-stat-box"><div class="game-stat-val" id="g-xp">+0</div><div class="game-stat-lbl">今回XP</div></div>
       <div class="game-stat-box"><div class="game-stat-val" id="g-time">0s</div><div class="game-stat-lbl">時間</div></div>
     </div>
+    <div class="progress-meta"><span id="g-progress-label">第1問</span><span id="g-progress-pct">0%</span></div>
     <div class="progress-track"><div class="progress-fill" id="g-progress-fill" style="width:0%"></div></div>
 
     <!-- PROBLEM CARD -->
@@ -495,16 +734,24 @@ header {
       <h2 id="p-prompt" style="font-size:1.35rem;font-weight:900;margin-top:1rem;line-height:1.4">問題文</h2>
 
       <div id="p-code-wrap" style="display:none">
+        <div class="code-head">
+          <span class="dot" style="background:#EF4444"></span>
+          <span class="dot" style="background:#F59E0B"></span>
+          <span class="dot" style="background:#10B981"></span>
+          <span>Python</span>
+          <button class="code-copy" onclick="copyProblemCode()" id="btn-copy-code">コードをコピー</button>
+        </div>
         <pre class="code-block"><code id="p-code"></code></pre>
       </div>
 
       <!-- CHOICES (4-choice) -->
       <div id="p-choices-wrap" style="display:none;margin-top:1.25rem" class="trial-choices"></div>
+      <p class="kbd-hint" id="p-choice-kbd" style="display:none">キーボード: <kbd>1</kbd>〜<kbd>4</kbd> で選択 ／ 判定後は <kbd>Enter</kbd> で次へ</p>
 
       <!-- TYPING / FILL INPUT -->
       <div id="p-input-wrap" style="display:none;margin-top:1.25rem">
-        <input type="text" id="p-input" class="typing-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="ここに答えを入力（Enterで判定）">
-        <p style="font-size:0.8rem;color:var(--text-muted);margin-top:0.4rem">ヒント: <span id="p-hint"></span> ／ Enterキーで決定</p>
+        <input type="text" id="p-input" class="typing-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="ここに答えを入力（Enterで判定）" aria-label="答えを入力">
+        <div class="hint-box"><span aria-hidden="true">💡</span><span>ヒント: <b id="p-hint"></b><br><span style="font-size:0.78rem">大文字・小文字とスペースまで正確に入力しましょう。<kbd>Enter</kbd> で判定します。</span></span></div>
       </div>
 
       <!-- SUBMIT ACTION -->
@@ -513,8 +760,9 @@ header {
       </button>
 
       <!-- FEEDBACK -->
-      <div id="p-feedback" class="feedback-box" style="display:none">
+      <div id="p-feedback" class="feedback-box" style="display:none" role="status" aria-live="polite">
         <h4 id="fb-title" style="font-weight:900;font-size:1.05rem"></h4>
+        <div><code class="feedback-code" id="fb-answer" style="display:none"></code></div>
         <p id="fb-desc" style="font-size:0.9rem;margin-top:0.35rem;line-height:1.6"></p>
         <button onclick="nextQuestion()" class="btn-primary" style="margin-top:1rem;width:100%;justify-content:center">
           次の問題へ →
@@ -528,8 +776,10 @@ header {
 <main id="screen-result" class="screen">
   <div class="game-container">
     <div class="result-hero">
+      <div class="confetti-wrap" id="confetti-wrap" aria-hidden="true"></div>
       <span style="color:#FFD43B;font-size:0.75rem;font-weight:900;letter-spacing:1px">MISSION COMPLETE</span>
       <h1 id="res-heading" style="font-size:2.5rem;font-weight:900;margin:0.5rem 0">🎉 クリア！</h1>
+      <div class="result-stars" id="res-stars" aria-label="評価スター"></div>
       <p id="res-quest-name" style="color:#CBD5E1;font-size:0.95rem"></p>
 
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;margin-top:1.5rem">
@@ -569,7 +819,8 @@ header {
       </div>
     </div>
 
-    <div style="display:flex;gap:0.75rem;margin-top:1.5rem">
+    <div style="display:flex;gap:0.75rem;margin-top:1.5rem;flex-wrap:wrap">
+      <button id="res-next-btn" onclick="startNextQuest()" class="btn-primary" style="flex:1;justify-content:center;display:none">次の章へ進む →</button>
       <button onclick="showScreen('home')" class="btn-primary" style="flex:1;justify-content:center">クエスト一覧へ戻る</button>
       <button id="res-review-btn" onclick="startReview()" class="btn-secondary" style="color:var(--dark);border-color:var(--border);display:none">復習リストに挑戦</button>
     </div>
@@ -579,7 +830,7 @@ header {
 <!-- ==================== JAVASCRIPT ==================== -->
 <script>
 // ============================================================
-// PyType Quest v4.1.0 - 全12章60問 問題データ＆ロジック
+// PyType Quest v5.0.0 - 全18章144問 問題データ＆ロジック
 //
 // 編集ガイド:
 //   新しい問題やクエストを追加したい場合は、QUESTS 配列にオブジェクトを追加するだけで動作します。
@@ -596,7 +847,10 @@ const QUESTS = [
       { id: "q1_2", type: "fill", prompt: "数値の 100 を画面に表示するコードを完成させてください", code: "___(100)", answer: "print", explanation: "数値はクォーテーションで囲まずにそのまま print(100) と書くことで出力できます。", hint: "表示命令の名前を入力", skill: "数値出力", xp: 20 },
       { id: "q1_3", type: "choice", prompt: "次のコードを実行したときの画面の表示結果は？", code: 'print("3 + 5")\nprint(3 + 5)', choices: ["3 + 5 と 8", "8 と 8", "3 + 5 と 3 + 5", "エラーになる"], answer: "3 + 5 と 8", explanation: '" " で囲むと文字としてそのまま出力され、囲まないと計算が行われて結果の 8 が出力されます。', hint: "クォーテーションで囲まれているかどうかを確認", skill: "文字と数値の違い", xp: 25 },
       { id: "q1_4", type: "typing", prompt: "「Python」と画面に表示するコードを正確に入力してください", answer: 'print("Python")', explanation: 'print("Python") と半角英数字で入力します。カッコと引用符を忘れないようにしましょう。', hint: 'print("Python")', skill: "基本タイピング", xp: 25 },
-      { id: "q1_5", type: "choice", prompt: "カンマで区切って複数の単語を並べて表示するコードの出力結果は？", code: 'print("Hello", "World")', choices: ["Hello World", "HelloWorld", "Hello, World", "エラー"], answer: "Hello World", explanation: "print() の中でカンマ区切りで渡すと、半角スペースで区切られて順番に出力されます。", hint: "カンマ区切りは自動でスペースが入ります", skill: "複数値の出力", xp: 30 }
+      { id: "q1_5", type: "choice", prompt: "カンマで区切って複数の単語を並べて表示するコードの出力結果は？", code: 'print("Hello", "World")', choices: ["Hello World", "HelloWorld", "Hello, World", "エラー"], answer: "Hello World", explanation: "print() の中でカンマ区切りで渡すと、半角スペースで区切られて順番に出力されます。", hint: "カンマ区切りは自動でスペースが入ります", skill: "複数値の出力", xp: 30 },
+      { id: "q1_6", type: "choice", prompt: "シングルクォーテーションで囲んだ次のコードの表示結果は？", code: "print('Python')", choices: ["Python", "'Python'", "エラーになる", "print"], answer: "Python", explanation: "文字列はダブルクォーテーション \" \" でもシングルクォーテーション ' ' でも囲めます。表示されるとき引用符は付きません。", hint: "引用符は画面には表示されません", skill: "クォーテーション", xp: 20 },
+      { id: "q1_7", type: "fill", prompt: "実行されないメモ（コメント行）の先頭に付ける記号を入れてください", code: "___ これはメモです\nprint(\"OK\")", answer: "#", explanation: "# から始まる行はコメントとして無視されます。コードの意図を人に伝えるためのメモです。", hint: "シャープ記号です", skill: "コメント", xp: 20 },
+      { id: "q1_8", type: "typing", prompt: "数値の 42 を画面に表示するコードを正確に入力してください", answer: "print(42)", explanation: "print(42) のように数値は引用符で囲まずにそのまま書きます。囲むと「42」という文字として扱われます。", hint: "print(42)", skill: "数値のタイピング", xp: 25 }
     ]
   },
   {
@@ -609,7 +863,10 @@ const QUESTS = [
       { id: "q2_2", type: "fill", prompt: "変数 score に 80 を保存する記号を埋めてください", code: "score ___ 80", answer: "=", explanation: "変数への代入には = 記号を1つ使います。", hint: "代入記号", skill: "代入演算子", xp: 20 },
       { id: "q2_3", type: "choice", prompt: "次のコードを実行したとき、最後に表示される値は？", code: 'x = 10\nx = 20\nprint(x)', choices: ["20", "10", "30", "エラー"], answer: "20", explanation: "変数は新しい値を代入すると上書きされ、最新の値（20）が保持されます。", hint: "変数は上書きされます", skill: "値の上書き", xp: 25 },
       { id: "q2_4", type: "typing", prompt: "変数 user に「ゲスト」を代入する1行を書いてください", answer: 'user = "ゲスト"', explanation: 'user = "ゲスト" と書くことで、文字列「ゲスト」が user という変数に保存されます。', hint: 'user = "ゲスト"', skill: "変数入力", xp: 25 },
-      { id: "q2_5", type: "choice", prompt: "f文字列を使って変数の値を文章に埋め込む正しい書き方は？", code: 'name = "花子"', choices: ['print(f"こんにちは、{name}さん")', 'print("こんにちは、{name}さん")', 'print(f"こんにちは、nameさん")', 'print("こんにちは" + {name})'], answer: 'print(f"こんにちは、{name}さん")', explanation: "文字列の先頭に f を付け、{変数名} と書くとその位置に変数の値が埋め込まれます（f文字列）。", hint: "先頭に f を置き、波カッコ { } で変数を囲みます", skill: "f文字列", xp: 30 }
+      { id: "q2_5", type: "choice", prompt: "f文字列を使って変数の値を文章に埋め込む正しい書き方は？", code: 'name = "花子"', choices: ['print(f"こんにちは、{name}さん")', 'print("こんにちは、{name}さん")', 'print(f"こんにちは、nameさん")', 'print("こんにちは" + {name})'], answer: 'print(f"こんにちは、{name}さん")', explanation: "文字列の先頭に f を付け、{変数名} と書くとその位置に変数の値が埋め込まれます（f文字列）。", hint: "先頭に f を置き、波カッコ { } で変数を囲みます", skill: "f文字列", xp: 30 },
+      { id: "q2_6", type: "choice", prompt: "次のコードで変数 pi のデータ型（type）は何ですか？", code: "pi = 3.14", choices: ["float（小数）", "int（整数）", "str（文字列）", "bool（真偽値）"], answer: "float（小数）", explanation: "小数点を含む数値は float 型、整数は int 型、文字は str 型です。type(値) で調べられます。", hint: "3.14 は小数です", skill: "データ型", xp: 25 },
+      { id: "q2_7", type: "fill", prompt: "文字列 \"20\" を計算できる整数に変換する関数名を入れてください", code: 'age = ___("20")', answer: "int", explanation: "int() で文字列を整数に変換できます。変換しないと \"20\" + 1 のような計算でエラーになります。", hint: "integer（整数）の略です", skill: "int型変換", xp: 25 },
+      { id: "q2_8", type: "typing", prompt: "変数 price に 500 を代入する1行を書いてください", answer: "price = 500", explanation: "price = 500 と書くと、数値 500 が price という名前の変数に保存されます。", hint: "price = 500", skill: "数値の代入", xp: 25 }
     ]
   },
   {
@@ -622,7 +879,10 @@ const QUESTS = [
       { id: "q3_2", type: "fill", prompt: "7 を 3 で割った「余り（1）」を求める演算子を入れてください", code: "amari = 7 ___ 3", answer: "%", explanation: "% 演算子は割り算の余り（剰余）を求めます。偶数・奇数の判定や周期的な処理で大活躍します。", hint: "パーセント記号", skill: "剰余算", xp: 20 },
       { id: "q3_3", type: "choice", prompt: "次のコードを実行したときの total の値は何ですか？", code: "total = 100\ntotal += 50\nprint(total)", choices: ["150", "100", "50", "total50"], answer: "150", explanation: "total += 50 は total = total + 50 の省略形（累積代入）で、元の値に50を加算します。", hint: "+= は足して代入する記号です", skill: "累積代入", xp: 25 },
       { id: "q3_4", type: "typing", prompt: "10 を 2 で割る割り算を画面に表示するコードを書いてください", answer: "print(10 / 2)", explanation: "スラッシュ1つの割り算 / は小数の結果（float: 5.0）を返します。", hint: "print(10 / 2)", skill: "除算入力", xp: 25 },
-      { id: "q3_5", type: "choice", prompt: "小数点以下を切り捨てて整数の商だけを求める演算子はどれ？", code: "print(7 // 2)", choices: ["3", "3.5", "4", "1"], answer: "3", explanation: "// は切り捨て除算です。7 // 2 は 3.5 の小数点以下を切り捨てて 3 になります。", hint: "スラッシュ2つで整数商", skill: "切り捨て除算", xp: 30 }
+      { id: "q3_5", type: "choice", prompt: "小数点以下を切り捨てて整数の商だけを求める演算子はどれ？", code: "print(7 // 2)", choices: ["3", "3.5", "4", "1"], answer: "3", explanation: "// は切り捨て除算です。7 // 2 は 3.5 の小数点以下を切り捨てて 3 になります。", hint: "スラッシュ2つで整数商", skill: "切り捨て除算", xp: 30 },
+      { id: "q3_6", type: "choice", prompt: "次のコードを実行したときの表示結果は？", code: "print(2 ** 3)", choices: ["8", "6", "5", "9"], answer: "8", explanation: "** はべき乗の演算子です。2 ** 3 は 2×2×2 = 8 になります。", hint: "2を3回掛けます", skill: "べき乗", xp: 25 },
+      { id: "q3_7", type: "fill", prompt: "3 の 2乗（結果は 9）になるべき乗演算子を入れてください", code: "power = 3 ___ 2", answer: "**", explanation: "** 演算子でべき乗を計算します。3 ** 2 = 9 です。面積や成長率の計算でよく使います。", hint: "アスタリスクを2つ並べます", skill: "べき乗演算子", xp: 20 },
+      { id: "q3_8", type: "typing", prompt: "5 に 3 を足した結果を画面に表示するコードを書いてください", answer: "print(5 + 3)", explanation: "print(5 + 3) と書くと計算結果の 8 が表示されます。print の中で直接計算できます。", hint: "print(5 + 3)", skill: "計算のタイピング", xp: 25 }
     ]
   },
   {
@@ -635,7 +895,10 @@ const QUESTS = [
       { id: "q4_2", type: "fill", prompt: "if文の行末に必要な記号は何ですか？", code: "if score >= 60___", answer: ":", explanation: "Pythonでは if、for、def などのブロックの始まりの行末に必ず :（コロン）を付けます。", hint: "コロン記号", skill: "構文コロン", xp: 20 },
       { id: "q4_3", type: "choice", prompt: "次のコードを実行したときの表示結果は？", code: 'age = 15\nif age >= 18:\n    print("大人")\nelse:\n    print("子ども")', choices: ["子ども", "大人", "何も出ない", "エラー"], answer: "子ども", explanation: "age は 15 なので条件 15 >= 18 は成り立たず（False）、else側のコードが実行されます。", hint: "条件が不成立のときは else 側へ進みます", skill: "if-else分岐", xp: 25 },
       { id: "q4_4", type: "typing", prompt: "role が「admin」と等しいかを判定する if文を入力してください", answer: 'if role == "admin":', explanation: "等しいかの比較には ==（イコール2つ）を使い、末尾に : を置きます。", hint: 'if role == "admin":', skill: "等価比較", xp: 25 },
-      { id: "q4_5", type: "choice", prompt: "「それ以外で、もし〜なら」と条件を追加するキーワードは？", choices: ["elif", "else if", "elseif", "case"], answer: "elif", explanation: "Pythonでは else if を縮めて elif と書きます。いくつでも条件を連結できます。", hint: "else と if の短縮形", skill: "elif分岐", xp: 30 }
+      { id: "q4_5", type: "choice", prompt: "「それ以外で、もし〜なら」と条件を追加するキーワードは？", choices: ["elif", "else if", "elseif", "case"], answer: "elif", explanation: "Pythonでは else if を縮めて elif と書きます。いくつでも条件を連結できます。", hint: "else と if の短縮形", skill: "elif分岐", xp: 30 },
+      { id: "q4_6", type: "choice", prompt: "「60点以上 かつ 90点未満」のように2つの条件を両方満たすときに使うキーワードは？", code: "if score >= 60 ___ score < 90:", choices: ["and", "or", "not", "with"], answer: "and", explanation: "and は左右両方の条件が True のときだけ全体が True になります。どちらか一方でよい場合は or を使います。", hint: "英語で「〜かつ〜」です", skill: "and条件", xp: 25 },
+      { id: "q4_7", type: "fill", prompt: "「18 と等しくない」という比較演算子を入れてください", code: "if age ___ 18:", answer: "!=", explanation: "!= は「等しくない」を表します。==（等しい）と反対の比較です。", hint: "ビックリマークとイコールです", skill: "不等号 !=", xp: 20 },
+      { id: "q4_8", type: "typing", prompt: "変数 x が 0 より大きいかを判定する if文の1行目を入力してください", answer: "if x > 0:", explanation: "if x > 0: と書きます。比較演算子 > と行末のコロンを忘れずに。", hint: "if x > 0:", skill: "if文タイピング", xp: 25 }
     ]
   },
   {
@@ -648,7 +911,10 @@ const QUESTS = [
       { id: "q5_2", type: "fill", prompt: "for文のキーワードを埋めてください", code: "___ i in range(5):\n    print(i)", answer: "for", explanation: "for 変数 in 繰り返す対象: の形で、対象から値を1つずつ取り出して処理します。", hint: "英語の「〜のために」", skill: "for構文", xp: 20 },
       { id: "q5_3", type: "choice", prompt: "次のループで最後に画面に表示される数字は何ですか？", code: "for i in range(1, 5):\n    print(i)", choices: ["4", "5", "1", "0"], answer: "4", explanation: "range(1, 5) は 1 から始まり、5 の直前（4）で終わります。終了値自身は含まれません。", hint: "終了値の手前まで繰り返します", skill: "range範囲指定", xp: 25 },
       { id: "q5_4", type: "typing", prompt: "3回繰り返す forループの1行目を入力してください（変数名: i）", answer: "for i in range(3):", explanation: "for i in range(3): と書くことで、変数 i に 0, 1, 2 が順番に入ります。", hint: "for i in range(3):", skill: "for行のタイピング", xp: 25 },
-      { id: "q5_5", type: "choice", prompt: "条件を満たしたときにループを途中で強制終了する命令はどれ？", choices: ["break", "continue", "stop", "exit"], answer: "break", explanation: "break はループをその場で中断して脱出します。continue は次の周へスキップします。", hint: "壊して脱出する英単語", skill: "break命令", xp: 30 }
+      { id: "q5_5", type: "choice", prompt: "条件を満たしたときにループを途中で強制終了する命令はどれ？", choices: ["break", "continue", "stop", "exit"], answer: "break", explanation: "break はループをその場で中断して脱出します。continue は次の周へスキップします。", hint: "壊して脱出する英単語", skill: "break命令", xp: 30 },
+      { id: "q5_6", type: "choice", prompt: "今回の周の残りの処理だけを飛ばして、次の周へ進む命令はどれ？", choices: ["continue", "break", "pass", "skip"], answer: "continue", explanation: "continue はその周の残りをスキップして次の繰り返しへ進みます。break（完全終了）との違いが重要です。", hint: "「続ける」という意味の英単語です", skill: "continue命令", xp: 25 },
+      { id: "q5_7", type: "fill", prompt: "0, 2, 4, 6, 8 と2ずつ増える range のステップ数を入れてください", code: "for i in range(0, 10, ___):", answer: "2", explanation: "range(開始, 終了, ステップ) の3番目に増え幅を指定できます。偶数だけ処理したいときなどに便利です。", hint: "2ずつ増やします", skill: "rangeステップ", xp: 25 },
+      { id: "q5_8", type: "typing", prompt: "リスト names の要素を1つずつ変数 name に取り出す for文の1行目を書いてください", answer: "for name in names:", explanation: "for name in names: と書くと、リストの要素が先頭から順に name に入って繰り返されます。", hint: "for name in names:", skill: "リストのfor文", xp: 25 }
     ]
   },
   {
@@ -661,7 +927,10 @@ const QUESTS = [
       { id: "q6_2", type: "fill", prompt: "リスト items の先頭（最初の要素）を取り出すインデックス番号は？", code: "first = items[___]", answer: "0", explanation: "プログラミングでは順番は 0 から数えます。最初の要素は [0]、2番目は [1] です。", hint: "ゼロ番目", skill: "0始まりインデックス", xp: 20 },
       { id: "q6_3", type: "choice", prompt: "リストの要素数を調べる関数 len([10, 20, 30]) の戻り値は？", choices: ["3", "2", "30", "エラー"], answer: "3", explanation: "len() 関数は length（長さ）の略で、リストの要素数や文字数を返します。", hint: "要素がいくつ入っているか", skill: "len関数", xp: 25 },
       { id: "q6_4", type: "typing", prompt: "リスト nums の末尾に 10 を追加するコードを入力してください", answer: "nums.append(10)", explanation: "リスト.append(値) を使うと、リストの一番後ろに新しい要素を追加できます。", hint: "nums.append(10)", skill: "appendメソッド", xp: 25 },
-      { id: "q6_5", type: "choice", prompt: "リストの一番後ろの要素を取り出す便利な負のインデックスは？", code: "last = items[-1]", choices: ["一番最後の要素が取れる", "エラーになる", "先頭の要素が取れる", "空になる"], answer: "一番最後の要素が取れる", explanation: "Pythonでは [-1] と書くことで、長さを気にせず末尾の要素を一発で取得できます。", hint: "-1 は末尾を指します", skill: "負のインデックス", xp: 30 }
+      { id: "q6_5", type: "choice", prompt: "リストの一番後ろの要素を取り出す便利な負のインデックスは？", code: "last = items[-1]", choices: ["一番最後の要素が取れる", "エラーになる", "先頭の要素が取れる", "空になる"], answer: "一番最後の要素が取れる", explanation: "Pythonでは [-1] と書くことで、長さを気にせず末尾の要素を一発で取得できます。", hint: "-1 は末尾を指します", skill: "負のインデックス", xp: 30 },
+      { id: "q6_6", type: "choice", prompt: "次のコードを実行したときの表示結果は？", code: "nums = [10, 20, 30, 40]\nprint(nums[1:3])", choices: ["[20, 30]", "[10, 20]", "[20, 30, 40]", "[30, 40]"], answer: "[20, 30]", explanation: "リスト[開始:終了] は開始位置から終了位置の直前までを切り出します（スライス）。1番目と2番目が取れます。", hint: "終了位置の要素自体は含まれません", skill: "スライス", xp: 25 },
+      { id: "q6_7", type: "fill", prompt: "リストから指定した要素そのものを削除するメソッド名を入れてください", code: 'items.___("バナナ")', answer: "remove", explanation: "remove(値) は一致する要素を削除します。位置で消す場合は pop(番号) や del を使います。", hint: "英語で「取り除く」です", skill: "removeメソッド", xp: 25 },
+      { id: "q6_8", type: "typing", prompt: "空のリストを変数 empty に代入する1行を書いてください", answer: "empty = []", explanation: "empty = [] で要素が0個の空リストを作れます。あとから append で追加していく土台になります。", hint: "empty = []", skill: "空リスト", xp: 25 }
     ]
   },
   {
@@ -674,7 +943,10 @@ const QUESTS = [
       { id: "q7_2", type: "fill", prompt: '辞書 user から "age" の値を取り出すキーを埋めてください', code: 'user_age = user["___"]', answer: "age", explanation: "辞書[キー名] で対応する値を取得できます。", hint: "キーの名前", skill: "辞書の取得", xp: 20 },
       { id: "q7_3", type: "choice", prompt: "次のコードを実行したときの表示結果は？", code: 'data = {"score": 50}\ndata["score"] = 90\nprint(data["score"])', choices: ["90", "50", "140", "エラー"], answer: "90", explanation: "辞書[キー] = 新しい値 と代入することで、既存のキーの値を上書き更新できます。", hint: "新しい値で上書きされます", skill: "辞書の更新", xp: 25 },
       { id: "q7_4", type: "typing", prompt: '辞書 user にキー "rank" で値 "Pro" をセットする行を書いてください', answer: 'user["rank"] = "Pro"', explanation: "存在しないキーに代入すると、辞書に新しいキーと値のペアが追加されます。", hint: 'user["rank"] = "Pro"', skill: "辞書への追加", xp: 25 },
-      { id: "q7_5", type: "choice", prompt: "キーが辞書に存在するか調べる正しい演算子はどれ？", code: 'if "email" in user:', choices: ["in", "has", "exists", "contains"], answer: "in", explanation: '"キー" in 辞書 と書くことで、エラーを出さずにキーの存在を安全に判定できます。', hint: "英語の前置詞 in", skill: "in演算子", xp: 30 }
+      { id: "q7_5", type: "choice", prompt: "キーが辞書に存在するか調べる正しい演算子はどれ？", code: 'if "email" in user:', choices: ["in", "has", "exists", "contains"], answer: "in", explanation: '"キー" in 辞書 と書くことで、エラーを出さずにキーの存在を安全に判定できます。', hint: "英語の前置詞 in", skill: "in演算子", xp: 30 },
+      { id: "q7_6", type: "choice", prompt: "キーが存在しないかもしれないとき、エラーにせず安全に値を取り出すメソッドは？", code: 'email = user.get("email")', choices: ["get() を使うと安全に取得できる", "get() は値を削除する", "get() はキーを追加する", "エラーになる"], answer: "get() を使うと安全に取得できる", explanation: "user.get(\"email\") はキーが無ければ None を返すので、KeyError で止まりません。安全な取得の定番です。", hint: "get は「安全に取得」です", skill: "getメソッド", xp: 25 },
+      { id: "q7_7", type: "fill", prompt: "辞書 user から \"age\" キーを削除するキーワードを入れてください", code: '___ user["age"]', answer: "del", explanation: "del 辞書[キー] でキーと値のペアを削除できます。存在しないキーを消そうとするとエラーになります。", hint: "delete の短縮形です", skill: "del削除", xp: 25 },
+      { id: "q7_8", type: "typing", prompt: '辞書 user の "name" の値を画面に表示するコードを書いてください', answer: 'print(user["name"])', explanation: 'print(user["name"]) と書くと、"name" キーに対応する値が表示されます。', hint: 'print(user["name"])', skill: "辞書の表示", xp: 25 }
     ]
   },
   {
@@ -687,7 +959,10 @@ const QUESTS = [
       { id: "q8_2", type: "fill", prompt: "計算結果を呼び出し元へ戻すキーワードを入れてください", code: "def add(a, b):\n    ___ a + b", answer: "return", explanation: "return は関数の処理結果を呼び出し元に返します。print と違い値として再利用できます。", hint: "英語で「返す」", skill: "return文", xp: 25 },
       { id: "q8_3", type: "choice", prompt: "次のコードを実行したときの表示結果は何ですか？", code: "def double(x):\n    return x * 2\n\nans = double(5)\nprint(ans)", choices: ["10", "5", "double(5)", "エラー"], answer: "10", explanation: "double(5) が呼び出され、引数 x に 5 が渡されて 5 * 2 = 10 が返されます。", hint: "5の2倍", skill: "関数の呼び出し", xp: 25 },
       { id: "q8_4", type: "typing", prompt: "引数を取らない greet 関数の定義1行目を書いてください", answer: "def greet():", explanation: "def greet(): と書き、関数名の後ろに () と : を置きます。", hint: "def greet():", skill: "引数なし関数", xp: 25 },
-      { id: "q8_5", type: "choice", prompt: "引数が渡されなかったときの初期値を設定する「デフォルト引数」の書き方は？", choices: ['def greet(name="ゲスト"):', 'def greet(name := "ゲスト"):', 'def greet(name == "ゲスト"):', 'def greet(name: "ゲスト"):'], answer: 'def greet(name="ゲスト"):', explanation: "引数名=初期値 と書くことで、引数を省略した呼び出し時に自動で初期値が使われます。", hint: "イコール1つで初期値を指定", skill: "デフォルト引数", xp: 30 }
+      { id: "q8_5", type: "choice", prompt: "引数が渡されなかったときの初期値を設定する「デフォルト引数」の書き方は？", choices: ['def greet(name="ゲスト"):', 'def greet(name := "ゲスト"):', 'def greet(name == "ゲスト"):', 'def greet(name: "ゲスト"):'], answer: 'def greet(name="ゲスト"):', explanation: "引数名=初期値 と書くことで、引数を省略した呼び出し時に自動で初期値が使われます。", hint: "イコール1つで初期値を指定", skill: "デフォルト引数", xp: 30 },
+      { id: "q8_6", type: "choice", prompt: "return を書かなかった関数を呼び出したとき、その戻り値は何になりますか？", choices: ["None（何も返らない）", "0", "空文字 \"\"", "エラーになる"], answer: "None（何も返らない）", explanation: "return が無い関数は自動的に None を返します。結果を使いたい関数は return を忘れないようにしましょう。", hint: "「何もない」を表す値です", skill: "None戻り値", xp: 25 },
+      { id: "q8_7", type: "fill", prompt: "関数の結果を変数 ans に代入する記号を入れてください", code: "ans ___ double(3)", answer: "=", explanation: "ans = double(3) と書くと、関数の戻り値が変数に保存され、あとで何度でも再利用できます。", hint: "代入のイコールです", skill: "戻り値の代入", xp: 20 },
+      { id: "q8_8", type: "typing", prompt: "引数 a と b を取る add 関数の定義1行目を書いてください", answer: "def add(a, b):", explanation: "def add(a, b): と書きます。複数の引数はカンマで区切ります。", hint: "def add(a, b):", skill: "複数引数", xp: 25 }
     ]
   },
   {
@@ -700,7 +975,10 @@ const QUESTS = [
       { id: "q9_2", type: "fill", prompt: '文字列の中の "A" を "B" に置換するメソッド名を埋めてください', code: 'text = "A-1".___("A", "B")', answer: "replace", explanation: "replace(置換前, 置換後) で文字列の一部を別の文字に置き換えます。", hint: "置き換える（replace）", skill: "replaceメソッド", xp: 25 },
       { id: "q9_3", type: "choice", prompt: "文字列の前後の余分な空白や改行を削るメソッドはどれ？", choices: ["strip()", "trim()", "clean()", "cut()"], answer: "strip()", explanation: "Pythonでは空白削除に strip() を使います（JavaScriptの trim と同じ役割です）。", hint: "strip メソッド", skill: "stripメソッド", xp: 25 },
       { id: "q9_4", type: "typing", prompt: 'リストの単語をハイフン "-" で連結する join のコードを入力してください', code: '"-".join(["A", "B", "C"])', answer: '"-".join(["A", "B", "C"])', explanation: '"区切り文字".join(リスト) でリストの各要素をひとつの文字列にまとめます。', hint: '"-".join(["A", "B", "C"])', skill: "joinメソッド", xp: 30 },
-      { id: "q9_5", type: "choice", prompt: '英字文字列 "python" をすべて大文字にするメソッドは？', choices: ['"python".upper()', '"python".toUpper()', '"python".capitalize()', '"python".big()'], answer: '"python".upper()', explanation: "upper() は大文字に変換し、lower() は小文字に変換します。", hint: "upper() です", skill: "大文字変換", xp: 30 }
+      { id: "q9_5", type: "choice", prompt: '英字文字列 "python" をすべて大文字にするメソッドは？', choices: ['"python".upper()', '"python".toUpper()', '"python".capitalize()', '"python".big()'], answer: '"python".upper()', explanation: "upper() は大文字に変換し、lower() は小文字に変換します。", hint: "upper() です", skill: "大文字変換", xp: 30 },
+      { id: "q9_6", type: "choice", prompt: "次のコードを実行したときの表示結果は？", code: 'print("Python".startswith("Py"))', choices: ["True", "False", "\"Py\"", "エラー"], answer: "True", explanation: "startswith(文字) は文字列がその文字で始まるかを True / False で返します。endswith は末尾の判定です。", hint: "Python は Py で始まります", skill: "startswith", xp: 25 },
+      { id: "q9_7", type: "fill", prompt: "英字をすべて小文字に変換するメソッド名を入れてください", code: 'text = "ABC".___()', answer: "lower", explanation: "lower() で小文字に統一できます。大文字・小文字のブレを吸収して比較するときに必須の処理です。", hint: "upper の反対です", skill: "lowerメソッド", xp: 25 },
+      { id: "q9_8", type: "typing", prompt: '文字列 "a,b" をカンマで分割するコードを入力してください', answer: '"a,b".split(",")', explanation: '"a,b".split(",") は ["a", "b"] というリストを返します。CSVの1行処理の基本形です。', hint: '"a,b".split(",")', skill: "splitタイピング", xp: 30 }
     ]
   },
   {
@@ -713,7 +991,10 @@ const QUESTS = [
       { id: "q10_2", type: "fill", prompt: "リストの中の最大値を取得する関数名を埋めてください", code: "top = ___(scores)", answer: "max", explanation: "max() は最大値を、min() は最小値を返します。", hint: "maximumの略", skill: "max関数", xp: 25 },
       { id: "q10_3", type: "choice", prompt: '文字列 "100" を計算可能な数値（整数）に変換する関数は？', choices: ["int()", "str()", "float()", "number()"], answer: "int()", explanation: 'int("100") で整数の 100 に変換できます。逆に数値を文字にするには str(100) を使います。', hint: "integer（整数）の略", skill: "int型変換", xp: 25 },
       { id: "q10_4", type: "typing", prompt: "リスト [3, 1, 2] を昇順に並び替えた新しいリストを作る関数呼び出しを書いてください", answer: "sorted([3, 1, 2])", explanation: "sorted(リスト) は元のリストを壊さずに並び替えた新しいリストを返します。", hint: "sorted([3, 1, 2])", skill: "sorted関数", xp: 30 },
-      { id: "q10_5", type: "choice", prompt: "インデックス番号と要素を同時に取り出すループの定番関数は？", code: "for i, val in enumerate(items):", choices: ["enumerate()", "zip()", "range()", "index()"], answer: "enumerate()", explanation: "enumerate() を使うと、0番目・1番目…というインデックスと要素をペアで取得できます。", hint: "enumerate 関数", skill: "enumerate関数", xp: 30 }
+      { id: "q10_5", type: "choice", prompt: "インデックス番号と要素を同時に取り出すループの定番関数は？", code: "for i, val in enumerate(items):", choices: ["enumerate()", "zip()", "range()", "index()"], answer: "enumerate()", explanation: "enumerate() を使うと、0番目・1番目…というインデックスと要素をペアで取得できます。", hint: "enumerate 関数", skill: "enumerate関数", xp: 30 },
+      { id: "q10_6", type: "choice", prompt: "次のコードを実行したときの表示結果は？", code: "print(round(3.7))", choices: ["4", "3", "3.7", "エラー"], answer: "4", explanation: "round(小数) は四捨五入して整数にします。金額表示などで小数を見やすくするときに使います。", hint: "3.7 の四捨五入です", skill: "round関数", xp: 25 },
+      { id: "q10_7", type: "fill", prompt: "負の数を正の数に変える「絶対値」を返す関数名を入れてください", code: "num = ___(-5)", answer: "abs", explanation: "abs() は absolute（絶対値）の略で、-5 なら 5、5 なら 5 のまま返します。差の大きさを比べるときに便利です。", hint: "absolute の略3文字です", skill: "abs関数", xp: 25 },
+      { id: "q10_8", type: "typing", prompt: '"Python" の文字数を画面に表示するコードを書いてください', answer: 'print(len("Python"))', explanation: 'print(len("Python")) と書くと 6 が表示されます。len は文字列にもリストにも使えます。', hint: 'print(len("Python"))', skill: "lenタイピング", xp: 30 }
     ]
   },
   {
@@ -726,7 +1007,10 @@ const QUESTS = [
       { id: "q11_2", type: "fill", prompt: "エラー発生時に実行するブロックのキーワードを埋めてください", code: 'try:\n    num = int(text)\n___ ValueError:\n    print("数字を入力してください")', answer: "except", explanation: "except エラーの種類: で、そのエラーが発生したときだけのリカバリー処理を書きます。", hint: "例外（exception）の略", skill: "except構文", xp: 25 },
       { id: "q11_3", type: "choice", prompt: "0で割り算しようとしたときに発生するPythonの代表的なエラーは？", choices: ["ZeroDivisionError", "NullError", "MathError", "DividedByZero"], answer: "ZeroDivisionError", explanation: "10 / 0 などゼロ除算を行うと ZeroDivisionError が発生します。try-except で防げます。", hint: "ゼロ除算エラー", skill: "ZeroDivisionError", xp: 25 },
       { id: "q11_4", type: "typing", prompt: "すべてのエラーを安全に受け止める except の基本行を書いてください", answer: "except Exception:", explanation: "except Exception: と書くことで、予期せぬほとんどのエラーをキャッチして安全に処理できます。", hint: "except Exception:", skill: "全例外キャッチ", xp: 30 },
-      { id: "q11_5", type: "choice", prompt: "エラーの有無に関わらず「最後に必ず実行したい後片付け」を書くブロックは？", choices: ["finally", "always", "end", "last"], answer: "finally", explanation: "finally: ブロックは、途中でエラーが起きても起きなくても必ず最後に実行されます。", hint: "「最終的に」を表す finally", skill: "finallyブロック", xp: 30 }
+      { id: "q11_5", type: "choice", prompt: "エラーの有無に関わらず「最後に必ず実行したい後片付け」を書くブロックは？", choices: ["finally", "always", "end", "last"], answer: "finally", explanation: "finally: ブロックは、途中でエラーが起きても起きなくても必ず最後に実行されます。", hint: "「最終的に」を表す finally", skill: "finallyブロック", xp: 30 },
+      { id: "q11_6", type: "choice", prompt: "辞書に存在しないキーを user[\"phone\"] のように取り出そうとしたときに発生するエラーは？", choices: ["KeyError", "ValueError", "IndexError", "ZeroDivisionError"], answer: "KeyError", explanation: "存在しないキーの取得は KeyError です。.get() を使えばエラーを避けられます。第7章の復習にもなります。", hint: "キーに関するエラーです", skill: "KeyError", xp: 25 },
+      { id: "q11_7", type: "fill", prompt: "自分から意図的にエラーを発生させるキーワードを入れてください", code: '___ ValueError("入力が不正です")', answer: "raise", explanation: "raise エラー名(...) で「この条件では処理できない」ことを呼び出し元に伝えられます。", hint: "英語で「上げる・起こす」です", skill: "raise文", xp: 25 },
+      { id: "q11_8", type: "typing", prompt: "try ブロックを開始する1行を入力してください", answer: "try:", explanation: "try: と書き、インデントして危険な処理を中に入れます。except とセットで使います。", hint: "try:", skill: "tryタイピング", xp: 25 }
     ]
   },
   {
@@ -739,7 +1023,106 @@ const QUESTS = [
       { id: "q12_2", type: "choice", prompt: "リスト内包表記を使った次のコードは何をしていますか？", code: "scores = [80, 45, 90, 55]\npassed = [s for s in scores if s >= 60]", choices: ["60点以上の合格者だけを抽出した新しいリストを作る", "全員の点数を60点に書き換える", "合計点を計算する", "エラーになる"], answer: "60点以上の合格者だけを抽出した新しいリストを作る", explanation: "[s for s in scores if s >= 60] は条件に合う要素だけを抽出して新しいリストを1行で作る強力な記法です。", hint: "if s >= 60 に注目", skill: "リスト内包表記", xp: 30 },
       { id: "q12_3", type: "fill", prompt: "ファイルに書き込みモード（write）で開くモード指定文字は？", code: 'with open("log.txt", "___") as f:\n    f.write("OK")', answer: "w", explanation: '"w" は書き込み（上書き）、"a" は追記（append）、"r" は読み込み（read）です。', hint: "writeの頭文字", skill: "ファイルモード", xp: 25 },
       { id: "q12_4", type: "typing", prompt: "税込価格（10%加算）を計算して整数にするコードを書いてください", answer: "tax_price = int(price * 1.1)", explanation: "price * 1.1 で10%増しを計算し、int() で小数点以下を切り捨てて整数にします。", hint: "tax_price = int(price * 1.1)", skill: "実務計算ロジック", xp: 30 },
-      { id: "q12_5", type: "choice", prompt: "全12クエストを制覇したあなたの次のステップとして最適なのは？", choices: ["ChatGPTなどのAIにコードを書かせ、自分で読んで修正・活用する", "基礎を忘れて諦める", "分厚い参考書をはじめから丸暗記し直す", "何もしない"], answer: "ChatGPTなどのAIにコードを書かせ、自分で読んで修正・活用する", explanation: "文法の骨格が身についた今、AIのコードを「読める・直せる」状態になっています。実践でどんどん使いましょう！", hint: "学んだ知識を活かしてAIと共創しましょう！", skill: "総合修了", xp: 35 }
+      { id: "q12_5", type: "choice", prompt: "ここまでの学習を実務につなげる次のステップとして最適なのは？", choices: ["ChatGPTなどのAIにコードを書かせ、自分で読んで修正・活用する", "基礎を忘れて諦める", "分厚い参考書をはじめから丸暗記し直す", "何もしない"], answer: "ChatGPTなどのAIにコードを書かせ、自分で読んで修正・活用する", explanation: "文法の骨格が身についた今、AIのコードを「読める・直せる」状態になっています。実践でどんどん使いましょう！", hint: "学んだ知識を活かしてAIと共創しましょう！", skill: "実務への接続", xp: 35 },
+      { id: "q12_6", type: "choice", prompt: "ファイルオブジェクト f の内容全体を1つの文字列として読み込むメソッドは？", code: "text = f.read()", choices: ["read() は全文を読み込む", "read() は1行だけ読み込む", "read() はファイル名を返す", "エラーになる"], answer: "read() は全文を読み込む", explanation: "read() は全文、readline() は1行、readlines() は全行をリストで返します。用途で使い分けます。", hint: "read は「全文読み込み」です", skill: "readメソッド", xp: 25 },
+      { id: "q12_7", type: "fill", prompt: "ファイルの末尾に追記するモード指定文字を入れてください", code: 'with open("log.txt", "___") as f:\n    f.write("OK")', answer: "a", explanation: '"a" は append（追記）です。"w" は既存内容を消して上書きするので、ログ用途では "a" が安全です。', hint: "append の頭文字です", skill: "追記モード", xp: 25 },
+      { id: "q12_8", type: "typing", prompt: 'ファイル f に文字列 "OK" を書き込むコードを入力してください', answer: 'f.write("OK")', explanation: 'f.write("OK") でファイルに文字を書き込みます。改行したい場合は "OK\\n" のように \\n を含めます。', hint: 'f.write("OK")', skill: "writeタイピング", xp: 30 }
+    ]
+  },
+  {
+    id: 13, title: "whileと入力 input", subtitle: "条件が続くあいだ繰り返し、対話する", minutes: 7, isPro: true,
+    outcome: "ユーザー入力を受け取り、条件を満たす間だけ繰り返す対話型プログラムが作れる",
+    skills: ["while", "input", "int変換", "無限ループ回避"],
+    bg: "#FFF7ED", color: "#C2410C",
+    questions: [
+      { id: "q13_1", type: "choice", prompt: "条件が True のあいだ処理を繰り返し続けるループのキーワードはどれ？", choices: ["while", "loop", "repeat", "until"], answer: "while", explanation: "while 条件: は条件が成り立つ間ずっと繰り返します。回数が決まっていない処理向きです。", hint: "英語で「〜のあいだ」です", skill: "while構文", xp: 25 },
+      { id: "q13_2", type: "fill", prompt: "count が 3 より小さい間繰り返す比較演算子を入れてください", code: "while count ___ 3:\n    print(count)", answer: "<", explanation: "while count < 3: で、count が 0, 1, 2 の間だけ繰り返します。", hint: "「より小さい」記号です", skill: "while条件", xp: 25 },
+      { id: "q13_3", type: "choice", prompt: "input() でユーザーが入力した値のデータ型は何ですか？", code: 'name = input("名前: ")', choices: ["str（文字列）", "int（整数）", "float（小数）", "list"], answer: "str（文字列）", explanation: "input() の戻り値は数字を打っても必ず文字列です。計算したいときは int() で変換します。", hint: "入力は常に見た目が数字でも文字列です", skill: "inputの型", xp: 25 },
+      { id: "q13_4", type: "typing", prompt: "無限ループの開始行を入力してください（あとで break で抜けます）", answer: "while True:", explanation: "while True: は代表的な無限ループの書き方です。必ず break で抜ける道を用意しましょう。", hint: "while True:", skill: "無限ループ", xp: 25 },
+      { id: "q13_5", type: "choice", prompt: "while ループが永遠に終わらない「無限ループ事故」を防ぐために必要な工夫は？", choices: ["ループの中で条件が変わる処理（カウント増加など）を入れる", "print をたくさん書く", "変数名を短くする", "何もしなくてよい"], answer: "ループの中で条件が変わる処理（カウント増加など）を入れる", explanation: "条件がずっと True のままだと終わりません。count += 1 のように条件を False に近づける更新が必須です。", hint: "条件がいつか変わるようにします", skill: "無限ループ回避", xp: 30 },
+      { id: "q13_6", type: "fill", prompt: "入力された文字列を整数に変換する関数名を入れてください", code: 'age = ___(input("年齢: "))', answer: "int", explanation: "int(input(...)) は入力処理の最頻出パターンです。数字以外が入ると ValueError になるので try と相性がよいです。", hint: "integer の略です", skill: "入力の型変換", xp: 25 },
+      { id: "q13_7", type: "choice", prompt: "次のコードで print が実行される回数は何回ですか？", code: "count = 0\nwhile count < 3:\n    print(count)\n    count += 1", choices: ["3回", "2回", "4回", "無限回"], answer: "3回", explanation: "count が 0, 1, 2 のとき実行され、3 になると条件が False になって終了します。", hint: "0, 1, 2 の3パターンです", skill: "whileの追跡", xp: 30 },
+      { id: "q13_8", type: "typing", prompt: "変数 count に 1 を加算して更新する累積代入を書いてください", answer: "count += 1", explanation: "count += 1 は count = count + 1 の省略形です。ループカウンタの更新で毎回使います。", hint: "count += 1", skill: "カウンタ更新", xp: 25 }
+    ]
+  },
+  {
+    id: 14, title: "リスト応用と並び替え", subtitle: "スライス・ソート・内包表記を使いこなす", minutes: 7, isPro: true,
+    outcome: "リストの部分取り出し、並び替え、1行での変換・抽出ができる",
+    skills: ["スライス応用", "sort", "リスト内包表記", "in判定"],
+    bg: "#F0FDF4", color: "#15803D",
+    questions: [
+      { id: "q14_1", type: "choice", prompt: "リストを逆順にコピーするスライス nums[::-1] の意味はどれですか？", code: "nums = [1, 2, 3]", choices: ["[3, 2, 1]（逆順の新しいリスト）", "[1, 2, 3]（そのまま）", "[3]（末尾だけ）", "エラー"], answer: "[3, 2, 1]（逆順の新しいリスト）", explanation: "[::-1] はステップ -1 で逆向きに走査し、逆順の新しいリストを作る定番イディオムです。", hint: "ステップ -1 で逆向きです", skill: "逆順スライス", xp: 25 },
+      { id: "q14_2", type: "fill", prompt: "リスト自体を昇順に並び替えるメソッド名を入れてください", code: "nums.___()", answer: "sort", explanation: "sort() はリストそのものを並び替えます（戻り値は None）。元の順序を残したい場合は sorted() を使います。", hint: "「並び替える」という英単語です", skill: "sortメソッド", xp: 25 },
+      { id: "q14_3", type: "choice", prompt: "元のリストの順序を壊さず、並び替えた新しいリストが欲しいときに使うのは？", choices: ["sorted(リスト)", "リスト.sort()", "リスト.reverse()", "リスト.copy()"], answer: "sorted(リスト)", explanation: "sorted() は新しいリストを返すため元データが保たれます。sort() は元リスト自体を変更します。", hint: "第10章で学んだ関数です", skill: "sortedとの違い", xp: 25 },
+      { id: "q14_4", type: "typing", prompt: "リスト nums 自体を昇順に並び替えるコードを入力してください", answer: "nums.sort()", explanation: "nums.sort() で元のリストが並び替わります。降順にしたい場合は nums.sort(reverse=True) です。", hint: "nums.sort()", skill: "sortタイピング", xp: 25 },
+      { id: "q14_5", type: "choice", prompt: "次のリスト内包表記を実行した結果は？", code: "result = [x * 2 for x in [1, 2, 3]]", choices: ["[2, 4, 6]", "[1, 2, 3]", "[2, 2, 2]", "エラー"], answer: "[2, 4, 6]", explanation: "[式 for 変数 in リスト] は、取り出した各要素を式で変換して新しいリストを作ります。", hint: "各要素が2倍になります", skill: "内包表記の変換", xp: 30 },
+      { id: "q14_6", type: "fill", prompt: "10 より大きい要素だけを抽出する条件の比較演算子を入れてください", code: "big = [n for n in nums if n ___ 10]", answer: ">", explanation: "[n for n in nums if n > 10] で条件に合う要素だけのリストが1行で作れます。", hint: "「より大きい」記号です", skill: "内包表記の条件", xp: 25 },
+      { id: "q14_7", type: "choice", prompt: "値 30 がリスト nums に含まれているかを調べる正しい書き方は？", choices: ["30 in nums", "nums.has(30)", "nums.contains(30)", "include 30 nums"], answer: "30 in nums", explanation: "値 in リスト で含まれているかを True / False で判定できます。辞書のキー判定と同じ記法です。", hint: "in 演算子を使います", skill: "リストのin判定", xp: 25 },
+      { id: "q14_8", type: "typing", prompt: "リスト nums の要素の順序をその場で逆転させるコードを入力してください", answer: "nums.reverse()", explanation: "reverse() はリスト自体を逆順にします。新しいリストが欲しい場合は nums[::-1] を使います。", hint: "nums.reverse()", skill: "reverseメソッド", xp: 30 }
+    ]
+  },
+  {
+    id: 15, title: "タプル・集合・辞書応用", subtitle: "データの形を使い分ける", minutes: 7, isPro: true,
+    outcome: "変更禁止のタプル、重複なしの集合、辞書の一括ループを使い分けられる",
+    skills: ["タプル", "集合 set", "items()", "アンパック"],
+    bg: "#FAF5FF", color: "#7E22CE",
+    questions: [
+      { id: "q15_1", type: "choice", prompt: "後から変更できない「タプル」を作る正しい書き方はどれ？", choices: ["point = (3, 5)", "point = [3, 5]", "point = {3, 5}", "point = <3, 5>"], answer: "point = (3, 5)", explanation: "丸カッコ ( ) はタプルです。作成後に要素を変更できないため、座標など「変わってはいけないデータ」向きです。", hint: "丸カッコです", skill: "タプル作成", xp: 25 },
+      { id: "q15_2", type: "fill", prompt: "リストの重複を取り除く集合に変換する関数名を入れてください", code: "unique = ___([1, 1, 2, 2, 3])", answer: "set", explanation: "set() に変換すると重複が自動で消えます。重複チェックや一意化の定番テクニックです。", hint: "「集合」という意味の英単語です", skill: "set変換", xp: 25 },
+      { id: "q15_3", type: "choice", prompt: "次のコードを実行したときの表示結果は？", code: "print(set([1, 1, 2]))", choices: ["{1, 2}", "[1, 1, 2]", "{1, 1, 2}", "3"], answer: "{1, 2}", explanation: "集合（set）は重複を許さないので 1 は1つだけ残ります。表示順序は保証されません。", hint: "重複は1つにまとまります", skill: "集合の重複除去", xp: 25 },
+      { id: "q15_4", type: "typing", prompt: "タプル point に座標 (3, 5) を代入する1行を書いてください", answer: "point = (3, 5)", explanation: "point = (3, 5) と書きます。タプルは point[0] のようにインデックスで取り出せますが変更はできません。", hint: "point = (3, 5)", skill: "タプル代入", xp: 25 },
+      { id: "q15_5", type: "choice", prompt: "辞書のキーと値をペアで取り出してループする正しい書き方は？", choices: ["for k, v in user.items():", "for k, v in user:", "for k in user.values():", "for k, v in user.keys():"], answer: "for k, v in user.items():", explanation: "items() で (キー, 値) のペアをまとめて取り出せます。報告書出力などで大活躍します。", hint: "items() を使います", skill: "itemsループ", xp: 30 },
+      { id: "q15_6", type: "fill", prompt: "辞書のキー一覧を取り出すメソッド名を入れてください", code: "key_list = user.___()", answer: "keys", explanation: "keys() でキー一覧、values() で値一覧、items() でペア一覧が取得できます。", hint: "英語で「キー（複数）」です", skill: "keysメソッド", xp: 25 },
+      { id: "q15_7", type: "choice", prompt: "次のアンパック代入で変数 b の値は何ですか？", code: "a, b = (10, 20)", choices: ["20", "10", "(10, 20)", "エラー"], answer: "20", explanation: "a, b = (10, 20) は左辺の変数へ順番に値を振り分けます。a が 10、b が 20 です。", hint: "順番に対応します", skill: "アンパック", xp: 25 },
+      { id: "q15_8", type: "typing", prompt: '集合 colors に "red" を追加するコードを入力してください', answer: 'colors.add("red")', explanation: '集合への追加は append ではなく add() です。すでに同じ値があれば何も起きません。', hint: 'colors.add("red")', skill: "addメソッド", xp: 30 }
+    ]
+  },
+  {
+    id: 16, title: "モジュール活用入門", subtitle: "Pythonの道具箱を import する", minutes: 7, isPro: true,
+    outcome: "乱数・数学・日付などの標準ライブラリを読み込んで使いこなせる",
+    skills: ["import", "random", "math", "datetime"],
+    bg: "#FDF4FF", color: "#A21CAF",
+    questions: [
+      { id: "q16_1", type: "choice", prompt: "モジュール random を読み込む正しい書き方はどれ？", choices: ["import random", "require random", "include random", "using random"], answer: "import random", explanation: "import モジュール名 で読み込みます。読み込んだ後は random.関数名 の形で使います。", hint: "import がキーワードです", skill: "import構文", xp: 25 },
+      { id: "q16_2", type: "fill", prompt: "math モジュールを読み込むキーワードを入れてください", code: "___ math", answer: "import", explanation: "import math と書くことで、平方根や円周率などの数学機能が使えるようになります。", hint: "「読み込む」という命令です", skill: "import穴埋め", xp: 20 },
+      { id: "q16_3", type: "choice", prompt: "1から6のサイコロの目をランダムに出す正しいコードは？", choices: ["random.randint(1, 6)", "random.dice(6)", "randint(1-6)", "random.number(6)"], answer: "random.randint(1, 6)", explanation: "randint(a, b) は a から b までの整数をランダムに1つ返します（両端を含みます）。", hint: "randint を使います", skill: "randint関数", xp: 25 },
+      { id: "q16_4", type: "typing", prompt: "random モジュールを読み込む1行を入力してください", answer: "import random", explanation: "import random はプログラムの先頭に書くのが慣習です。", hint: "import random", skill: "importタイピング", xp: 20 },
+      { id: "q16_5", type: "choice", prompt: "math.sqrt(9) の計算結果はどれですか？", choices: ["3.0", "9", "81", "エラー"], answer: "3.0", explanation: "sqrt は平方根（square root）です。9 の平方根は 3.0 になります（戻り値は小数）。", hint: "9の平方根です", skill: "sqrt関数", xp: 25 },
+      { id: "q16_6", type: "fill", prompt: "円周率を表す math モジュールの属性名を入れてください", code: "print(math.___)", answer: "pi", explanation: "math.pi は 3.141592... を返します。自分で 3.14 と直書きするより正確で読みやすいコードになります。", hint: "円周率の記号です", skill: "math.pi", xp: 25 },
+      { id: "q16_7", type: "choice", prompt: "今日の日付を取得する代表的な書き方はどれ？", choices: ["datetime.date.today()", "date.now.today()", "datetime.today.date()", "today()"], answer: "datetime.date.today()", explanation: "import datetime のあと datetime.date.today() で今日の日付が取得できます。ログ記録の定番です。", hint: "date.today() が核心です", skill: "日付取得", xp: 30 },
+      { id: "q16_8", type: "typing", prompt: "サイコロ（1〜6）を振って結果を表示するコードを書いてください", answer: "print(random.randint(1, 6))", explanation: "print(random.randint(1, 6)) で実行するたびに変わる目が表示されます。ゲームやくじ引きの基礎です。", hint: "print(random.randint(1, 6))", skill: "乱数の実践", xp: 30 }
+    ]
+  },
+  {
+    id: 17, title: "クラスとオブジェクト入門", subtitle: "自分だけのデータ型を作る", minutes: 8, isPro: true,
+    outcome: "クラス定義・初期化・メソッド・インスタンス生成の基本が一通り書ける",
+    skills: ["class", "__init__", "self", "メソッド"],
+    bg: "#FFFBEB", color: "#D97706",
+    questions: [
+      { id: "q17_1", type: "choice", prompt: "クラスを新しく定義するキーワードはどれですか？", choices: ["class", "object", "struct", "type"], answer: "class", explanation: "class クラス名: で設計図を定義します。クラス名は先頭を大文字にするのがPythonの慣習です。", hint: "英語で「分類・型」です", skill: "class定義", xp: 25 },
+      { id: "q17_2", type: "fill", prompt: "インスタンス生成時に自動で呼ばれる初期化メソッドの名前を入れてください", code: "def ___ (self, name):", answer: "__init__", explanation: "__init__ は生成と同時に初期値をセットするための特別なメソッドです。前後にアンダースコアが2つずつ付きます。", hint: "initialize の略が中心に入ります", skill: "__init__", xp: 30 },
+      { id: "q17_3", type: "choice", prompt: "クラスの中でメソッドの第1引数に必ず書く self は何を表しますか？", choices: ["生成されたインスタンス自身", "クラス名そのもの", "親クラス", "何も意味がない飾り"], answer: "生成されたインスタンス自身", explanation: "self は「そのインスタンス自身」です。self.name のように書くと、その個体専用のデータを持てます。", hint: "英語で「自分自身」です", skill: "selfの意味", xp: 25 },
+      { id: "q17_4", type: "typing", prompt: "Dog クラスの定義を開始する1行を入力してください", answer: "class Dog:", explanation: "class Dog: と書きます。クラス名は大文字始まり（PascalCase）が慣習です。", hint: "class Dog:", skill: "classタイピング", xp: 25 },
+      { id: "q17_5", type: "choice", prompt: "クラス Dog から実体（インスタンス）を作る正しい書き方は？", choices: ["dog = Dog()", "dog = new Dog", "dog = class Dog", "dog = Dog.create"], answer: "dog = Dog()", explanation: "クラス名() と関数呼び出しのように書くとインスタンスが生成され、__init__ が自動実行されます。Pythonに new はありません。", hint: "関数と同じ呼び出し方です", skill: "インスタンス生成", xp: 25 },
+      { id: "q17_6", type: "fill", prompt: "メソッド定義でインスタンス自身を受け取る引数名を入れてください", code: "def bark(___):\n    print(\"ワン！\")", answer: "self", explanation: "メソッドの第1引数は慣習として self と名前を付けます。呼び出し時に自動でインスタンスが渡されます。", hint: "「自分自身」という英単語です", skill: "self引数", xp: 25 },
+      { id: "q17_7", type: "choice", prompt: "インスタンス dog の属性 name を取り出す正しい書き方は？", code: 'dog = Dog("ポチ")', choices: ["dog.name", "Dog.name", "dog[name]", "dog->name"], answer: "dog.name", explanation: "属性やメソッドへのアクセスは ドット（.）を使います。辞書の [\"キー\"] とは書き方が異なります。", hint: "ドットでつなぎます", skill: "属性アクセス", xp: 25 },
+      { id: "q17_8", type: "typing", prompt: "Dog クラスのインスタンスを変数 dog に生成するコードを書いてください", answer: "dog = Dog()", explanation: "dog = Dog() で設計図から実体が1つ生まれます。同じクラスから何個でも作れます。", hint: "dog = Dog()", skill: "生成タイピング", xp: 30 }
+    ]
+  },
+  {
+    id: 18, title: "総合・卒業プロジェクト", subtitle: "全知識を組み合わせて読む・書く・直す", minutes: 8, isPro: true,
+    outcome: "複合コードの読解、バグ発見、実務パターンの組み立てまで自走できる",
+    skills: ["コード読解", "デバッグ", "総合演習", "実務パターン"],
+    bg: "#ECFDF5", color: "#047857",
+    questions: [
+      { id: "q18_1", type: "choice", prompt: "次のコードを実行したときの表示結果は？", code: "scores = [80, 45, 90]\ntotal = 0\nfor s in scores:\n    if s >= 60:\n        total += s\nprint(total)", choices: ["170", "215", "90", "エラー"], answer: "170", explanation: "60点以上だけを合計します。80 + 90 = 170 です。for・if・累積代入の複合パターンです。", hint: "45は条件で除外されます", skill: "複合コード読解", xp: 30 },
+      { id: "q18_2", type: "fill", prompt: "エラーの原因である「閉じカッコ」を補ってください", code: 'print("Hello"___', answer: ")", explanation: "開いたカッコは必ず閉じます。SyntaxError が出たら、まずカッコと引用符の対応を疑いましょう。", hint: "閉じ丸カッコです", skill: "構文デバッグ", xp: 25 },
+      { id: "q18_3", type: "choice", prompt: "読みやすく保守しやすい変数名として最も適切なのはどれ？", choices: ["total_price（意味が分かる名前）", "x", "aaaa", "tmp12345"], answer: "total_price（意味が分かる名前）", explanation: "変数名は「中身が想像できる英語」が原則です。未来の自分とチームが読むコードだと思って名付けましょう。", hint: "読んだだけで中身が分かる名前です", skill: "命名の作法", xp: 25 },
+      { id: "q18_4", type: "typing", prompt: "リスト scores から60点以上だけを抽出するリスト内包表記を入力してください", answer: "[s for s in scores if s >= 60]", explanation: "[s for s in scores if s >= 60] が抽出の完成形です。卒業レベルの頻出パターンです。", hint: "[s for s in scores if s >= 60]", skill: "内包表記の完成形", xp: 35 },
+      { id: "q18_5", type: "choice", prompt: "ユーザー入力を数値として安全に受け取る、最も堅牢な組み合わせはどれ？", choices: ["try の中で int(input()) し、except で案内する", "input() をそのまま計算に使う", "エラーが出たら再起動する", "入力チェックはしない"], answer: "try の中で int(input()) し、except で案内する", explanation: "入力・変換・例外処理の組み合わせが実務の標準形です。第11章と第13章の知識が合体しています。", hint: "try-except で守ります", skill: "堅牢な入力処理", xp: 30 },
+      { id: "q18_6", type: "fill", prompt: "合計を返す関数の戻り値キーワードを入れてください", code: "def calc_total(prices):\n    total = sum(prices)\n    ___ total", answer: "return", explanation: "return total で計算結果を呼び出し元に返します。関数の締めくくりの基本動作です。", hint: "英語で「返す」です", skill: "総合return", xp: 25 },
+      { id: "q18_7", type: "choice", prompt: "次のコードは何を数えていますか？", code: "count = {}\nfor w in [\"a\", \"b\", \"a\"]:\n    count[w] = count.get(w, 0) + 1\nprint(count)", choices: ["各文字が何回出たかの出現回数", "文字の合計数だけ", "重複を取り除いた一覧", "エラーになる"], answer: "各文字が何回出たかの出現回数", explanation: "辞書 + get(キー, 初期値) + カウントアップは頻度集計の王道です。結果は {\"a\": 2, \"b\": 1} です。", hint: "get で初期値を用意して数えます", skill: "頻度集計パターン", xp: 35 },
+      { id: "q18_8", type: "choice", prompt: "全18クエストを制覇したあなたの、最も効果的な次のステップは？", choices: ["自分の身近な作業を1つ選び、小さな自動化プログラムをAIと一緒に作る", "また最初から参考書を丸暗記し直す", "基礎だけで満足して手を止める", "いきなり大規模システムに挑む"], answer: "自分の身近な作業を1つ選び、小さな自動化プログラムをAIと一緒に作る", explanation: "卒業おめでとうございます！ 小さな実務課題を自分の力+AIで解く経験こそが、最も伸びる学習です。ここからが本番です。", hint: "小さな実践が最強の教材です", skill: "卒業・次の挑戦", xp: 35 }
     ]
   }
 ];
@@ -773,6 +1156,10 @@ function saveState() {
   updateHeader();
 }
 
+function totalQuestions() {
+  return QUESTS.reduce((sum, q) => sum + q.questions.length, 0);
+}
+
 function updateHeader() {
   const level = Math.floor(state.xp / 100) + 1;
   const streak = calcStreak(state.dates);
@@ -780,14 +1167,54 @@ function updateHeader() {
   document.getElementById("head-xp").textContent = state.xp;
   document.getElementById("head-streak").textContent = streak;
 
-  // Home stats
-  document.getElementById("stat-cleared").textContent = `${state.completed.length}/12`;
+  // 次のレベルまでの進捗（ヘッダー + 30秒体験カードで共用）
+  const inLevel = state.xp % 100;
+  const xpFill = document.getElementById("head-xp-fill");
+  if (xpFill) xpFill.style.width = `${inLevel}%`;
+  const xpNext = document.getElementById("head-xp-next");
+  if (xpNext) xpNext.textContent = `Lv.${level + 1} まで あと ${100 - inLevel} XP`;
+  const xpLabel = document.getElementById("head-xp-label");
+  if (xpLabel) xpLabel.textContent = `現在 Lv.${level} ・ ${state.xp} XP`;
+  const trialFill = document.getElementById("trial-xp-fill");
+  if (trialFill) trialFill.style.width = `${inLevel}%`;
+  const trialText = document.getElementById("trial-xp-text");
+  if (trialText) trialText.textContent = `${inLevel} / 100 XP`;
+
+  // Home stats（章数・問題数はデータから動的に算出）
+  const totalQEl = document.getElementById("stat-total-q");
+  if (totalQEl) totalQEl.textContent = totalQuestions();
+  document.getElementById("stat-cleared").textContent = `${state.completed.length}/${QUESTS.length}`;
   const acc = state.totalAnswered ? Math.round(state.totalCorrect / state.totalAnswered * 100) : 100;
   document.getElementById("stat-acc").textContent = `${acc}%`;
 
   // Review badge
   const revBadge = document.getElementById("review-count-badge");
   if (revBadge) revBadge.textContent = `${state.mistakes.length}問 待ち`;
+
+  renderDashboard();
+}
+
+function renderDashboard() {
+  const pctEl = document.getElementById("dash-pct");
+  if (!pctEl) return;
+  const totalChapters = QUESTS.length;
+  const cleared = state.completed.length;
+  const pct = totalChapters ? Math.round((cleared / totalChapters) * 100) : 0;
+  pctEl.textContent = `${pct}%`;
+  const fill = document.getElementById("dash-fill");
+  if (fill) fill.style.width = `${pct}%`;
+  const set = (id, value) => { const el = document.getElementById(id); if (el) el.textContent = value; };
+  set("dash-cleared", `${cleared} / ${totalChapters}章`);
+  set("dash-answered", `${state.totalAnswered}問`);
+  set("dash-acc", state.totalAnswered ? `${Math.round(state.totalCorrect / state.totalAnswered * 100)}%` : "—");
+  set("dash-review", `${state.mistakes.length}問`);
+  const msg = document.getElementById("dash-message");
+  if (msg) {
+    if (cleared === totalChapters) msg.textContent = "🎓 全章クリア達成！復習と実務課題で力を伸ばし続けましょう。";
+    else if (cleared > 0) msg.textContent = `あと ${totalChapters - cleared} 章で全制覇です。今日の5分ミッションから続きをどうぞ。`;
+    else if (state.totalAnswered > 0) msg.textContent = "学習を開始しました。その調子で最初の章クリアを目指しましょう。";
+    else msg.textContent = "まずは第1章から始めましょう。1問30秒から体験できます。";
+  }
 }
 
 function calcStreak(dates) {
@@ -894,34 +1321,99 @@ function renderCalendar() {
 // ------------------------------------------------------------
 // クエスト一覧描画
 // ------------------------------------------------------------
+let questFilter = "all";
+let questSearch = "";
+
+function setQuestFilter(filter, btn) {
+  questFilter = filter;
+  document.querySelectorAll(".filter-chip").forEach(c => c.classList.toggle("active", c.dataset.filter === filter));
+  renderQuests();
+}
+function onQuestSearch(value) {
+  questSearch = value.trim().toLowerCase();
+  renderQuests();
+}
+function questDifficulty(q) {
+  return Math.min(4, Math.max(1, Math.ceil(q.id / 4)));
+}
+function difficultyStars(q) {
+  const d = questDifficulty(q);
+  return "★".repeat(d) + `<span class="off">${"★".repeat(4 - d)}</span>`;
+}
+function questXpTotal(q) {
+  return q.questions.reduce((sum, item) => sum + (item.xp || 0), 0);
+}
+function nextQuestId() {
+  const next = QUESTS.find(q => !state.completed.includes(q.id));
+  return next ? next.id : null;
+}
+
 function renderQuests() {
   const container = document.getElementById("quests-container");
   if (!container) return;
   container.innerHTML = "";
 
-  QUESTS.forEach(q => {
+  const heading = document.getElementById("quests-title");
+  if (heading) heading.textContent = `🗺️ クエストマップ — 全${QUESTS.length}章 ${totalQuestions()}問`;
+  const nextId = nextQuestId();
+
+  const visible = QUESTS.filter(q => {
+    const isDone = state.completed.includes(q.id);
+    if (questFilter === "done" && !isDone) return false;
+    if (questFilter === "todo" && isDone) return false;
+    if (questFilter === "free" && q.isPro) return false;
+    if (questFilter === "pro" && !q.isPro) return false;
+    if (questSearch) {
+      const haystack = `${q.title} ${q.subtitle} ${q.outcome} ${(q.skills || []).join(" ")}`.toLowerCase();
+      if (!haystack.includes(questSearch)) return false;
+    }
+    return true;
+  });
+
+  const countEl = document.getElementById("quest-result-count");
+  if (countEl) countEl.textContent = `${visible.length} 章を表示中（全${QUESTS.length}章・${totalQuestions()}問）`;
+
+  if (!visible.length) {
+    container.innerHTML = `<div class="quest-empty">該当するクエストが見つかりませんでした。<br>キーワードやフィルターを変えてお試しください。</div>`;
+    return;
+  }
+
+  visible.forEach(q => {
     const isUnlocked = q.id === 1 || state.completed.includes(q.id - 1);
     const isDone = state.completed.includes(q.id);
     const lockedPro = q.isPro && !state.proUnlocked;
+    const sequentiallyLocked = !isUnlocked && !lockedPro;
+    const isNext = q.id === nextId && !lockedPro;
 
     const card = document.createElement("article");
-    card.className = `quest-card ${(!isUnlocked && !lockedPro) ? 'locked' : ''}`;
+    card.className = `quest-card reveal visible ${sequentiallyLocked ? 'locked' : ''} ${isDone ? 'is-done' : ''} ${isNext ? 'is-next' : ''}`;
+    card.style.borderTopColor = q.color || "var(--primary)";
 
     let statusBadge = "";
-    if (isDone) statusBadge = `<span style="background:#10B981;color:#fff;padding:0.2rem 0.5rem;border-radius:9999px;font-size:0.7rem;font-weight:800">クリア済</span>`;
-    else if (lockedPro) statusBadge = `<span style="background:#FCD34D;color:#78350F;padding:0.2rem 0.5rem;border-radius:9999px;font-size:0.7rem;font-weight:800">PRO先行</span>`;
-    else if (!isUnlocked) statusBadge = `<span style="color:#94A3B8;font-size:0.75rem">🔒 前の章で解放</span>`;
+    if (isDone) statusBadge = `<span style="background:#10B981;color:#fff;padding:0.2rem 0.5rem;border-radius:9999px;font-size:0.7rem;font-weight:800">✓ クリア済</span>`;
+    else if (lockedPro) statusBadge = `<span style="background:#FCD34D;color:#78350F;padding:0.2rem 0.5rem;border-radius:9999px;font-size:0.7rem;font-weight:800">👑 PRO先行</span>`;
+    else if (!isUnlocked) statusBadge = `<span style="color:#94A3B8;font-size:0.75rem;font-weight:700">🔒 前の章で解放</span>`;
+    else statusBadge = `<span style="background:#CCFBF1;color:#0F766E;padding:0.2rem 0.5rem;border-radius:9999px;font-size:0.7rem;font-weight:800">挑戦できます</span>`;
+
+    const skills = (q.skills || []).slice(0, 4).map(s => `<span class="skill-chip">${escapeHtml(s)}</span>`).join("");
+    const btnLabel = lockedPro ? "👑 Pro登録で解放" : isDone ? "↻ もう一度挑戦" : isUnlocked ? "▶ この章を始める" : "🔒 前の章クリアで解放";
 
     card.innerHTML = `
+      ${isNext ? '<span class="next-ribbon">NEXT</span>' : ''}
       <div class="quest-top">
-        <span class="quest-badge" style="background:${q.bg};color:${q.color}">QUEST ${q.id}${q.isPro ? ' ・ PRO' : ''}</span>
+        <span class="quest-badge" style="background:${q.bg};color:${q.color}">QUEST ${q.id}${q.isPro ? ' ・ PRO' : ' ・ 無料'}</span>
         ${statusBadge}
       </div>
-      <h3 class="quest-title">${q.title}</h3>
-      <p class="quest-meta">${q.subtitle} ・ 約${q.minutes}分 ・ 5問</p>
-      <p class="quest-outcome"><b>できること:</b> ${q.outcome}</p>
-      <button class="quest-btn" ${(!isUnlocked && !lockedPro) ? 'disabled' : ''} onclick="startQuest(${q.id})">
-        ${lockedPro ? 'Pro登録で解放' : isDone ? 'もう一度挑戦' : isUnlocked ? 'この章を始める' : '前の章で解放'}
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:0.5rem">
+        <h3 class="quest-title">${escapeHtml(q.title)}</h3>
+        <span class="difficulty" title="難易度 ${questDifficulty(q)} / 4">${difficultyStars(q)}</span>
+      </div>
+      <p class="quest-meta">${escapeHtml(q.subtitle)} ・ 約${q.minutes}分 ・ ${q.questions.length}問</p>
+      <p class="quest-outcome"><b>できること:</b> ${escapeHtml(q.outcome)}</p>
+      <div class="skill-chips">${skills}</div>
+      <div class="quest-footer"><span>⏱ 約${q.minutes}分</span><span>⭐ 最大 +${questXpTotal(q)} XP</span></div>
+      <button class="quest-btn" ${sequentiallyLocked ? 'disabled' : ''} onclick="startQuest(${q.id})" aria-label="${escapeHtml(q.title)}を始める">
+        ${btnLabel}
       </button>
     `;
     container.appendChild(card);
@@ -941,11 +1433,15 @@ let gameCorrects = 0;
 let gameStartTime = 0;
 let gameTimer = null;
 let isReviewMode = false;
+let currentAnswered = false;
 
 function startQuest(id, review = false) {
   const q = QUESTS.find(x => x.id === id) || QUESTS[0];
   if (q.isPro && !state.proUnlocked && !review) {
-    document.getElementById("pro").scrollIntoView({ behavior: "smooth" });
+    const proEl = document.getElementById("pro");
+    if (proEl && typeof proEl.scrollIntoView === "function") {
+      proEl.scrollIntoView({ behavior: "smooth" });
+    }
     return;
   }
   activeQuest = q;
@@ -975,7 +1471,7 @@ function startQuest(id, review = false) {
   if (gameTimer) clearInterval(gameTimer);
   gameTimer = setInterval(() => {
     const el = Math.floor((Date.now() - gameStartTime) / 1000);
-    document.getElementById("g-time").textContent = `${el}s`;
+    document.getElementById("g-time").textContent = formatTime(el);
   }, 1000);
 
   showScreen("game");
@@ -995,11 +1491,19 @@ function renderQuestion() {
   const q = currentQueue[queueIndex];
   if (!q) { finishQuest(); return; }
 
+  currentAnswered = false;
+
   // Stats
   document.getElementById("g-prog").textContent = `${queueIndex + 1} / ${currentQueue.length}`;
-  document.getElementById("g-combo").textContent = gameCombo;
+  const comboEl = document.getElementById("g-combo");
+  comboEl.textContent = gameCombo;
+  comboEl.classList.toggle("combo-hot", gameCombo >= 3);
   const pct = Math.round((queueIndex / currentQueue.length) * 100);
   document.getElementById("g-progress-fill").style.width = `${pct}%`;
+  const pctEl = document.getElementById("g-progress-pct");
+  if (pctEl) pctEl.textContent = `${pct}%`;
+  const labelEl = document.getElementById("g-progress-label");
+  if (labelEl) labelEl.textContent = `第${queueIndex + 1}問 / 全${currentQueue.length}問`;
   document.getElementById("g-xp").textContent = `+${gameXp}`;
 
   const currentAcc = queueIndex > 0 ? Math.round((gameCorrects / queueIndex) * 100) : 100;
@@ -1017,7 +1521,7 @@ function renderQuestion() {
   const codeEl = document.getElementById("p-code");
   if (q.code) {
     codeWrap.style.display = "block";
-    codeEl.textContent = q.code;
+    codeEl.innerHTML = highlightPython(q.code);
   } else {
     codeWrap.style.display = "none";
   }
@@ -1029,20 +1533,28 @@ function renderQuestion() {
   const fb = document.getElementById("p-feedback");
   fb.style.display = "none";
 
+  const kbdHint = document.getElementById("p-choice-kbd");
   if (q.type === "choice" && q.choices) {
     choicesWrap.style.display = "grid";
     inputWrap.style.display = "none";
     submitBtn.style.display = "none";
+    if (kbdHint) kbdHint.style.display = "block";
     choicesWrap.innerHTML = "";
-    q.choices.forEach(c => {
+    // 選択肢は毎回シャッフル（正解の位置で覚えるクセを防ぐ）
+    const shuffled = shuffleArray(q.choices);
+    const letters = ["A", "B", "C", "D", "E"];
+    shuffled.forEach((c, idx) => {
       const b = document.createElement("button");
       b.className = "choice-btn";
-      b.textContent = c;
+      b.dataset.value = c;
+      b.innerHTML = `<span class="choice-letter">${letters[idx] || idx + 1}</span><span>${escapeHtml(c)}</span>`;
+      b.setAttribute("aria-label", `選択肢 ${letters[idx] || idx + 1}: ${c}`);
       b.onclick = () => judgeChoice(b, c);
       choicesWrap.appendChild(b);
     });
   } else {
     choicesWrap.style.display = "none";
+    if (kbdHint) kbdHint.style.display = "none";
     inputWrap.style.display = "block";
     submitBtn.style.display = "block";
     const inp = document.getElementById("p-input");
@@ -1093,15 +1605,37 @@ function submitAnswer() {
 }
 
 function showFeedback(isOk, q) {
+  if (currentAnswered) return;
+  currentAnswered = true;
   const fb = document.getElementById("p-feedback");
   fb.className = `feedback-box ${isOk ? 'ok' : 'bad'}`;
   fb.style.display = "block";
+
+  // 不正解のときは正解の選択肢も緑で示す（その場で覚え直せる）
+  if (!isOk) {
+    document.querySelectorAll("#p-choices-wrap .choice-btn").forEach(b => {
+      if (b.dataset.value === q.answer) b.classList.add("reveal-ok");
+    });
+  }
+  const answerEl = document.getElementById("fb-answer");
+  if (answerEl) {
+    answerEl.style.display = "inline-block";
+    answerEl.textContent = `正解: ${q.answer}`;
+  }
+  const comboEl = document.getElementById("g-combo");
+  if (comboEl) comboEl.classList.toggle("combo-hot", gameCombo >= 2 && isOk);
 
   state.totalAnswered++;
   if (isOk) {
     state.totalCorrect++;
     gameCorrects++;
     gameCombo++;
+    const comboNow = document.getElementById("g-combo");
+    if (comboNow) {
+      comboNow.textContent = gameCombo;
+      comboNow.classList.toggle("combo-hot", gameCombo >= 3);
+    }
+    document.getElementById("g-xp").textContent = `+${gameXp + q.xp + (gameCombo >= 3 ? 5 : 0)}`;
     if (gameCombo > gameMaxCombo) gameMaxCombo = gameCombo;
     const gained = q.xp + (gameCombo >= 3 ? 5 : 0);
     gameXp += gained;
@@ -1113,6 +1647,8 @@ function showFeedback(isOk, q) {
     document.getElementById("fb-title").textContent = `🎉 正解！ +${gained} XP ${gameCombo >= 3 ? '（COMBOボーナス+5）' : ''}`;
   } else {
     gameCombo = 0;
+    const comboReset = document.getElementById("g-combo");
+    if (comboReset) { comboReset.textContent = "0"; comboReset.classList.remove("combo-hot"); }
     if (!state.mistakes.includes(q.id)) {
       state.mistakes.push(q.id);
     }
@@ -1148,12 +1684,34 @@ function finishQuest() {
 
   document.getElementById("r-xp").textContent = `+${gameXp}`;
   document.getElementById("r-acc").textContent = `${acc}%`;
-  document.getElementById("r-time").textContent = `${elapsed}s`;
+  document.getElementById("r-time").textContent = formatTime(elapsed);
   document.getElementById("r-combo").textContent = gameMaxCombo;
   document.getElementById("res-quest-name").textContent = isReviewMode ? "復習ミッション完了" : `${activeQuest.title} (${activeQuest.outcome})`;
 
   const heading = acc >= 80 ? "素晴らしいクリア！" : acc >= 60 ? "クリア！その調子です" : "おつかれさま！復習で伸びます";
   document.getElementById("res-heading").textContent = heading;
+
+  // ★評価（100%:3つ / 70%以上:2つ / それ以外:1つ）と紙吹雪
+  const starCount = acc >= 100 ? 3 : acc >= 70 ? 2 : 1;
+  const starsEl = document.getElementById("res-stars");
+  if (starsEl) {
+    starsEl.innerHTML = [1, 2, 3].map(i => `<span class="${i <= starCount ? '' : 'off'}">★</span>`).join("");
+  }
+  if (acc >= 60) launchConfetti();
+
+  // 「次の章へ」ボタン（章モードで、次章が存在するときだけ）
+  const nextBtn = document.getElementById("res-next-btn");
+  if (nextBtn) {
+    if (!isReviewMode && activeQuest && activeQuest.id < QUESTS.length) {
+      const following = QUESTS.find(x => x.id === activeQuest.id + 1);
+      nextBtn.style.display = "block";
+      nextBtn.textContent = following && following.isPro && !state.proUnlocked
+        ? `次の章「${following.title}」は Pro登録で解放 →`
+        : `次の章「${following ? following.title : ''}」へ進む →`;
+    } else {
+      nextBtn.style.display = "none";
+    }
+  }
 
   // シェア文
   const streak = calcStreak(state.dates);
@@ -1233,6 +1791,13 @@ function explainPythonLine(l) {
   if (t.startsWith("elif")) return "前の条件が不成立で、もし〜なら";
   if (t.startsWith("else")) return "条件が成り立たなかった場合の処理";
   if (t.startsWith("return")) return "計算結果を関数の呼び出し元へ戻す";
+  if (t.startsWith("while")) return "条件が True の間ずっと繰り返すループの開始";
+  if (t.startsWith("class ")) return "新しいクラス（データ型の設計図）を定義する";
+  if (t.startsWith("import ") || t.startsWith("from ")) return "モジュール（便利機能の集まり）を読み込む";
+  if (t.startsWith("try")) return "エラーが起きそうな処理を安全に試すブロックの開始";
+  if (t.startsWith("except")) return "エラーが起きたときだけ実行される受け止め処理";
+  if (t.startsWith("with ")) return "ファイルなどを自動で安全に開いて閉じる構文";
+  if (t.includes("input(")) return "ユーザーからの入力を受け取る（戻り値は文字列）";
   if (t.includes("+=")) return "左の変数に右の値を足して更新する";
   if (t.includes("=")) return "右側の値を左の変数に代入する";
   if (t.startsWith("#")) return "コメント（実行されない人間のためのメモ）";
@@ -1242,8 +1807,8 @@ function explainPythonLine(l) {
 function showAiDrill(line) {
   const box = document.getElementById("ai-drill-box");
   box.style.display = "block";
-  const masked = line.replace(/(print|def|for|while|if|return|input|range|sum|len|int|str)/, "___");
-  const keyword = (line.match(/(print|def|for|while|if|return|input|range|sum|len|int|str)/) || ["変数名"])[0];
+  const masked = line.replace(/(print|def|for|while|if|return|input|range|sum|len|int|str|import|class|try|except)/, "___");
+  const keyword = (line.match(/(print|def|for|while|if|return|input|range|sum|len|int|str|import|class|try|except)/) || ["変数名"])[0];
 
   box.innerHTML = `
     <div style="font-size:0.75rem;font-weight:900;color:var(--primary)">この行の穴埋め練習</div>
@@ -1269,17 +1834,22 @@ function handleWaitlist(e) {
   state.proUnlocked = true;
   saveState();
 
-  fetch("/api/waitlist", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, interest, source: "web_app" })
-  }).catch(() => {});
+  // 送信失敗や未対応ブラウザでも、解放と完了表示は必ず行う
+  try {
+    if (typeof fetch === "function") {
+      fetch("/api/waitlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, interest, source: "web_app" })
+      }).catch(() => {});
+    }
+  } catch (e) { /* 計測送信はベストエフォート */ }
 
   const msg = document.getElementById("wl-msg");
   msg.style.display = "block";
   msg.style.background = "#ECFDF5";
   msg.style.color = "#065F46";
-  msg.textContent = "🎉 登録完了！ 全12クエストが解放されました。マップからお進みください。";
+  msg.textContent = "🎉 登録完了！ 全18クエストが解放されました。マップからお進みください。";
 
   renderQuests();
 }
@@ -1292,12 +1862,119 @@ function resetData() {
 }
 
 // ------------------------------------------------------------
+// v5.0 ヘルパー（ハイライト / シャッフル / 紙吹雪 / キーボード）
+// ------------------------------------------------------------
+function formatTime(sec) {
+  if (sec < 60) return `${sec}s`;
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return `${m}:${String(s).padStart(2, "0")}`;
+}
+function shuffleArray(arr) {
+  const copy = [...arr];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+function highlightPython(code) {
+  const pattern = /(#[^\n]*)|("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')|\b(def|return|if|elif|else|for|while|in|not|and|or|is|break|continue|try|except|finally|raise|with|as|import|from|class|pass|del|None|True|False)\b|\b(print|len|range|input|int|str|float|list|dict|set|sum|max|min|sorted|enumerate|type|abs|round|open|isinstance)\b|(\b\d+(?:\.\d+)?\b)/g;
+  return escapeHtml(code).replace(pattern, (m, comment, str, kw, builtin, num) => {
+    if (comment) return `<span class="tok-comment">${comment}</span>`;
+    if (str) return `<span class="tok-str">${str}</span>`;
+    if (kw) return `<span class="tok-kw">${kw}</span>`;
+    if (builtin) return `<span class="tok-builtin">${builtin}</span>`;
+    if (num) return `<span class="tok-num">${num}</span>`;
+    return m;
+  });
+}
+function copyProblemCode() {
+  const q = currentQueue[queueIndex];
+  if (!q || !q.code) return;
+  const btn = document.getElementById("btn-copy-code");
+  navigator.clipboard.writeText(q.code).then(() => {
+    if (btn) {
+      const original = btn.textContent;
+      btn.textContent = "コピーしました！";
+      setTimeout(() => { btn.textContent = original; }, 1600);
+    }
+  }).catch(() => {});
+}
+function startNextQuest() {
+  if (isReviewMode || !activeQuest) { showScreen("home"); return; }
+  const following = QUESTS.find(x => x.id === activeQuest.id + 1);
+  if (!following) { showScreen("home"); return; }
+  if (following.isPro && !state.proUnlocked) {
+    showScreen("home");
+    setTimeout(() => {
+      const pro = document.getElementById("pro");
+      if (pro && typeof pro.scrollIntoView === "function") pro.scrollIntoView({ behavior: "smooth" });
+    }, 60);
+    return;
+  }
+  startQuest(following.id);
+}
+function launchConfetti() {
+  const wrap = document.getElementById("confetti-wrap");
+  if (!wrap) return;
+  wrap.innerHTML = "";
+  const colors = ["#FFD43B", "#0D9488", "#F59E0B", "#38BDF8", "#F472B6", "#10B981"];
+  for (let i = 0; i < 42; i++) {
+    const piece = document.createElement("span");
+    piece.className = "confetti-piece";
+    const size = 6 + Math.random() * 7;
+    piece.style.cssText = `left:${Math.random() * 100}%;width:${size}px;height:${size * 0.55}px;background:${colors[i % colors.length]};animation-duration:${1.6 + Math.random() * 1.6}s;animation-delay:${Math.random() * 0.5}s;transform:rotate(${Math.random() * 360}deg)`;
+    wrap.appendChild(piece);
+  }
+  setTimeout(() => { wrap.innerHTML = ""; }, 4200);
+}
+// 選択肢のキーボード操作（1〜4キー / 判定後は Enter で次へ）
+document.addEventListener("keydown", (e) => {
+  const gameScreen = document.getElementById("screen-game");
+  if (!gameScreen || !gameScreen.classList.contains("active")) return;
+  const tag = (e.target && e.target.tagName) || "";
+  if (tag === "TEXTAREA" || tag === "SELECT") return;
+  const fb = document.getElementById("p-feedback");
+  const fbVisible = fb && fb.style.display === "block";
+  if (e.key === "Enter" && fbVisible && tag !== "INPUT") {
+    e.preventDefault();
+    nextQuestion();
+    return;
+  }
+  if (fbVisible || currentAnswered) return;
+  if (tag === "INPUT") return;
+  const num = parseInt(e.key, 10);
+  if (num >= 1 && num <= 4) {
+    const btns = document.querySelectorAll("#p-choices-wrap .choice-btn");
+    if (btns[num - 1]) btns[num - 1].click();
+  }
+});
+function setupReveal() {
+  const targets = document.querySelectorAll(".reveal");
+  if (!("IntersectionObserver" in window) || !targets.length) {
+    targets.forEach(el => el.classList.add("visible"));
+    return;
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  targets.forEach(el => observer.observe(el));
+}
+
+// ------------------------------------------------------------
 // 初期化
 // ------------------------------------------------------------
 window.addEventListener("DOMContentLoaded", () => {
   loadState();
   renderCalendar();
   renderQuests();
+  setupReveal();
   loadAiSample(1);
 });
 </script>
